@@ -6,13 +6,21 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "doc": "jsdoc -c jsdoc.json"
   },
   "dependencies": {
-    "vue": "^3.2.47"
+    "@splidejs/vue-splide": "^0.6.12",
+    "pinia": "^2.0.36",
+    "vue": "^3.2.47",
+    "vue-router": "^4.2.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",
+    "@vue/compiler-sfc": "^3.3.2",
+    "jsdoc": "^4.0.2",
+    "jsdoc-vuejs": "^4.0.0",
+    "sass": "^1.62.1",
     "vite": "^4.3.2"
   }
 }
