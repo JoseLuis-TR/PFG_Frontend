@@ -1,0 +1,23 @@
+.inicio{
+
+    &__superior{
+        width: 75%;
+        margin: 0 auto;
+        display: flex;
+        margin-top: 5rem;
+    }
+
+    &__inferior{
+        
+    }
+}
+
+// Media queries
+@media (max-width: 900px) {
+    .inicio{
+        &__superior{
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+}

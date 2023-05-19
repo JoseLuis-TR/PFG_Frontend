@@ -3,4 +3,10 @@
 @import "./base/_reset";
 @import "./base/_background";
 
-@import "./components/_header"
+@import "./components/_header";
+@import "./components/_carteleraHoy";
+@import "./components/topEsperadas";
+
+@import "./views/_index";
+
+@import '@splidejs/vue-splide/css';
