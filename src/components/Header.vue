@@ -8,7 +8,17 @@
 </template>
 
 <script>
-    export default {
-        name: 'Header'
-    }
+  /**
+   * @file Header.vue - Componente que contiene el header de la página web
+   * @author José Luis Tocino Rojo
+   * @see <a href="https://github.com/JoseLuis-TR/cines_haven" target="_blank">Github</a>
+  */
+
+  /**
+   * @property {string} name - Nombre del componente
+   */
+
+  export default {
+      name: 'Header'
+  }
 </script>

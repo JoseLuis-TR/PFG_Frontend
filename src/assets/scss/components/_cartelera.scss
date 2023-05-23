@@ -1,0 +1,237 @@
+@use '../utilities/_variables.scss' as v;
+// Descripción: Estilos del componente de la cartelera con su slider
+
+.sliderSinceToday{
+  width: 100%;
+  max-width: 1000px;
+  min-width: 375px;
+  height: 50px;
+  background-color: v.$black;
+  font-family: v.$manrope;
+  color: v.$white;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 10px;
+
+  &__sliderButton{
+    flex: 0 1 auto;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    border: none;
+    background-color: v.$black;
+    cursor: pointer;
+    transition: all 0.3s;
+  
+    img{
+      width: 100%;
+      filter: invert(100%);
+    }
+  }
+
+  &__sliderButton:first-child{
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+
+  &__sliderButton:last-child{
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+
+  &__sliderButton:hover{
+    background-color: v.$yellow;
+
+    img {
+      filter: invert(0%);
+    }
+  }
+
+  &__item{
+    flex: 1 1 auto;
+    width: 50px;
+    height: 50px;
+    font-size: 2rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+
+  &__item:hover{
+    color: v.$black;
+    background-color: v.$yellow;
+  }
+}
+
+.selected{
+  background-color: v.$yellow;
+  color: v.$black;
+  font-weight: 700;
+}
+
+.infoMovies{
+  width: 100%;
+  font-family: v.$manrope;
+  max-width: 1000px;
+
+  &__item{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    height: 200px;
+    padding-top: 20px;
+    gap: 15px;
+
+    &__data{
+      display: grid;
+      grid-template-columns: fit-content(50%) 1fr;
+      grid-template-rows: 1fr 1fr;
+      grid-template-areas: "Poster Titulo" "Poster Sala";
+      background-color: rgba(51, 51, 51, .5);
+      min-width: 35%;
+      width: 35%;
+      max-width: 450px;
+      color: v.$white;
+      border-radius: 10px;
+
+      &--poster{
+        grid-area: Poster;
+        align-self: center;
+        justify-self: center;
+        width: 85px;
+        max-height: 150px;
+        margin: 15px 15px;
+        cursor: pointer;
+        transition: all 0.7s;
+      }
+
+      &--poster:hover{
+        transform: translateX(10px) translateY(-10px);
+        box-shadow: v.$yellow -10px 10px;
+      }
+
+      &--titulo{
+        grid-area: Titulo;
+        width: 80%;
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 800;
+        align-self: center;
+        justify-self: center;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 2;
+        cursor: pointer;
+        position: relative;
+        max-width: fit-content;
+      }
+
+      &--titulo::after{
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: v.$yellow;
+        transform-origin: bottom right;
+        transition: transform .3s ease-out;
+        transform: scaleX(0);
+      }
+
+      &--titulo:hover::after{
+          transform-origin: bottom left;
+          transform: scaleX(1);
+      }
+
+      &--sala{
+        grid-area: Sala;
+        font-size: 20px;
+        align-self: center;
+        justify-self: center;
+        width: fit-content;
+        height: fit-content;
+        text-align: center;
+        color: v.$black;
+        font-weight: 700;
+        background-color: v.$yellow;
+        padding: 7px;
+      }
+      }
+
+    &__times{
+      background-color: rgba(51, 51, 51, .5);
+      flex-grow: 1;
+      width: fit-content;
+      display: flex;
+      align-items: flex-start;
+      padding: 15px 10px;
+      flex-wrap: wrap;
+      border-radius: 10px;
+
+      &--hour{
+        font-size: 2.5rem;
+        font-weight: 500;
+        color: v.$white;
+        background-color: v.$back_web_darker;
+        padding: 10px;
+        margin: 0 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+        border-radius: 10px;
+      }
+
+      &--hour:hover{
+        background-color: v.$yellow;
+        color: v.$black;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 890px){
+  .infoMovies{
+    &__item{
+      &__data{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        grid-template-areas: "Poster";
+        min-width: 125px;
+        &--poster{
+          grid-area: Poster;
+        }
+
+        &--titulo{
+          display: none;
+        }
+
+        &--sala{
+          display: none;
+        }
+      }
+      
+      &__times{
+        min-width: 250px;
+        &--hour{
+          font-size: 2rem;
+        }
+      }
+    }
+  }
+
+  .sliderSinceToday{
+    &__item{
+      font-size: 1.5rem;
+    }
+  }
+}
