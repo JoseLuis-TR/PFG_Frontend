@@ -9,7 +9,7 @@ import { defineStore } from "pinia";
  * relacionadas con el propio usuario.
  * 
  * @memberof module:Store_User
- * @constant {object} useUserStore
+ * @constant {object} userStore
  * @property {object} state - Datos almacenados
  * @property {object} state.user - Objeto del usuario almacenado
  * @property {function} actions - Funciones relacionadas con el usuario
@@ -17,7 +17,7 @@ import { defineStore } from "pinia";
  * @property {function} actions.signUp - Registra un usuario
  * @property {function} actions.signIn - Inicia sesión con un usuario
  */
-export const useUserStore = defineStore("user", {
+export const userStore = defineStore("user", {
   state: () => ({
     user: null,
   }),

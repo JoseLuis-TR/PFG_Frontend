@@ -6,6 +6,7 @@
 
     &__superior{
         width: 75%;
+        max-width: 175rem;
         margin: 0 auto;
         display: flex;
         margin-top: 5rem;
@@ -13,6 +14,7 @@
 
     &__inferior{
         width: 75%;
+        max-width: 175rem;
         margin: 0 auto;
         display: flex;
         flex-direction: column;

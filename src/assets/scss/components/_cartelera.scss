@@ -44,6 +44,7 @@
 
   &__sliderButton:hover{
     background-color: v.$yellow;
+    font-weight: 700;
 
     img {
       filter: invert(0%);

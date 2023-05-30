@@ -5,6 +5,20 @@ import './assets/scss/main.scss'
 import App from './App.vue'
 import Index from './pages/Index.vue'
 import VueSplide from '@splidejs/vue-splide';
+import MovieDetails from './pages/MovieDetails.vue'
+import Catalogo from './pages/Catalogo.vue'
+
+// Importación de Vuetify
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+const vuetify = createVuetify({
+    components,
+    directives,
+    theme: {
+        defaultTheme: 'dark',
+    }
+})
 
 // Se definen las rutas
 const routes = [
@@ -14,6 +28,22 @@ const routes = [
         component: Index,
         meta: {
             title: 'Cines Haven - Inicio'
+        }
+    },
+    {
+        path: '/pelicula/:id',
+        name: 'Detalles Pelicula',
+        component: MovieDetails,
+        meta: {
+            title: 'Cines Haven - Detalles Pelicula'
+        }
+    },
+    {
+        path: '/catalogo',
+        name: 'Catálogo',
+        component: Catalogo,
+        meta: {
+            title: 'Cines Haven - Catálogo'
         }
     }
 ]
@@ -38,6 +68,7 @@ const pinia = createPinia();
 app.use(router)
 app.use(pinia)
 app.use(VueSplide)
+app.use(vuetify)
 
 // Se monta la aplicación
 app.mount('#app')

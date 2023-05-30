@@ -1,5 +1,4 @@
 <template>
-    <Header></Header>
     <section class="inicio">
         <article class="inicio__superior">
             <Carrusel />

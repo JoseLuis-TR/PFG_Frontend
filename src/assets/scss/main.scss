@@ -8,8 +8,12 @@
 @import "./components/_carrusel";
 @import "./components/_carteleraUnica";
 @import "./components/_cartelera";
-@import "./components/topEsperadas";
+@import "./components/_topEsperadas";
+@import "./components/_captureBackground";
+@import "./components/_pagination";
 
 @import "./views/_index";
+@import "./views/_movieDetails";
+@import "./views/_catalogo";
 
 @import '@splidejs/vue-splide/css';
