@@ -5,12 +5,12 @@
         <Splide
             :options="slideOptions"
             class="carteleraHoy__splide"
-            v-else-if="!isLoading && this.movies.length > 0">
+            v-else-if="!isLoading && this.moviesUnicas.length > 0">
             <SplideSlide 
                 class="carteleraHoy__splide__slide"
-                v-for="(movie, index) in this.movies"
+                v-for="(movie, index) in this.moviesUnicas"
                 :key="index"
-                @click="redirectToMoviePage(movie.id)">
+                @click="redirectToMoviePage(movie.peliculaCartelera.id)">
                     <img :src="movie.peliculaCartelera.captura" >
                     <section class="movieInfo">
                         <p class="movieInfo__titulo">{{movie.peliculaCartelera.nombre}}</p>
@@ -53,6 +53,7 @@
       data() {
           return {
               movies: [],
+              movieListForCarousel: [],
               isLoading: false,
               slideOptions: {
                   type: 'loop',
@@ -60,7 +61,8 @@
                   cover: true, 
                   autoplay: true, 
                   interval: 3000
-              }
+              },
+              moviesUnicas: []
           };
       },
       methods: {
@@ -68,16 +70,21 @@
            * Obtiene las películas en cartelera hoy
            * @returns {Promise} - Promesa con las películas en cartelera hoy
            */
-          async getTodaySessions() {
-              const apiUrl = import.meta.env.VITE_API_URL;
-              return await fetch(`${apiUrl}/sesiones/hoy`)
-                  .then(response => response.json())
-                  .then(data => {
-                  this.movies = data;
-                  this.isLoading = false;
-              });
-          },
-          /**
+            async getTodaySessions() {
+                const apiUrl = import.meta.env.VITE_API_URL;
+                return await fetch(`${apiUrl}/sesiones/hoy`)
+                    .then(response => response.json())
+                    .then(data => {
+                    this.movies = data;
+                    const moviesArray = this.movies.map(proxy => proxy)
+                    this.moviesUnicas = moviesArray.filter((movie, indice, array) => {
+                        return array.findIndex(obj => obj.peliculaCartelera.id === movie.peliculaCartelera.id) === indice;
+                    });
+                    console.log(this.moviesUnicas)
+                    this.isLoading = false;
+                });
+            },
+            /**
            * Redirecciona a la página de la película
            */
           redirectToMoviePage(movieId) {

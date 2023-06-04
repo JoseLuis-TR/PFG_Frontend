@@ -9,7 +9,6 @@
     <section
         class="sliderSinceToday__item"
         v-for="date in visibleDates"
-        :key="date.date"
         @click="toggleClass(date.date)"
         v-bind:class="{'selected': date.date === selectedDate}"
         >
@@ -22,7 +21,7 @@
     </button>
   </section>
   <section  class="infoMovies">
-    <section class="infoMovies__item" v-for="movieSession in sessionsList" :key="key">
+    <section class="infoMovies__item" v-for="movieSession in sessionsList">
       <section class="infoMovies__item__data">
         <img class="infoMovies__item__data--poster" 
               :src="movieSession.pelicula.poster"
@@ -242,7 +241,6 @@
             }))
           }))
         })
-        console.log(sessionsByDate)
         return sessionsByDate
       }
     },

@@ -23,32 +23,100 @@ export const userStore = defineStore("user", {
   }),
 
     actions: {
-    /**
-     * Obtiene los datos del usuario
-     * 
-     * @function fetchUser
-     * @return {object} Objeto con los datos del usuario
-     */
-    async fetchUser() {
-      // https://upmostly.com/vue-js/how-to-use-vue-with-pinia-to-set-up-authentication
-    },
+      getUserFromCookie() {
+        const cookies = document.cookie.split(";"); // Obtiene todas las cookies
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          const [cookieKey, cookieValue] = cookie.split("=");
+          if (cookieKey === 'userID') {
+            return decodeURIComponent(cookieValue); // Retorna el valor de la cookie
+          }
+        }
+        return null;
+      },
+      /**
+       * Obtiene los datos del usuario
+       * 
+       * @function fetchUser
+       * @param {string} idUsuario - ID del usuario
+       * @return {object} Objeto con los datos del usuario
+       */
+      async fetchUser(idUsuario) {
+        const apiUrl = import.meta.env.VITE_API_URL;
 
-    /**
-     * Inicia sesión con un usuario
-     * 
-     * @function loginUser
-     * @param {string} email - Correo electrónico del usuario
-     * @param {string} password - Contraseña del usuario
-     * @return {object} Objeto con los datos del usuario
-     **/
-    async loginUser(email, password) {
-    
-    /**
-     * Inicia sesión con un usuario
-     */
-    },
-    async registerUser(email, password) {
-        
+        const response = await fetch(`${apiUrl}/usuario?idUsuario=${idUsuario}`);
+        const data = await response.json();
+
+        if(data.hasOwnProperty("nick")) {
+          this.user = data;
+          sessionStorage.setItem("user", JSON.stringify(data));
+        } else {
+          return;
+        }
+      },
+
+      /**
+       * Inicia sesión con un usuario
+       * 
+       * @function loginUser
+       * @param {string} email - Correo electrónico del usuario
+       * @param {string} password - Contraseña del usuario
+       * @return {object} Objeto con los datos del usuario
+       **/
+      async loginUser(email, password) {
+        const apiUrl = import.meta.env.VITE_API_URL;
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            clave: password
+          }),
+        };
+        const response = await fetch("http://localhost:8080/usuario/login", options);
+        const data = await response.json();
+        if(data.hasOwnProperty("codigo")){
+          return false;
+        } else {
+          this.user = data;
+          return true;
+        }
+      },
+      /**
+       * Registro de un nuevo usuario
+       * 
+       * @function registerUser
+       * @param {string} nick - Nick del usuario
+       * @param {string} email - Correo electrónico del usuario
+       * @param {string} password - Contraseña del usuario
+       * @return {boolean} True si se ha registrado correctamente, false en caso contrario
+       */
+      async registerUser(nick, email, password) {
+        const apiUrl = import.meta.env.VITE_API_URL;
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            nick: nick,
+            email: email,
+            clave: password
+          }),
+        };
+
+        const response = await fetch(`${apiUrl}/usuario`, options);
+
+        const data = await response.json();
+
+        if(data.hasOwnProperty("nick")) {
+          this.user = data;
+          return true;
+        } else {
+          return false;
+        }
       }
   },
 });

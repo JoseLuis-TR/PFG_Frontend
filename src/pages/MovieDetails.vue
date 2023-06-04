@@ -1,12 +1,11 @@
 <template>
-  <section class="mainDetails">
-    <Loader 
+  <Loader 
       class="loader__details"
       v-if="isLoading"
       :mensajeCarga="'Cargando información de la película'"
       />
+  <section class="mainDetails" v-else>
     <CaptureBackground
-      v-else
       :movieCapture="movieInfo.captura"
       :movieName="movieInfo.nombre"
       :moviePoster="movieInfo.poster"
@@ -16,25 +15,28 @@
     <section class="buttons">
       <button
         class="buttons__item"
-        :class="{ 'active': infoIsOpen, 'inactive': !infoIsOpen }"
+        :class="{ 'active': activeTab === 'info' , 'inactive': activeTab !== 'info' }"
         @click="changeTab('info')">
         Información
       </button>
       <button
         class="buttons__item"
-        :class="{ 'active': opinionsIsOpen, 'inactive': !opinionsIsOpen }"
+        :class="{ 'active': activeTab === 'opinions', 'inactive': activeTab !== 'opinions' }"
         @click="changeTab('opinions')">
         Opiniones
       </button>
       <button
         class="buttons__item"
-        :class="{ 'active': ticketsIsOpen, 'inactive': !ticketsIsOpen }"
+        :class="{ 'active': activeTab === 'tickets', 'inactive': activeTab !== 'tickets' }"
         @click="changeTab('tickets')">
         Entradas
       </button>
     </section>
-    <infoMovie
-      v-if="infoIsOpen"/>
+    <Transition name="fade" mode="out-in">
+      <component 
+        :is="activeTabComponent"
+        ></component>
+    </Transition>
   </section>
 </template>
 
@@ -43,6 +45,8 @@
   import CaptureBackground from '../components/MovieDetails/CaptureBackground.vue'
   import Loader from '../components/Loader.vue'
   import infoMovie from '../components/MovieDetails/InfoMovie.vue'
+  import opinionMovie from '../components/MovieDetails/OpinionMovie.vue';
+  import ticketMovie from '../components/MovieDetails/TicketMovie.vue';
 
   export default {
     name: "MovieDetails",
@@ -50,7 +54,9 @@
       Header,
       CaptureBackground,
       Loader,
-      infoMovie
+      infoMovie,
+      opinionMovie,
+      ticketMovie
     },
     data() {
       return {
@@ -60,6 +66,8 @@
         infoIsOpen: true,
         opinionsIsOpen: false,
         ticketsIsOpen: false,
+        activeTab: 'info',
+        sessions: [],
       };
     },
     methods: {
@@ -71,15 +79,6 @@
               this.movieInfo = data;
               console.log(this.movieInfo);
               this.isLoading = false;
-            });
-      },
-      async getMovieSessions(movieId){
-        const apiUrl = import.meta.env.VITE_API_URL;
-        return await fetch(`${apiUrl}/sesiones/desdeHoy/pelicula?idPelicula=${movieId}`)
-            .then(response => response.json())
-            .then(data => {
-              this.movieSessions = data;
-              this.orderSessionsByDate();
             });
       },
       // Ordena las sesiones por fecha y almacena dentro de cada objeto fecha
@@ -107,28 +106,25 @@
         return orderedSessions;
       },
       changeTab(tabName){
-      switch(tabName){
-        case "info":
-          this.infoIsOpen = true;
-          this.opinionsIsOpen = false;
-          this.ticketsIsOpen = false;
-          break;
-        case "opinions":
-          this.infoIsOpen = false;
-          this.opinionsIsOpen = true;
-          this.ticketsIsOpen = false;
-          break;
-        case "tickets":
-          this.infoIsOpen = false;
-          this.opinionsIsOpen = false;
-          this.ticketsIsOpen = true;
-          break;
+        this.activeTab = tabName;
+      }
+    },
+    computed:{
+      activeTabComponent(){
+        switch(this.activeTab){
+          case "info":
+            return 'infoMovie';
+          case "opinions":
+            return 'opinionMovie';
+          case "tickets":
+            return 'ticketMovie';
+          default:
+            return 'infoMovie';
         }
       }
     },
     mounted() {
       this.getMovieDetails(this.$route.params.id);
-      this.getMovieSessions(this.$route.params.id);
     }
   };
   

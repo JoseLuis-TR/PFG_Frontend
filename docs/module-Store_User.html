@@ -100,7 +100,7 @@
 
         
             
-<h4 class="name" id=".useUserStore"><span class="type-signature">(static, constant) </span>useUserStore<span class="type-signature"> :object</span></h4>
+<h4 class="name" id=".userStore"><span class="type-signature">(static, constant) </span>userStore<span class="type-signature"> :object</span></h4>
 
 
 
@@ -399,7 +399,7 @@
     
 
     
-    <h4 class="name" id="~fetchUser"><span class="type-signature">(inner) </span>fetchUser<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="~fetchUser"><span class="type-signature">(inner) </span>fetchUser<span class="signature">(idUsuario)</span><span class="type-signature"> &rarr; {object}</span></h4>
     
 
     
@@ -416,6 +416,55 @@
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>idUsuario</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">ID del usuario</td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -633,7 +682,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="store_user.js.html">store/user.js</a>, <a href="store_user.js.html#line36">line 36</a>
+        <a href="store_user.js.html">store/user.js</a>, <a href="store_user.js.html#line46">line 46</a>
     </li></ul></dd>
     
 
@@ -686,6 +735,211 @@
 
 
         
+            
+
+    
+
+    
+    <h4 class="name" id="~registerUser"><span class="type-signature">(inner) </span>registerUser<span class="signature">(nick, email, password)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Registro de un nuevo usuario
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>nick</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Nick del usuario</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>email</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Correo electrónico del usuario</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>password</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Contraseña del usuario</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="store_user.js.html">store/user.js</a>, <a href="store_user.js.html#line56">line 56</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    True si se ha registrado correctamente, false en caso contrario
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
     
 
     
@@ -701,13 +955,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CarteleraDetails.html">CarteleraDetails</a></li><li><a href="module-Header.html">Header</a></li><li><a href="module-Loader.html">Loader</a></li><li><a href="module-Store_User.html">Store_User</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getTodaySessions">getTodaySessions</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Header.html">Header</a></li><li><a href="module-Loader.html">Loader</a></li><li><a href="module-Store_User.html">Store_User</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue May 23 2023 16:21:58 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sun Jun 04 2023 20:20:47 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

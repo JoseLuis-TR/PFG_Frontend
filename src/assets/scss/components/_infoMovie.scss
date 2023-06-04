@@ -1,0 +1,69 @@
+@use '../utilities/_variables.scss' as v;
+
+.infoContainer{
+    margin-bottom: 5rem;
+    &__title{
+        width: 100%;
+        font-size: 6rem;
+        font-family: v.$merri;
+        margin-top: 8rem;
+
+        @media (max-width: 850px) {
+            font-size: 4rem;
+        }
+
+        @media (max-width: 550px) {
+            font-size: 3rem;
+        }
+    }
+
+    &__divider{
+        display:block;
+        width:100%;
+        border-top: 10px solid v.$yellow;
+        border-radius: 10px;
+
+        @media (max-width: 550px) {
+            border-top: 5px solid v.$yellow;
+        }
+    }
+
+    &__sinopsis{
+        width: 100%;
+        margin-top: 2rem;
+        font-size: 2.5rem;
+        font-family: v.$manrope;
+
+        @media (max-width: 850px) {
+            font-size: 2rem;
+        }
+
+        @media (max-width: 550px) {
+            font-size: 1.5rem;
+        }
+    }
+
+    .videoContainer{
+        margin-top: 10rem;
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        justify-content: center;
+
+        &__video{
+            width: 75%;
+            min-width: 250px;
+            aspect-ratio: 16/9;
+        }
+    }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}

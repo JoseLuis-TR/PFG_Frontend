@@ -30,6 +30,7 @@
   import TopEsperadas from '../components/TopEsperadas.vue';
   import Header from '../components/Header.vue'
   import Cartelera from '../components/Cartelera/Cartelera.vue';
+  import { userStore } from '../store/user';
 
   export default{
     name: 'Index',
@@ -38,6 +39,13 @@
     Carrusel,
     TopEsperadas,
     Cartelera
+    },
+    setup(){
+      const userStorePinia = userStore();
+      return { userStorePinia };
+    },
+    mounted(){
+      console.log(this.userStorePinia.user)
     }
   }
 </script>

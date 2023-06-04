@@ -7,6 +7,7 @@ import Index from './pages/Index.vue'
 import VueSplide from '@splidejs/vue-splide';
 import MovieDetails from './pages/MovieDetails.vue'
 import Catalogo from './pages/Catalogo.vue'
+import { userStore } from './store/user.js'
 
 // Importación de Vuetify
 import { createVuetify } from 'vuetify'
@@ -67,10 +68,29 @@ const pinia = createPinia();
 // Se agregan dependencias
 app.use(router)
 app.use(pinia)
+const userStorePinia = userStore();
 app.use(VueSplide)
 app.use(vuetify)
 
-// Se monta la aplicación
-app.mount('#app')
+app.config.globalProperties.$fetchUserOnStart = async () => {
+    const cookies = document.cookie.split(";");
+    let userID;
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        const [cookieKey, cookieValue] = cookie.split("=");
+        if (cookieKey === 'userID') {
+            userID = decodeURIComponent(cookieValue);
+            break;
+        }
+    }
+    if(userID) {
+        await userStorePinia.fetchUser(userID);
+    }
+}
 
-
+// Se comprueba si hay un usuario en las cookies
+// Y se inicia la app con los datos del usuario
+app.config.globalProperties.$fetchUserOnStart()
+    .then(() => {
+        app.mount('#app');
+    });

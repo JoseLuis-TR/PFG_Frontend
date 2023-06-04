@@ -13,3 +13,7 @@
 - Pinia
 - Jsdoc
 - Vite
+
+## Enlace despliegue
+
+https://pfg-frontend.vercel.app/#/

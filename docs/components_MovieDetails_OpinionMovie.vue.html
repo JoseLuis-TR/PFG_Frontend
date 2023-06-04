@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/MovieDetails/OpinionMovie.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/MovieDetails/OpinionMovie.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;template>
+    &lt;section>
+        &lt;Loader v-if="isLoading">&lt;/Loader>
+        &lt;section class="opinions" v-else-if="!isLoading &amp;&amp; opinions.length > 0">
+            &lt;button class="opinions__add" @click="showForm">
+                &lt;img src="../../assets/icons/add.svg">
+                Añade una opinión
+            &lt;/button>
+            &lt;section class="opinions__container">
+                &lt;article class="opinions__container--item" v-for="opinion in opinions">
+                    &lt;section class="user">
+                        &lt;img class="user__img" v-if="opinion.usuario.avatar" :src="opinion.usuario.avatar" >
+                        &lt;img class="user__img" v-else src="../../assets/images/default.png" alt="Usuario">
+                        &lt;button class="user__remove" @click="showConfirmation(opinion.id)">
+                            &lt;img class="user__remove--icon" src="../../assets/icons/trash.svg">
+                            Eliminar
+                        &lt;/button>
+                    &lt;/section>
+                    &lt;section class="opinion">
+                        &lt;p class="opinion__info">@{{opinion.usuario.nick}} &amp;nbsp;&amp;nbsp;·&amp;nbsp;&amp;nbsp; {{formatoFecha(opinion.fecha)}}&lt;/p>
+                        &lt;p class="opinion__text">{{opinion.texto}}&lt;/p>
+                    &lt;/section>
+                &lt;/article>
+            &lt;/section>
+        &lt;/section>
+        &lt;section v-else-if="!isLoading &amp;&amp; opinions.length === 0" class="noOpinion">
+            &lt;p class="noOpinion__title">¡Oh no!&lt;/p>
+            &lt;p class="noOpinion__explain">
+                Actualmente no hay opiniones de esta película. ¡Sé el primero en opinar!
+            &lt;/p>
+            &lt;button class="noOpinion__button">
+                &lt;img src="../../assets/icons/add.svg">
+                Añade una opinión
+            &lt;/button>
+        &lt;/section>
+        &lt;ModalConfirmacion 
+            v-if="showModal" 
+            @close="hideConfirmation" 
+            @delete="deleteOpinion" 
+            :mensaje="'¿Esta seguro de querer eliminar este comentario?'"
+            >&lt;/ModalConfirmacion>
+        &lt;FormModal 
+            v-if="showAddComment" 
+            @close="hideForm" 
+            :formType="'addComment'">
+        &lt;/FormModal>
+    &lt;/section>
+&lt;/template>
+
+&lt;script>
+    import Loader from '../Loader.vue'
+    import ModalConfirmacion from '../Overlays/ModalConfirmacion.vue'
+    import FormModal from '../Overlays/FormModal.vue'
+
+    export default {
+        name: "opinionMovie",
+        components: {
+            Loader,
+            ModalConfirmacion,
+            FormModal
+        },
+        data() {
+            return {
+                isLoading: true,
+                opinions: [],
+                showModal: false,
+                idComentarioABorrar: null,
+                showAddComment: false
+            }
+        },
+        methods:{
+            /**
+             * Se recogen los comentarios de la película
+             */
+            async getOpinions(){
+                const apiUrl = import.meta.env.VITE_API_URL;
+                return await fetch(`${apiUrl}/comentarios/pelicula/${this.$route.params.id}/paginado/0`)
+                    .then(response => response.json())
+                    .then(data => {
+                        this.opinions = data.comentarios;
+                        console.log(this.opinions.length)
+                        this.isLoading = false;
+                    });
+            },
+            /**
+             * Formatea la fecha de la opinión de YYYY-MM-DD HH:MM:SS a DD/MM/YYYY
+             * @returns {string} - Fecha formateada
+             */
+            formatoFecha(fecha){
+                const date = new Date(fecha);
+                const day = date.getDate();
+                const month = date.getMonth() + 1;
+                const year = date.getFullYear();
+
+                const formattedDay = day &lt; 10 ? `0${day}` : day;
+                const formattedMonth = month &lt; 10 ? `0${month}` : month;
+
+                return `${formattedDay}/${formattedMonth}/${year}`;
+            },
+            /**
+             * Elimina la opinión
+             */
+            deleteOpinion(){
+                const apiUrl = import.meta.env.VITE_API_URL;
+                const options = {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+                fetch(`${apiUrl}/comentarios/${this.idComentarioABorrar}`, options)
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data.id){
+                            this.getOpinions();
+                            this.hideConfirmation();
+                        }
+                    })
+            },
+            showConfirmation(idComentario){
+                this.idComentarioABorrar = idComentario;
+                this.showModal = true
+            },
+            /**
+             * Oculta el mensaje de confirmación de compra
+             */
+            hideConfirmation(){
+                this.idComentarioABorrar = null;
+                this.showModal = false
+            },
+            /**
+             * Muestra el formulario para añadir una opinión
+             */
+            showForm(){
+                this.showAddComment = true;
+            },
+            /**
+             * Oculta el formulario para añadir una opinión
+             */
+            hideForm(){
+                this.showAddComment = false;
+            }
+        },
+        mounted() {
+            this.isLoading = true;
+            this.getOpinions();
+        }
+    }
+&lt;/script></code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Header.html">Header</a></li><li><a href="module-Loader.html">Loader</a></li><li><a href="module-Store_User.html">Store_User</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sun Jun 04 2023 20:20:47 GMT+0200 (hora de verano de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
