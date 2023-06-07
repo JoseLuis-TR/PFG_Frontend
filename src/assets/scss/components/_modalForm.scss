@@ -1,7 +1,7 @@
 @use '../utilities/_variables.scss' as v;
 
 .modalForm{
-    max-width: 750px;
+    max-width: 500px;
     width: 40%;
     min-width: 250px;
     background-color: v.$back_menu_medium;
@@ -11,15 +11,20 @@
     justify-content: center;
     align-items: center;
     padding: 3rem;
+    z-index: 3;
 
     &__comment{
         width: 100%;
         border: none;
         border-radius: 10px;
-        font-size: 4rem;
+        font-size: 3rem;
         font-family: v.$manrope;
         text-align: center;
         padding-bottom: 2rem;
+
+        @media screen and (max-width: 500px) {
+            font-size: 2rem;
+        }
     }
 
     &__textarea{
@@ -34,6 +39,11 @@
         padding: 1rem;
         resize: none;
         color: v.$black;
+
+        @media screen and (max-width: 500px) {
+            font-size: 1.5rem;
+            height: 200px;
+        }
     }
 
     &__contador{
@@ -71,10 +81,25 @@
             cursor: pointer;
             transition: all 0.3s;
 
+            @media screen and (max-width: 800px) {
+                font-size: 1.5rem;
+            }
+
             &:hover{
                 background-color: v.$yellow;
                 color: v.$black;
             }
         }
+    }
+}
+
+.contact__text{
+    font-size: 3rem;
+    font-family: v.$manrope;
+    text-align: center;
+    margin-bottom: 2rem;
+
+    @media screen and (max-width: 1000px) {
+        font-size: 2rem;
     }
 }

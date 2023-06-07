@@ -1,13 +1,12 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { createPinia } from 'pinia'
 import './assets/scss/main.scss'
 import App from './App.vue'
 import Index from './pages/Index.vue'
 import VueSplide from '@splidejs/vue-splide';
 import MovieDetails from './pages/MovieDetails.vue'
 import Catalogo from './pages/Catalogo.vue'
-import { userStore } from './store/user.js'
+import { fetchUser } from './store/user.js'
 
 // Importación de Vuetify
 import { createVuetify } from 'vuetify'
@@ -46,6 +45,10 @@ const routes = [
         meta: {
             title: 'Cines Haven - Catálogo'
         }
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        redirect: '/'
     }
 ]
 
@@ -63,12 +66,9 @@ router.beforeEach((to, from) => {
 // Se crea la aplicación
 const app = createApp(App)
 
-const pinia = createPinia();
 
 // Se agregan dependencias
 app.use(router)
-app.use(pinia)
-const userStorePinia = userStore();
 app.use(VueSplide)
 app.use(vuetify)
 
@@ -78,13 +78,13 @@ app.config.globalProperties.$fetchUserOnStart = async () => {
     for (let i = 0; i < cookies.length; i++) {
         const cookie = cookies[i].trim();
         const [cookieKey, cookieValue] = cookie.split("=");
-        if (cookieKey === 'userID') {
+        if (cookieKey === 'loggedUser') {
             userID = decodeURIComponent(cookieValue);
             break;
         }
     }
     if(userID) {
-        await userStorePinia.fetchUser(userID);
+        await fetchUser(userID);
     }
 }
 

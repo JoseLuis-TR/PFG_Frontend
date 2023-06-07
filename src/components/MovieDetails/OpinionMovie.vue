@@ -2,7 +2,7 @@
     <section>
         <Loader v-if="isLoading"></Loader>
         <section class="opinions" v-else-if="!isLoading && opinions.length > 0">
-            <button class="opinions__add" @click="showForm">
+            <button class="opinions__add" @click="showForm" v-if="user">
                 <img src="../../assets/icons/add.svg">
                 Añade una opinión
             </button>
@@ -11,7 +11,7 @@
                     <section class="user">
                         <img class="user__img" v-if="opinion.usuario.avatar" :src="opinion.usuario.avatar" >
                         <img class="user__img" v-else src="../../assets/images/default.png" alt="Usuario">
-                        <button class="user__remove" @click="showConfirmation(opinion.id)">
+                        <button class="user__remove" @click="showConfirmation(opinion.id)" v-if="user !== null && (opinion.usuario.id === user.id || user.rol === 'ADMIN')">
                             <img class="user__remove--icon" src="../../assets/icons/trash.svg">
                             Eliminar
                         </button>
@@ -28,7 +28,7 @@
             <p class="noOpinion__explain">
                 Actualmente no hay opiniones de esta película. ¡Sé el primero en opinar!
             </p>
-            <button class="noOpinion__button">
+            <button class="noOpinion__button" @click="showForm">
                 <img src="../../assets/icons/add.svg">
                 Añade una opinión
             </button>
@@ -51,6 +51,7 @@
     import Loader from '../Loader.vue'
     import ModalConfirmacion from '../Overlays/ModalConfirmacion.vue'
     import FormModal from '../Overlays/FormModal.vue'
+    import { getLoggedUser } from '../../store/user'
 
     export default {
         name: "opinionMovie",
@@ -65,7 +66,8 @@
                 opinions: [],
                 showModal: false,
                 idComentarioABorrar: null,
-                showAddComment: false
+                showAddComment: false,
+                user: getLoggedUser()
             }
         },
         methods:{

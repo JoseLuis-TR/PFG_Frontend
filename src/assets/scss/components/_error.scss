@@ -6,7 +6,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-top: 5rem;
+
+    @media screen {
+        
+    }
 
     &__title{
         font-size: 5rem;
@@ -17,6 +20,7 @@
     &__text{
         font-size: 2rem;
         font-family: v.$manrope;
+        text-align: center;
     }
 
     &__sad{
