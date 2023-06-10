@@ -31,7 +31,6 @@
         },
         methods: {
             async castVote(){
-                console.log("Votando...")
                 const apiUrl = import.meta.env.VITE_API_URL;
                 const options = {
                     method: 'PUT',
@@ -42,7 +41,6 @@
                 const response = await fetch(`${apiUrl}/peliculas/voto?idPelicula=${this.$route.params.id}`, options);
                 this.movieData = await response.json();
                 this.isVoted = true;
-                console.log(this.isVoted);
             }
         },
     }

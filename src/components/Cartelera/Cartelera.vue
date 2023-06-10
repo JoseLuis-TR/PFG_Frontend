@@ -1,6 +1,6 @@
 <template>
   <Loader v-if="isLoading"/>
-  <section v-else class="sliderSinceToday">
+  <section v-else-if="!isLoading && sessionsList.length > 0" class="sliderSinceToday">
     <button
         class="sliderSinceToday__sliderButton"
         @click="showPreviousDates">
@@ -20,7 +20,7 @@
       <img src="../../assets/icons/right.svg" alt="Siguiente">
     </button>
   </section>
-  <section  class="infoMovies">
+  <section v-if="!isLoading && sessionsList.length > 0" class="infoMovies">
     <section class="infoMovies__item" v-for="movieSession in sessionsList">
       <section class="infoMovies__item__data">
         <img class="infoMovies__item__data--poster" 
@@ -39,6 +39,7 @@
       </section>
     </section>
   </section>
+  <ErrorComp v-if="!isLoading && sessionsList.length === 0" mensajeError="No hay sesiones programadas proximamente"/>
 </template>
 
 <script>
@@ -63,10 +64,11 @@
    * @vue-data {Object} orderedSessions - Objeto con las sesiones ordenadas por fecha y pelicula
    */
   import Loader from '../Loader.vue'
+  import ErrorComp from '../Error.vue'
 
   export default {
     name: "Cartelera",
-    components: { Loader },
+    components: { Loader, ErrorComp },
     data(){
       return{
         sinceToday : [],

@@ -80,7 +80,6 @@
                     .then(response => response.json())
                     .then(data => {
                         this.opinions = data.comentarios;
-                        console.log(this.opinions.length)
                         this.isLoading = false;
                     });
             },

@@ -14,9 +14,9 @@
               <p class="formContainer__body--text">Inicia sesión en tu cuenta de cines Haven</p>
               <form class="formContainer__body__form" v-on:submit.prevent="checkLogin(userLog, passLog)">
                 <label for="nick">Email</label>
-                <input v-model="userLog" id="nick" type="text">
+                <input v-model="userLog" id="nick" type="text" placeholder="Escriba su email...">
                 <label for="password">Contraseña</label>
-                <input v-model="passLog" id="password" type="password">
+                <input v-model="passLog" id="password" type="password" placeholder="Escriba su contraseña...">
                 <Transition name="errorMessage">
                   <section v-show="messageError !== ''" class="formContainer__body__form--error">
                     <ul>
@@ -36,16 +36,16 @@
                 v-on:submit.prevent="createNewUser(emailReg, nickReg, passReg, repPassReg)">
                 <label for="email">Email</label>
                 <input v-model="emailReg" v-on:blur="validateEmail" :class="{ 'input_error': !regexEmailOk }" id="email"
-                  type="email">
+                  type="email" placeholder="Escriba su email...">
                 <label for="username">Usuario</label>
                 <input v-model="nickReg" v-on:blur="validateUser" :class="{ 'input_error': !regexUserOk }" id="username"
-                  type="text">
+                  type="text" placeholder="Escriba su nombre de usuario...">
                 <label for="password">Contraseña</label>
                 <input v-model="passReg" v-on:blur="validatePass" :class="{ 'input_error': !regexPassOk }" id="password"
-                  type="password">
+                  type="password" placeholder="Escriba su contraseña...">
                 <label for="repPassword">Repetir contraseña</label>
                 <input v-model="repPassReg" v-on:blur="validateRepeatPass" :class="{ 'input_error': !repeatPassOk }"
-                  id="repPassword" type="password">
+                  id="repPassword" type="password" placeholder="Repita su contraseña...">
                 <Transition name="errorMessage">
                   <section v-show="!regexEmailOk || !regexPassOk || !regexUserOk || !repeatPassOk || !emailExistsOk || !nickExistsOk || messageError !== ''"
                     class="formContainer__body__form--error">
@@ -160,12 +160,10 @@ export default {
      */
     async nickIsUsed(){
       const apiUrl = import.meta.env.VITE_API_URL;
-      console.log(this.nickReg)
 
       await fetch(`${apiUrl}/usuario/nick?nickBuscado=${this.nickReg}`)
         .then(response => response.json())
         .then(data => {
-          console.log(data)
           if (data === true) {
             this.nickExistsOk = false
           } else {
@@ -180,12 +178,10 @@ export default {
      */
     async emailIsUsed(){
       const apiUrl = import.meta.env.VITE_API_URL;
-      console.log(this.emailReg)
 
       await fetch(`${apiUrl}/usuario/email?emailBuscado=${this.emailReg}`)
         .then(response => response.json())
         .then(data => {
-          console.log(data)
           if (data === true) {
             this.emailExistsOk = false
           } else {

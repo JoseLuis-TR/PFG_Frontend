@@ -1,7 +1,11 @@
 <template>
     <section class="catalogoContainer">
         <h2 class="catalogoContainer__titulo">Catálogo</h2>
-        <ul class="catalogoContainer__lista">
+        <button class="opinions__add" @click="showMovieForm" v-if="user && user.rol === 'ADMIN'">
+            <img src="../assets/icons/add.svg">
+            Añade una pelicula
+        </button>
+        <ul class="catalogoContainer__lista" v-if="moviesList.peliculas">
             <li class="catalogoContainer__lista__item"
                 v-for="movie in moviesList.peliculas" >
                 <div class="catalogoContainer__lista__item__container"
@@ -16,19 +20,24 @@
                 </div>
             </li>
         </ul>
-        <v-pagination 
+        <v-pagination
+            v-if="moviesList.peliculas"
             :length="moviesList.totalPages"
             :total-visible="10"
             v-model="currentPage"
             prev-icon="ai-triangle-left-fill"
             next-icon="ai-triangle-right-fill"></v-pagination>
-        <h1>Jpla</h1>
+        <ErrorComp v-else mensajeError="El catálogo se encuentra actualmente vacio"></ErrorComp>
     </section>
+    <ModalNewPelicula v-if="showAddMovie" @close="hideForm" :action="add"></ModalNewPelicula>
 </template>
 
 <script>
     import CustomPrevIcon from '../assets/icons/left.svg';
     import CustomNextIcon from '../assets/icons/right.svg';
+    import { getLoggedUser } from '../store/user';
+    import ModalNewPelicula from '../components/NewPelicula/ModalNewPelicula.vue';
+    import ErrorComp from '../components/Error.vue';
     export default {
         name: "Catalogo",
         data() {
@@ -38,26 +47,35 @@
                 currentPage: 1,
                 prevIcon: CustomPrevIcon,
                 nextIcon: CustomNextIcon,
+                user: getLoggedUser(),
+                showAddMovie: false,
             }
+        },
+        components: {
+            ModalNewPelicula,
+            ErrorComp
         },
         methods: {
             async getMoviesByPage(page) {
-                console.log(page)
                 const apiUrl = import.meta.env.VITE_API_URL;
                 return await fetch(`${apiUrl}/peliculas/page?numberPage=${page}`)
                     .then(response => response.json())
                     .then(data => {
                         this.moviesList = data;
-                        console.log(this.moviesList);
                     });
             },
             seeMovieDetails(movieId){
                 this.$router.push(`/pelicula/${movieId}`);
+            },
+            showMovieForm(){
+                this.showAddMovie = true;
+            },
+            hideForm(){
+                this.showAddMovie = false;
             }
         },
         mounted() {
             this.currentPage = parseInt(this.$route.query.page) || 1;
-            console.log(this.currentPage);
             this.getMoviesByPage(this.currentPage-1);
         },
         watch:{
@@ -66,7 +84,6 @@
             },
             $route() {
                 this.currentPage = parseInt(this.$route.query.page) || 1;
-                console.log(this.currentPage);
                 this.getMoviesByPage(this.currentPage-1);
             }
         }

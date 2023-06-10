@@ -39,9 +39,17 @@
                         <form ref="contactForm" class="formContainer__body__form"
                             v-on:submit.prevent="sendNewEmail()">
                             <label for="email">Nombre</label>
-                            <input v-model="nameContact" id="email" type="text" min="3">
+                            <input v-model="nameContact" id="email" type="text" min="3" placeholder="Escriba su nombre...">
                             <label for="message">Mensaje</label>
-                            <textarea v-model="messageContact" id="message" type="text" min="10"></textarea>
+                            <textarea v-model="messageContact" id="message" type="text" min="10" placeholder="Escriba su mensaje..."></textarea>
+                            <Transition name="errorMessage">
+                                <section v-show="error"
+                                    class="formContainer__body__form--error">
+                                    <ul>
+                                        <li>Se debe adjuntar un nombre y un mensaje antes de enviar</li>
+                                    </ul>
+                                </section>
+                            </Transition>
                             <button>Enviar</button>
                         </form>
                     </section>
@@ -94,7 +102,6 @@
                         id_pelicula: this.$route.params.id,
                         texto: this.comment
                     }
-                    console.log(commentPost);
                     const options = {
                         method: 'POST',
                         headers: {
@@ -102,17 +109,20 @@
                         },
                         body: JSON.stringify(commentPost)
                     }
-                    console.log(options);
                     const apiUrl = import.meta.env.VITE_API_URL;
                     fetch(`${apiUrl}/comentarios`, options)
                         .then(response => response.json())
                         .then(data => {
                             this.$emit('close');
-                            //this.$emit('addComment', data.comentario);
                         })
                 }
             },
             sendNewEmail(){
+                if(this.nameContact === '' || this.messageContact === ''){
+                    this.error = true;
+                    return;
+                }
+                this.error = false;
                 const templateParams = {
                     name: this.nameContact,
                     message: this.messageContact

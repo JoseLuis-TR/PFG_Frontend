@@ -13,6 +13,7 @@
 .containerInfo{
     padding-top: 200px;
     width: 100%;
+    min-width: 32rem;
     height: fit-content;
     display: grid; 
     grid-template-columns: auto 1fr; 
@@ -45,6 +46,7 @@
         flex-direction: column;
         justify-content: center;
         padding-left: 5rem;
+        position: relative;
         
         &--title{
             min-width: 100px;
@@ -69,6 +71,68 @@
             font-size: 3rem;
             font-family: v.$manrope;
             margin-top: auto;
+        }
+    }
+}
+
+.adminButtons{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 5rem;
+
+    .deleteMovie{
+        margin: 0;
+        width: fit-content;
+
+        @media screen and (max-width: 850px) {
+            font-size: 2rem;
+            margin: 0;
+
+            img{
+                width: 2.5rem;
+                height: 2.5rem;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            font-size: 0;
+        }
+    }
+
+    .deleteMovie:hover{
+        color: v.$red;
+
+        img{
+            filter: invert(77%) sepia(51%) saturate(5649%) hue-rotate(316deg) brightness(97%) contrast(90%);
+        }
+    }
+
+    .editMovie{
+        margin: 0;
+        width: fit-content;
+
+        @media screen and (max-width: 850px) {
+            font-size: 2rem;
+            margin: 0;
+
+            img{
+                width: 2.5rem;
+                height: 2.5rem;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            font-size: 0;
+        }
+    }
+
+    .editMovie:hover{
+        color: v.$yellow;
+
+        img{
+            filter: invert(93%) sepia(13%) saturate(2685%) hue-rotate(334deg) brightness(97%) contrast(85%);
         }
     }
 }

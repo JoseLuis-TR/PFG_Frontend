@@ -56,7 +56,6 @@ export default {
     async mounted() {
         await this.getMovieDetails(this.$route.params.id);
         this.youtubeUrl = this.extractYoutubeId(this.movieData.trailer);
-        console.log()
     }
 }
 </script>

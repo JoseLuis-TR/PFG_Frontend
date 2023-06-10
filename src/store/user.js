@@ -48,7 +48,6 @@ export async function loginUser(email, password) {
       clave: password
     }),
   };
-  console.log(options);
   const response = await fetch(`${apiUrl}/usuario/login`, options);
   const data = await response.json();
   if(data.hasOwnProperty("codigo")){

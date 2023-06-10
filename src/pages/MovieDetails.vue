@@ -11,6 +11,7 @@
       :moviePoster="movieInfo.poster"
       :movieDirector="movieInfo.director"
       :movieDuration="movieInfo.duracion"
+      :movieData="movieInfo"
     />
     <section class="buttons">
       <button
@@ -77,7 +78,6 @@
             .then(response => response.json())
             .then(data => {
               this.movieInfo = data;
-              console.log(this.movieInfo);
               this.isLoading = false;
             });
       },
@@ -86,7 +86,6 @@
       orderSessionsByDate(){
         let sessions = this.movieSessions;
         let orderedSessions = [];
-        console.log(sessions);
         // Se obtienen las fechas de las sesiones
         // No se modifica el formato de la fecha
         orderedSessions[date] = sessions
@@ -102,7 +101,6 @@
           });
           orderedSessions.push({date: date, sessions: sessionsByDate});
         });
-        console.log(orderedSessions);
         return orderedSessions;
       },
       changeTab(tabName){

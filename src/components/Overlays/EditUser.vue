@@ -86,7 +86,7 @@ import { getLoggedUser } from "../../store/user";
  * @vue-data {boolean} [modPassOk = true] - Indica si la contraseña es válida
  */
 export default {
-    name: "Contact",
+    name: "EditUser",
     props: {
     needProfile: {
         type: Boolean,
@@ -191,7 +191,7 @@ export default {
         this.modPassOk = validatePasswordRegex(this.passData)
     },
     showedAvatar(whatINeed, newAvatar = null){
-        if(whatINeed === "initialAvatar"){
+        if(whatINeed === "initialAvatar" && this.loggedUser){
             this.avatarToShow = this.loggedUser.avatar ? this.loggedUser.avatar : "src/assets/images/default.png"
         }
         if(whatINeed === 'newUserAvatar'){

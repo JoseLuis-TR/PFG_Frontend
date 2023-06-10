@@ -193,7 +193,6 @@
           }
         }
         this.sessionsList = sessionsList[date];
-        console.log(this.sessionsList);
       },
       /**
        * Cambia la fecha seleccionada
