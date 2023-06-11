@@ -1,11 +1,11 @@
 <script>
 import Header from './components/Header.vue'
-  export default {
+export default {
   name: 'App',
   components: {
     Header
   }
-  }
+}
 </script>
 
 <template>

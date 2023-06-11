@@ -47,7 +47,8 @@
                 <input v-model="repPassReg" v-on:blur="validateRepeatPass" :class="{ 'input_error': !repeatPassOk }"
                   id="repPassword" type="password" placeholder="Repita su contraseña...">
                 <Transition name="errorMessage">
-                  <section v-show="!regexEmailOk || !regexPassOk || !regexUserOk || !repeatPassOk || !emailExistsOk || !nickExistsOk || messageError !== ''"
+                  <section
+                    v-show="!regexEmailOk || !regexPassOk || !regexUserOk || !repeatPassOk || !emailExistsOk || !nickExistsOk || messageError !== ''"
                     class="formContainer__body__form--error">
                     <ul>
                       <li v-if="!regexEmailOk">Email no válido</li>
@@ -158,7 +159,7 @@ export default {
      * 
      * @param {String} nick - Nick del usuario
      */
-    async nickIsUsed(){
+    async nickIsUsed() {
       const apiUrl = import.meta.env.VITE_API_URL;
 
       await fetch(`${apiUrl}/usuario/nick?nickBuscado=${this.nickReg}`)
@@ -176,7 +177,7 @@ export default {
      * 
      * @param {String} email - Email del usuario
      */
-    async emailIsUsed(){
+    async emailIsUsed() {
       const apiUrl = import.meta.env.VITE_API_URL;
 
       await fetch(`${apiUrl}/usuario/email?emailBuscado=${this.emailReg}`)
@@ -243,7 +244,7 @@ export default {
         }
         const registerResult = await registerNewUser(newUser)
 
-        if(!registerResult){
+        if (!registerResult) {
           this.messageError = 'Error al crear el usuario'
           if (this.$route.path === "/") this.$router.go()
           else this.$router.push("/");

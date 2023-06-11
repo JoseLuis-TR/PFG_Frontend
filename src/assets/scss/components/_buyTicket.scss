@@ -1,0 +1,156 @@
+@use "../utilities/_variables.scss" as v;
+
+.newBuyer {
+  padding: 5rem 5rem;
+  width: 70%;
+  max-width: 1000px;
+  min-width: fit-content;
+
+  @media (max-width: 900px) {
+    padding: 2rem 2rem;
+  }
+
+  &__title {
+    font-size: 3rem;
+    font-family: v.$manrope;
+    text-align: center;
+    margin-bottom: 3rem;
+
+    @media (max-width: 900px) {
+      font-size: 2rem;
+    }
+  }
+
+  &__button {
+    font-size: 2rem;
+    font-weight: 700;
+    color: v.$white;
+    width: fit-content;
+    align-self: center;
+    margin-top: 30px;
+    border: none;
+    border-radius: 5px;
+    padding: 15px 20px;
+    background-color: v.$back_web_lighter;
+    cursor: pointer;
+    transition: all 0.7s;
+
+    @media (max-width: 768px) {
+      font-size: 1.5rem;
+    }
+  }
+
+  &__button:hover {
+    background-color: v.$yellow;
+    color: v.$black;
+  }
+
+  .chooseSeat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    transition: all 0.5s ease-in-out;
+
+    @media (max-width: 900px) {
+      gap: 1rem;
+    }
+
+    &__row {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      transition: all 0.5s ease-in-out;
+
+      @media (max-width: 900px) {
+        gap: 1rem;
+      }
+
+      &__title {
+        font-size: 3rem;
+        color: v.$white;
+        font-family: v.$manrope;
+
+        @media (max-width: 900px) {
+          font-size: 1.5rem;
+        }
+      }
+
+      &__columns {
+        display: flex;
+        gap: 2rem;
+        transition: all 0.5s ease-in-out;
+
+        @media (max-width: 900px) {
+          gap: 0.5rem;
+        }
+
+        .seat {
+          position: relative;
+          cursor: pointer;
+
+          &__number {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 17px;
+            font-family: v.$manrope;
+            font-weight: 500;
+
+            @media (max-width: 900px) {
+              font-size: 12px;
+            }
+          }
+
+          &__img {
+            width: 35px;
+            transition: all 0.5s ease-in-out;
+
+            @media (max-width: 900px) {
+              width: 25px;
+            }
+          }
+        }
+
+        .available:hover {
+          .seat__number {
+            color: v.$black;
+            z-index: 1;
+          }
+
+          .seat__img {
+            filter: invert(58%) sepia(14%) saturate(2310%) hue-rotate(7deg)
+              brightness(98%) contrast(70%);
+          }
+        }
+
+        .picked {
+          .seat__number {
+            color: v.$black;
+            z-index: 1;
+          }
+
+          .seat__img {
+            filter: invert(87%) sepia(30%) saturate(1061%) hue-rotate(339deg)
+              brightness(92%) contrast(94%);
+          }
+        }
+
+        .disabled {
+          cursor: auto;
+          .seat__number {
+            color: v.$black;
+            z-index: 1;
+          }
+
+          & .seat__img {
+            filter: invert(50%) sepia(28%) saturate(3755%) hue-rotate(326deg)
+              brightness(111%) contrast(84%);
+          }
+        }
+      }
+    }
+  }
+}

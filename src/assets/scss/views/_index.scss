@@ -1,45 +1,49 @@
-@use '../utilities/_variables.scss' as v;
+@use "../utilities/_variables.scss" as v;
 
 // Estilos de la vista de inicio
 
-.inicio{
+.inicio {
+  &__superior {
+    width: 75%;
+    max-width: 175rem;
+    margin: 0 auto;
+    display: flex;
+    margin-top: 5rem;
+  }
 
-    &__superior{
-        width: 75%;
-        max-width: 175rem;
-        margin: 0 auto;
-        display: flex;
-        margin-top: 5rem;
+  &__inferior {
+    width: 75%;
+    max-width: 175rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+
+    &__titulo {
+      font-size: 3.5rem;
+      color: v.$white;
+      font-family: v.$merri;
+      text-align: center;
+      margin-bottom: 4rem;
+      white-space: nowrap;
     }
 
-    &__inferior{
-        width: 75%;
-        max-width: 175rem;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        margin-top: 5rem;
-        margin-bottom: 5rem;
-
-        &__titulo{
-            font-size: 3.5rem;
-            color: v.$white;
-            font-family: v.$merri;
-            text-align: center;
-            margin-bottom: 4rem;
-            white-space: nowrap;
-        }
+    .opinions__add {
+      margin-top: 0;
+      margin-bottom: 3rem;
     }
+  }
 }
 
 // Media queries
 @media (max-width: 900px) {
-    .inicio{
-        &__superior{
-            flex-direction: column;
-            align-items: center;
-        }
+  .inicio {
+    &__superior {
+      flex-direction: column;
+      align-items: center;
     }
+  }
 }

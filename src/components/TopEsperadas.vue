@@ -1,22 +1,20 @@
 <template>
-    <section class="top">
-        <h2 class="top__titulo" >Top 5 + esperadas</h2>
-        <section class="top__container">
-            <Loader mensajeCarga="Cargando Top 5" v-if="isLoading"/>
-            <ul class="list" v-else-if="!isLoading && topMovies.length > 0">
-                <li class="list__item"
-                    v-for="(movie,index) in this.topMovies.slice(0,5)">
-                    <p class="list__item__order">{{ index+1 }}</p>
-                    <section class="list__item__info">
-                        <p class="list__item__info__name"
-                            @click="redirectToMoviePage(movie.id)">{{movie.nombre}}</p>
-                        <p class="list__item__info__vote">{{movie.votos}} votos</p>
-                    </section>
-                </li>
-            </ul>
-            <ErrorComp v-else-if="!isLoading && topMovies.length === 0" mensajeError="No hay películas en el top"/>
-        </section>
+  <section class="top">
+    <h2 class="top__titulo">Top 5 + esperadas</h2>
+    <section class="top__container">
+      <Loader mensajeCarga="Cargando Top 5" v-if="isLoading" />
+      <ul class="list" v-else-if="!isLoading && topMovies.length > 0">
+        <li class="list__item" v-for="(movie, index) in this.topMovies.slice(0, 5)">
+          <p class="list__item__order">{{ index + 1 }}</p>
+          <section class="list__item__info">
+            <p class="list__item__info__name" @click="redirectToMoviePage(movie.id)">{{ movie.nombre }}</p>
+            <p class="list__item__info__vote">{{ movie.votos }} votos</p>
+          </section>
+        </li>
+      </ul>
+      <ErrorComp v-else-if="!isLoading && topMovies.length === 0" mensajeError="No hay películas en el top" />
     </section>
+  </section>
 </template>
 
 <script>
@@ -37,37 +35,38 @@ import Loader from './Loader.vue';
 import ErrorComp from './Error.vue';
 
 export default {
-    name: "TopEsperadas",
-    components: { Loader, ErrorComp },
-    data() {
-        return {
-            topMovies: [],
-            isLoading: false
-        };
-    },
-    methods:{
+  name: "TopEsperadas",
+  components: { Loader, ErrorComp },
+  data() {
+    return {
+      topMovies: [],
+      isLoading: false
+    };
+  },
+  methods: {
     /**
      * Obtiene las películas más votadas por los usuarios
      */
     async getTopMovies() {
-        const apiUrl = import.meta.env.VITE_API_URL;
-        return await fetch(`${apiUrl}/peliculas/top`)
-            .then(response => response.json())
-            .then(data => {
-                this.topMovies = data;
-                this.isLoading = false;
-            });
+      const apiUrl = import.meta.env.VITE_API_URL;
+      return await fetch(`${apiUrl}/peliculas/top`)
+        .then(response => response.json())
+        .then(data => {
+          this.topMovies = data;
+          this.isLoading = false;
+        });
     },
     /**
      * Redirige a la página de la película
      * @param {number} movieId - Id de la película
      */
     redirectToMoviePage(movieId) {
-    this.$router.push(`pelicula/${movieId}`)
+      this.$router.push(`pelicula/${movieId}`)
     }
-    },
-    mounted() {
-        this.isLoading = true;
-        this.getTopMovies();
-    }}
+  },
+  mounted() {
+    this.isLoading = true;
+    this.getTopMovies();
+  }
+}
 </script>

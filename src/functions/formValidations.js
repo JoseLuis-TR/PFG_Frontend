@@ -17,10 +17,10 @@
  * @return {boolean}
  */
 export const validateEmailRegex = (email) => {
-    // Expresión regular que testea si lo recibido es un email valido
-    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-    return emailRegex.test(email);
-}
+  // Expresión regular que testea si lo recibido es un email valido
+  const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+  return emailRegex.test(email);
+};
 
 /**
  * Función que valida la contraseña usando una expresión regular
@@ -31,10 +31,11 @@ export const validateEmailRegex = (email) => {
  * @return {boolean}
  */
 export const validatePasswordRegex = (password) => {
-    // Contraseñas de más de 8 a 32 y debe de tener al menos una minúscula, una mayuscula, un número y un caracter especial
-    const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&\.\-\_])[A-Za-z\d@$!%*?&\.\-\_]{8,32}$/
-    return passRegex.test(password);
-}
+  // Contraseñas de más de 8 a 32 y debe de tener al menos una minúscula, una mayuscula, un número y un caracter especial
+  const passRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&\.\-\_])[A-Za-z\d@$!%*?&\.\-\_]{8,32}$/;
+  return passRegex.test(password);
+};
 
 /**
  * Función que valida que la contraseña al registrarse se repite corretamente
@@ -46,8 +47,8 @@ export const validatePasswordRegex = (password) => {
  * @return {boolean}
  */
 export const validateSamePassRegex = (check, pass) => {
-    return check === pass;
-}
+  return check === pass;
+};
 
 /**
  * Función que valida el nombre de usuario usando una expresión regular
@@ -58,7 +59,7 @@ export const validateSamePassRegex = (check, pass) => {
  * @return {boolean}
  */
 export const validateUserRegex = (user) => {
-    // Nombre de usuario que acepta letras, numeros y algún caracter especial
-    const userRegex = /^[A-Za-z\d]{5,30}$/;
-    return userRegex.test(user);
-}
+  // Nombre de usuario que acepta letras, numeros y algún caracter especial
+  const userRegex = /^[A-Za-z\d]{5,30}$/;
+  return userRegex.test(user);
+};

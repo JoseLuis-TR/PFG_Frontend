@@ -1,136 +1,139 @@
-@use '../utilities/_variables.scss' as v;
+@use "../utilities/_variables.scss" as v;
 
-.ticketContainer{
-    margin-bottom: 5rem;
+.ticketContainer {
+  margin-bottom: 5rem;
 
-    &__title{
-        width: 100%;
-        font-size: 6rem;
-        font-family: v.$merri;
-        margin-top: 8rem;
-    }
+  &__title {
+    width: 100%;
+    font-size: 6rem;
+    font-family: v.$merri;
+    margin-top: 8rem;
+  }
 
-    &__divider{
-        display:block;
-        width:100%;
-        border-top: 10px solid v.$yellow;
-        border-radius: 10px;
-    }
+  &__divider {
+    display: block;
+    width: 100%;
+    border-top: 10px solid v.$yellow;
+    border-radius: 10px;
+  }
+
+  .opinions__add {
+    margin-top: 3rem;
+  }
 }
 
-.sliderDetails{
-    width: 100%;
-    min-width: 200px;
+.sliderDetails {
+  width: 100%;
+  min-width: 200px;
+  height: 50px;
+  background-color: v.$black;
+  font-family: v.$manrope;
+  color: v.$white;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 10px;
+
+  &__sliderButton {
+    flex: 0 1 auto;
+    width: 50px;
     height: 50px;
-    background-color: v.$black;
-    font-family: v.$manrope;
-    color: v.$white;
-    display: flex;
-    justify-content: space-between;
-    border-radius: 10px;
-
-    &__sliderButton{
-        flex: 0 1 auto;
-        width: 50px;
-        height: 50px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        outline: none;
-        border: none;
-        background-color: v.$black;
-        cursor: pointer;
-        transition: all 0.3s;
-        
-        img{
-            width: 100%;
-            filter: invert(100%);
-        }
-    }
-    
-    &__sliderButton:first-child{
-        border-top-left-radius: 10px;
-        border-bottom-left-radius: 10px;
-    }
-    
-    &__sliderButton:last-child{
-        border-top-right-radius: 10px;
-        border-bottom-right-radius: 10px;
-    }
-    
-    &__sliderButton:hover{
-        background-color: v.$yellow;
-        font-weight: 700;
-    
-        img {
-            filter: invert(0%);
-        }
-    }
-    
-    &__item{
-        flex: 1 1 auto;
-        width: 50px;
-        height: 50px;
-        font-size: 2rem;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        transition: all 0.3s;
-
-        @media (max-width: 500px) {
-            font-size: 1.5rem;
-        }
-    }
-    
-    
-    &__item:hover{
-        color: v.$black;
-        background-color: v.$yellow;
-    }
-}
-
-.infoHorarios{
-    font-family: v.$manrope;
-    background-color: rgba(51, 51, 51, .5);
-    border-radius: 10px;
-    margin-top: 2rem;
-    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    padding: 2.5rem 0;
+    outline: none;
+    border: none;
+    background-color: v.$black;
+    cursor: pointer;
+    transition: all 0.3s;
 
-    &__title{
-        font-size: 3rem;
-        font-weight: 500;
-        color: v.$white;
+    img {
+      width: 100%;
+      filter: invert(100%);
+    }
+  }
+
+  &__sliderButton:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+
+  &__sliderButton:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+
+  &__sliderButton:hover {
+    background-color: v.$yellow;
+    font-weight: 700;
+
+    img {
+      filter: invert(0%);
+    }
+  }
+
+  &__item {
+    flex: 1 1 auto;
+    width: 50px;
+    height: 50px;
+    font-size: 2rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    @media (max-width: 500px) {
+      font-size: 1.5rem;
+    }
+  }
+
+  &__item:hover {
+    color: v.$black;
+    background-color: v.$yellow;
+  }
+}
+
+.infoHorarios {
+  font-family: v.$manrope;
+  background-color: rgba(51, 51, 51, 0.5);
+  border-radius: 10px;
+  margin-top: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 2.5rem 0;
+
+  &__title {
+    font-size: 3rem;
+    font-weight: 500;
+    color: v.$white;
+  }
+
+  &__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+    width: 75%;
+
+    &--hora {
+      font-size: 2.5rem;
+      font-weight: 500;
+      color: v.$white;
+      background-color: v.$back_web_darker;
+      padding: 10px;
+      margin: 0 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+      border-radius: 10px;
     }
 
-    &__container{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 5rem;
-        width: 75%;
-
-        &--hora{
-            font-size: 2.5rem;
-            font-weight: 500;
-            color: v.$white;
-            background-color: v.$back_web_darker;
-            padding: 10px;
-            margin: 0 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border-radius: 10px;
-        }
-
-        &--hora:hover{
-            background-color: v.$yellow;
-            color: v.$black;
-        }
+    &--hora:hover {
+      background-color: v.$yellow;
+      color: v.$black;
     }
+  }
 }

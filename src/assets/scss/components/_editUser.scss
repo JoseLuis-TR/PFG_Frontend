@@ -1,63 +1,63 @@
-@use '../utilities/_variables.scss' as v;
+@use "../utilities/_variables.scss" as v;
 // Descripción: Estilo de la pantalla de modifiación de perfil
 
-.formContainer{
-  &__body{
+.formContainer {
+  &__body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    &__imageHandler{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    &__imageHandler {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: none;
+      &--image {
+        width: 100px;
+        height: 100px;
+        outline: solid 2px v.$yellow;
+        border-radius: 50%;
+        background-color: white;
+        object-fit: cover;
+      }
+      &--input {
+        display: none;
+      }
+
+      &--label {
+        font-size: 2.5rem;
+        font-weight: 500;
+        color: v.$white;
+        width: fit-content;
+        align-self: center;
+        margin-top: 15px;
         border: none;
-        &--image{
-            width: 100px;
-            height: 100px;
-            outline: solid 2px v.$yellow;
-            border-radius: 50%;
-            background-color: white;
-            object-fit: cover;
-        }
-        &--input{
-            display: none;
-        }
+        border-radius: 10px;
+        padding: 15px 20px;
+        background-color: v.$back_menu_darker;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
 
-        &--label{
-            font-size: 2.5rem;
-            font-weight: 500;
-            color: v.$white;
-            width: fit-content;
-            align-self: center;
-            margin-top: 15px;
-            border: none;
-            border-radius: 10px;
-            padding: 15px 20px;
-            background-color: v.$back_menu_darker;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        &--label:hover{
-            background-color: v.$yellow;
-            color: v.$black;
-        }
+      &--label:hover {
+        background-color: v.$yellow;
+        color: v.$black;
+      }
     }
 
-    &__userDataHandler{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    margin-top: 50px;
-    border: none;
+    &__userDataHandler {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      margin-top: 50px;
+      border: none;
 
-    label{
+      label {
         font-size: 2rem;
         margin-bottom: 5px;
         color: v.$white;
-    }
+      }
 
-    input{
+      input {
         height: 40px;
         padding: 0 10px;
         font-size: 1.5rem;
@@ -67,9 +67,9 @@
         background-color: v.$back_menu_lighter;
         margin: 0 0 20px;
         color: v.$black;
-    }
+      }
 
-    &--submit{
+      &--submit {
         justify-self: center;
         color: white;
         width: fit-content;
@@ -85,11 +85,12 @@
         font-family: v.$manrope;
         font-weight: 500;
         transition: all 0.3s;
-    }
+      }
 
-    &--submit:hover{
+      &--submit:hover {
         background-color: v.$yellow;
         color: v.$black;
+      }
     }
-    }}
+  }
 }

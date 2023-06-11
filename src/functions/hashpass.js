@@ -1,4 +1,4 @@
-import sha1 from 'crypto-js/sha1';
+import sha1 from "crypto-js/sha1";
 /**
  * @file formValidations.js - Funciones para validar los formularios
  * @author José Luis Tocino Rojo
@@ -17,9 +17,9 @@ import sha1 from 'crypto-js/sha1';
  * @param {string} password Contraseña a encriptar
  * @return {string} Contraseña encriptada
  */
-export const encriptarPass = (password) => {   
-    return sha1(password).toString();
-}
+export const encriptarPass = (password) => {
+  return sha1(password).toString();
+};
 
 /**
  * Compara la contraseña encriptada con la contraseña no encriptada
@@ -31,5 +31,5 @@ export const encriptarPass = (password) => {
  * @return {boolean}
  */
 export const compararPass = (passNoHash, passHash) => {
-    return sha1(passNoHash).toString() === passHash;
-}
+  return sha1(passNoHash).toString() === passHash;
+};

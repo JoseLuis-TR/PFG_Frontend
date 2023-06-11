@@ -1,80 +1,85 @@
-@use '../utilities/_variables.scss' as v;
+@use "../utilities/_variables.scss" as v;
 
-.vote{
-    width: 100%;
+.vote {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8rem;
+  text-align: center;
+
+  @media screen and (max-width: 850px) {
+    margin-top: 2rem;
+  }
+
+  &__title {
+    font-size: 6rem;
+    font-family: v.$merri;
+    margin-bottom: 1rem;
+
+    @media (max-width: 850px) {
+      font-size: 4rem;
+    }
+  }
+
+  &__explain {
+    width: 70%;
+    min-width: 300px;
+    font-size: 2rem;
+    font-family: v.$manrope;
+    margin-bottom: 1rem;
+
+    @media screen and (max-width: 850px) {
+      font-size: 1.5rem;
+    }
+  }
+
+  &__button {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 8rem;
-    text-align: center;
+    font-size: 3rem;
+    gap: 1.5rem;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    margin-top: 6rem;
+    font-family: v.$manrope;
+    font-weight: 600;
 
-    &__title{
-        font-size: 6rem;
-        font-family: v.$merri;
-        margin-bottom: 1rem;
-
-        @media (max-width: 850px) {
-            font-size: 4rem;
-        }
+    @media screen and (max-width: 850px) {
+      font-size: 2rem;
+      margin-top: 3rem;
     }
 
-    &__explain{
-        width: 70%;
-        min-width: 300px;
-        font-size: 2rem;
-        font-family: v.$manrope;
-        margin-bottom: 1rem;
+    img {
+      width: 3.5rem;
+      height: 3.5rem;
+      filter: invert(100%);
 
-        @media screen and (max-width: 850px) {
-            font-size: 1.5rem;
-        }
+      @media screen and (max-width: 850px) {
+        width: 2.5rem;
+        height: 2.5rem;
+      }
     }
+  }
 
-    &__button{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 3rem;
-        gap: 1.5rem;
-        border: none;
-        background-color: transparent;
-        cursor: pointer;
-        margin-top: 6rem;
-        font-family: v.$manrope;
-        font-weight: 600;
+  &__button:hover {
+    color: v.$yellow;
 
-        @media screen and (max-width: 850px) {
-            font-size: 2rem;
-            margin-top: 3rem;
-        }
-
-        img{
-            width: 3.5rem;
-            height: 3.5rem;
-            filter: invert(100%);
-
-            @media screen and (max-width: 850px) {
-                width: 2.5rem;
-                height: 2.5rem;
-            }
-        }
+    img {
+      filter: invert(81%) sepia(36%) saturate(818%) hue-rotate(350deg)
+        brightness(92%) contrast(95%);
     }
+  }
 
-    &__button:hover{
-        color: v.$yellow;
-
-        img{
-            filter: invert(81%) sepia(36%) saturate(818%) hue-rotate(350deg) brightness(92%) contrast(95%);
-        }
-    }
-
-    &__voted{
-        width: 70%;
-        min-width: 300px;
-        font-size: 2rem;
-        font-family: v.$manrope;
-        margin-top: 6rem;
-        margin-bottom: 1rem;
-    }
+  &__voted {
+    width: 70%;
+    min-width: 300px;
+    font-size: 2rem;
+    font-family: v.$manrope;
+    margin-top: 6rem;
+    margin-bottom: 1rem;
+  }
 }

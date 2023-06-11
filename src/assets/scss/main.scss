@@ -23,9 +23,11 @@
 @import "./components/_formErrors";
 @import "./components/_editUser";
 @import "./components/_modalNewPelicula";
+@import "./components/_addSesion";
+@import "./components/_buyTicket";
 
 @import "./views/_index";
 @import "./views/_movieDetails";
 @import "./views/_catalogo";
 
-@import '@splidejs/vue-splide/css';
+@import "@splidejs/vue-splide/css";

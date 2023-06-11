@@ -1,93 +1,94 @@
-@use '../utilities/_variables.scss' as v;
+@use "../utilities/_variables.scss" as v;
 
 // Estilos del carrusel de la vista de inicio
 
-.carteleraHoy{
-    width: 60%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.carteleraHoy {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-    &__titulo{
-        font-size: 3.5rem;
-        color: v.$white;
-        font-family: v.$merri;
-        text-align: center;
-        margin-bottom: 4rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+  &__titulo {
+    font-size: 3.5rem;
+    color: v.$white;
+    font-family: v.$merri;
+    text-align: center;
+    margin-bottom: 4rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-    .splide{
-        width: 80%;
-        max-width: 900px;
-        height: 450px;
+  .splide {
+    width: 80%;
+    max-width: 900px;
+    height: 450px;
 
-        .splide__track{
-            height: 400px;
-            
-            .splide__list{
+    .splide__track {
+      height: 400px;
 
-                .splide__slide{
-                    display: flex;
-                    cursor: pointer;
-                    border-radius: 10px;
+      .splide__list {
+        .splide__slide {
+          display: flex;
+          cursor: pointer;
+          border-radius: 10px;
 
-                    .movieInfo{
-                        background-image: linear-gradient(to top, v.$back_web_lighter ,rgba(0, 0, 0, 0));
-                        width: 100%;
-                        height: 100px;
-                        align-self: flex-end;
-                        display: flex;
-                        align-items: flex-end;
-                        justify-content: center;
+          .movieInfo {
+            background-image: linear-gradient(
+              to top,
+              v.$back_web_lighter,
+              rgba(0, 0, 0, 0)
+            );
+            width: 100%;
+            height: 100px;
+            align-self: flex-end;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
 
-                        &__titulo{
-                            font-size: 4rem;
-                            color: v.$white;
-                            font-family: v.$fjalla;
-                            text-align: center;
-                            margin-bottom: 2rem;
-                            white-space: nowrap;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                        }
-                    }
-                }
+            &__titulo {
+              font-size: 4rem;
+              color: v.$white;
+              font-family: v.$fjalla;
+              text-align: center;
+              margin-bottom: 2rem;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
             }
+          }
         }
-
-        .splide__navigation{
-            height: 50px;
-        }
+      }
     }
+
+    .splide__navigation {
+      height: 50px;
+    }
+  }
 }
 
-.splide__pagination{
-
-    li{
-
-        .splide__pagination__page{
-            background-color: v.$white;
-            width: 1.5rem;
-            height: 1.5rem;
-            margin: 0 1rem;
-            opacity: 1;
-        }
-
-        .is-active{
-            background-color: v.$yellow;
-        }
+.splide__pagination {
+  li {
+    .splide__pagination__page {
+      background-color: v.$white;
+      width: 1.5rem;
+      height: 1.5rem;
+      margin: 0 1rem;
+      opacity: 1;
     }
+
+    .is-active {
+      background-color: v.$yellow;
+    }
+  }
 }
 
 // Media Queries
 
-@media screen and (max-width: 900px){
-    .carteleraHoy{
-        width: 100%;
-        min-width: 400px;
-        margin-bottom: 4rem;
-    }
+@media screen and (max-width: 900px) {
+  .carteleraHoy {
+    width: 100%;
+    min-width: 400px;
+    margin-bottom: 4rem;
+  }
 }

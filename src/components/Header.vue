@@ -5,26 +5,13 @@
       <img src="../assets/icons/menu.svg" class="header__container__menu" @click="menuOpen = true">
     </section>
   </header>
-  <Menu 
-    :menuOpen="menuOpen" 
-    @close-menu="menuOpen = false" 
-    @open-user-form="openUserForm()"
-    @open-contact="contactOpen = true"
-    @open-edit-user="openEditForm()"
-  ></Menu>
-  <LRUser 
-    :is-needed="formUserOpen" 
-    @close-user-form="formUserOpen = false">
+  <Menu :menuOpen="menuOpen" @close-menu="menuOpen = false" @open-user-form="openUserForm()"
+    @open-contact="contactOpen = true" @open-edit-user="openEditForm()"></Menu>
+  <LRUser :is-needed="formUserOpen" @close-user-form="formUserOpen = false">
   </LRUser>
-  <FormModal
-    v-if="contactOpen"
-    :form-type="'contact'"
-    @close="contactOpen = false">
+  <FormModal v-if="contactOpen" :form-type="'contact'" @close="contactOpen = false">
   </FormModal>
-  <EditUser
-    :need-profile="editUserOpen"
-    @close-profile="editUserOpen = false"
-  ></EditUser>
+  <EditUser :need-profile="editUserOpen" @close-profile="editUserOpen = false"></EditUser>
 </template>
 
 <script>
@@ -49,7 +36,7 @@ export default {
     LRUser,
     FormModal,
     EditUser
-},
+  },
   data() {
     return {
       menuOpen: false,
