@@ -18,7 +18,7 @@
         </ul>
       </section>
     </Transition>
-    <button v-if="hourListValid" @click="addNewSesion">
+    <button class="pickHourbtn" v-if="hourListValid" @click="addNewSesion">
       Agregar sesión
     </button>
   </section>

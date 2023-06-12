@@ -29,7 +29,7 @@
             </select>
           </section>
           <section v-if="pickedDate && selectedMovie && selectedSala && !showPickHours">
-            <button @click="showPickHours = true">
+            <button class="pickHourbtn" @click="showPickHours = true">
               Elegir horarios
             </button>
           </section>

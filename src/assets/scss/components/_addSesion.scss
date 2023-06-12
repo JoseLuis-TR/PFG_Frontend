@@ -4,6 +4,32 @@
   gap: 3rem;
   text-align: center;
 
+  .pickHourbtn {
+    width: 40%;
+    min-width: fit-content;
+    height: 50px;
+    font-size: 2.5rem;
+    border: none;
+    background-color: v.$back_web_lighter;
+    border-radius: 10px;
+    color: v.$white;
+    font-family: v.$manrope;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    padding: 0 20px;
+    margin-top: 2rem;
+
+    @media screen and (max-width: 800px) {
+      font-size: 1.5rem;
+    }
+
+    &:hover {
+      background-color: v.$yellow;
+      color: v.$black;
+    }
+  }
+
   &__pickDate {
     font-family: v.$manrope;
     width: 100%;
@@ -154,6 +180,7 @@
       max-width: 300px;
       .list {
         .item {
+          font-family: v.$manrope;
           width: fit-content;
           text-align: left;
         }

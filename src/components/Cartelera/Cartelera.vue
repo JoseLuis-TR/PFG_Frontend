@@ -230,6 +230,10 @@ export default {
             horaSesion: sesion.hora.substring(0, 5)
           }))
         }))
+
+        sessionsByDate[date].sort(function (a, b) {
+          return a.salaSesion.nombre.localeCompare(b.salaSesion.nombre);
+        });
       })
       return sessionsByDate
     },
@@ -258,6 +262,7 @@ export default {
     this.updateVisibleDates()
     this.orderedSessions = this.sortSessionsByDate()
     this.selectedDate = this.dates[0]
+    console.log(this.orderedSessions)
   }
 }
 </script>

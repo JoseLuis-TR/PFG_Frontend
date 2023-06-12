@@ -44,7 +44,7 @@
 
   &__sliderButton:hover {
     background-color: v.$yellow;
-    font-weight: 700;
+    font-weight: 500;
 
     img {
       filter: invert(0%);
@@ -103,6 +103,7 @@
 
       &--poster {
         grid-area: Poster;
+        border-radius: 10px;
         align-self: center;
         justify-self: center;
         width: 85px;

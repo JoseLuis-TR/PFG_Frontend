@@ -4,12 +4,14 @@
     <section class="top__container">
       <Loader mensajeCarga="Cargando Top 5" v-if="isLoading" />
       <ul class="list" v-else-if="!isLoading && topMovies.length > 0">
-        <li class="list__item" v-for="(movie, index) in this.topMovies.slice(0, 5)">
+        <li class="list__item" v-for="(movie, index) in this.topMovies">
           <p class="list__item__order">{{ index + 1 }}</p>
           <section class="list__item__info">
             <p class="list__item__info__name" @click="redirectToMoviePage(movie.id)">{{ movie.nombre }}</p>
             <p class="list__item__info__vote">{{ movie.votos }} votos</p>
           </section>
+        </li>
+        <li class="list__item" v-if="this.topMovies" v-for="emptyElement in 5 - this.topMovies.length">
         </li>
       </ul>
       <ErrorComp v-else-if="!isLoading && topMovies.length === 0" mensajeError="No hay películas en el top" />
