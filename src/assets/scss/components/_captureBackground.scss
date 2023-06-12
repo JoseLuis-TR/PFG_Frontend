@@ -1,5 +1,8 @@
 @use "../utilities/_variables.scss" as v;
 
+// Estilos del contenedor con la información de la página de detalles de cada pelicula
+// que muestra la captura, un poster y algunos datos
+
 .mainDetails__img {
   position: absolute;
   left: 0;

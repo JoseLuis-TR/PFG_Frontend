@@ -1,5 +1,7 @@
 @use "../utilities/_variables.scss" as v;
 
+// Estilos del componente que muestra que hay un error en alguna sección
+
 .errorContainer {
   width: 100%;
   display: flex;
