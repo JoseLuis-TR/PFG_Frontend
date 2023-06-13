@@ -11,9 +11,6 @@
         </section>
       </SplideSlide>
     </Splide>
-    <!-- <section v-else>
-            <p>No hay películas en cartelera</p>
-        </section> -->
     <ErrorComp v-else mensajeError="No hay peliculas programadas para hoy" />
   </section>
 </template>
@@ -21,22 +18,25 @@
 <script>
 /**
  * @file Carrusel.vue - Componente que contiene el carrusel de las películas en cartelera hoy
- * @see <a href="https://github.com/JoseLuis-TR/PFG_Frontend - target="_blank">Github</a>
- */
-
-/**
- * @property {string} name - Nombre del componente
+ * @author José Luis Tocino Rojo
+ * @see <a href="https://github.com/JoseLuis-TR/PFG_Frontend" target="_blank">Github</a>
+ * @module Component/Carrusel
+ * 
  * @property {Object} components - Componentes que se utilizan en el carrusel
  * @property {Object} components.Loader - Componente pantalla de carga
  * @property {Object} components.Splide - Componente carrusel de la libreria de Splide
- * @vue-data {Array} movies - Array con las películas que se muestran en el carrusel
- * @vue-data {boolean} [isLoading = false] - Indica si se está cargando el carrusel
- * @vue-data {Object} slideOptions - Opciones para personalizar el carrusel
- * @vue-data {string} slideOptions.type - Tipo de carrusel
- * @vue-data {boolean} slideOptions.arrows - Indica si se muestran las flechas de navegación
- * @vue-data {boolean} slideOptions.cover - La imagen ocupa todo el espacio del carrusel
- * @vue-data {boolean} slideOptions.autoplay - Indica si el carrusel se mueve automáticamente
- * @vue-data {number} slideOptions.interval - Intervalo de tiempo entre cada movimiento del carrusel
+ * @property {Object} components.ErrorComp - Componente pantalla de error
+ * @property {Object} data - Datos del componente
+ * @property {Array} data.movies - Array que contiene las películas hoy en cartelera
+ * @property {boolean} data.isLoading - Booleano que indica si se está cargando la página
+ * @property {Object} data.slideOptions - Opciones del carrusel
+ * @property {string} data.slideOptions.type - Tipo de carrusel
+ * @property {boolean} data.slideOptions.arrows - Indica si se muestran las flechas
+ * @property {boolean} data.slideOptions.cover - Indica si se muestra la imagen completa
+ * @property {boolean} data.slideOptions.autoplay - Indica si se reproduce automáticamente
+ * @property {number} data.slideOptions.interval - Intervalo de tiempo entre cada slide
+ * @property {Array} data.moviesUnicas - Array que contiene las películas hoy en cartelera sin repetir
+ * 
  */
 
 import { Splide } from '@splidejs/vue-splide';
@@ -49,7 +49,6 @@ export default {
   data() {
     return {
       movies: [],
-      movieListForCarousel: [],
       isLoading: false,
       slideOptions: {
         type: 'loop',
@@ -85,8 +84,8 @@ export default {
         });
     },
     /**
- * Redirecciona a la página de la película
- */
+     * Redirecciona a la página de la película
+     */
     redirectToMoviePage(movieId) {
       this.$router.push(`pelicula/${movieId}`)
     }

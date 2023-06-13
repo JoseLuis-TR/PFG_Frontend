@@ -64,6 +64,34 @@ import Loader from '../Loader.vue'
 import VotoPelicula from '../MovieDetails/VotoPelicula.vue';
 import BuyTicket from '../Overlays/BuyTicket.vue';
 
+/**
+ * @file CarteleraMovieDetails.vue - Página principal de la aplicación
+ * @author José Luis Tocino Rojo
+ * @see &lt;a href="https://github.com/JoseLuis-TR/PFG_Frontend" target="_blank">Github&lt;/a>
+ * @module Component/Cartelera/CarteleraPelicula
+ * 
+ * @property {Object} components - Componentes que se utilizan en la página
+ * @property {Object} components.Loader - Componente Loader
+ * @property {Object} components.VotoPelicula - Componente para el voto de las peliculas sin sesiones
+ * @property {Object} components.BuyTicket - Componente para la compra de entradas
+ * @property {Object} data - Datos de la página
+ * @property {boolean} data.isLoading - Indica si se está cargando la página
+ * @property {Object[]} data.movieSessions - Sesiones de la película
+ * @property {Object} data.orderedSessions - Sesiones ordenadas por fecha
+ * @property {string[]} data.dates - Fechas de las sesiones
+ * @property {string[]} data.visibleDates - Fechas visibles en el slider
+ * @property {Object[]} data.sessionsList - Sesiones de la fecha seleccionada
+ * @property {string} data.selectedDate - Fecha seleccionada
+ * @property {number} data.index - Índice de la fecha seleccionada
+ * @property {boolean} data.sessionExists - Indica si la película tiene sesiones
+ * @property {boolean} data.showAddSession - Indica si se muestra el modal para añadir sesiones
+ * @property {boolean} data.showBuyTicket - Indica si se muestra el modal para comprar entradas
+ * @property {Object} data.buyTicketNeededInfo - Información necesaria para comprar entradas
+ * @property {string} data.buyTicketNeededInfo.idSesion - Id de la sesión
+ * @property {string} data.buyTicketNeededInfo.idSala - Id de la sala
+ * @property {string} data.buyTicketNeededInfo.movieName - Nombre de la película
+ * @property {string} data.buyTicketNeededInfo.pickedTime - Hora de la sesión
+ */
 export default {
   name: "CarteleraMovieDetails",
   components: {
@@ -92,12 +120,20 @@ export default {
       }
     }
   },
+  /**
+   * Revisa la fecha que se señala para mostrar las horas de ese día
+   */
   watch: {
     selectedDate: function (val) {
       this.showHours(val);
     }
   },
   methods: {
+    /**
+     * Recoge las sesiones desde hoy de la pelicula en especifico
+     * 
+     * @returns {Promise} - Sesiones de la película
+     */
     async getMovieInfo() {
       const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -168,7 +204,8 @@ export default {
       return sessionsByDate
     },
     /**
-     * Muestra las 3 anteriores fechas y la siguiente
+     * Muestra una fecha más cercana a la actualidad al hacer click en el botón
+     * de la izquierda en el slider
      */
     showPreviousDates() {
       if (this.index > 0) {
@@ -177,7 +214,8 @@ export default {
       }
     },
     /**
-     * Muestra las 3 siguientes fechas y la anterior
+     * Muestra una fecha más lejana a la actualidad al hacer click en el botón
+     * que se encuentra a la derecha en el slider
      */
     showNextDates() {
       if (this.index + 4 &lt; this.dates.length) {
@@ -235,6 +273,8 @@ export default {
     },
     /**
      * Convierte la fecha recibida en formato YYYY-MM-DD a DD/MM/YYYY
+     * 
+     * @param {string} date - Fecha en formato YYYY-MM-DD
      */
     formatDate(date) {
       let dateParts = date.split("-")
@@ -259,6 +299,8 @@ export default {
     },
   },
   async mounted() {
+    // Realiza la carga de las sesiones de la pelicula y ordena las fechas
+    // En caso de no existir sesiones muestra el componente para votar
     this.isLoading = true;
     await this.getMovieInfo();
     if (this.sessionExists) {
@@ -283,13 +325,13 @@ export default {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-EditUser.html">EditUser</a></li><li><a href="module-Functions_PassOperations.html">Functions_PassOperations</a></li><li><a href="module-Functions_User.html">Functions_User</a></li><li><a href="module-Functions_Validations.html">Functions_Validations</a></li><li><a href="module-LRUser.html">LRUser</a></li><li><a href="module-Loader.html">Loader</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Component_Carrusel.html">Component/Carrusel</a></li><li><a href="module-Component_Cartelera_CarteleraGeneral.html">Component/Cartelera/CarteleraGeneral</a></li><li><a href="module-Component_Cartelera_CarteleraPelicula.html">Component/Cartelera/CarteleraPelicula</a></li><li><a href="module-Component_ErrorComp.html">Component/ErrorComp</a></li><li><a href="module-Component_Header.html">Component/Header</a></li><li><a href="module-Component_Loader.html">Component/Loader</a></li><li><a href="module-Component_MovieDetails_CaptureBackground.html">Component/MovieDetails/CaptureBackground</a></li><li><a href="module-Component_MovieDetails_InfoMovie.html">Component/MovieDetails/InfoMovie</a></li><li><a href="module-Component_MovieDetails_OpinionMovie.html">Component/MovieDetails/OpinionMovie</a></li><li><a href="module-Component_MovieDetails_TicketMovie.html">Component/MovieDetails/TicketMovie</a></li><li><a href="module-Component_MovieDetails_VotoPelicula.html">Component/MovieDetails/VotoPelicula</a></li><li><a href="module-Component_Ovelays_BuyTicket.html">Component/Ovelays/BuyTicket</a></li><li><a href="module-Component_Ovelays_ModalNewPelicula.html">Component/Ovelays/ModalNewPelicula</a></li><li><a href="module-Component_Overlays_AddSession.html">Component/Overlays/AddSession</a></li><li><a href="module-Component_Overlays_EditUser.html">Component/Overlays/EditUser</a></li><li><a href="module-Component_Overlays_FormModal.html">Component/Overlays/FormModal</a></li><li><a href="module-Component_Overlays_LRUser.html">Component/Overlays/LRUser</a></li><li><a href="module-Component_Overlays_Menu.html">Component/Overlays/Menu</a></li><li><a href="module-Component_Overlays_ModalConfirmacion.html">Component/Overlays/ModalConfirmacion</a></li><li><a href="module-Component_Overlays_PickHours.html">Component/Overlays/PickHours</a></li><li><a href="module-Component_TopEsperadas.html">Component/TopEsperadas</a></li><li><a href="module-View_Catalogo.html">View/Catalogo</a></li><li><a href="module-View_Index.html">View/Index</a></li><li><a href="module-View_MovieDetails.html">View/MovieDetails</a></li><li><a href="module-_Functions_PassOperations.html">_Functions/PassOperations</a></li><li><a href="module-_Functions_User.html">_Functions/User</a></li><li><a href="module-_Functions_Validations.html">_Functions/Validations</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Jun 12 2023 23:35:50 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Jun 13 2023 20:50:29 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

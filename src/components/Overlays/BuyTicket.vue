@@ -32,6 +32,27 @@
 <script>
 import ModalConfirmacion from './ModalConfirmacion.vue';
 import { getLoggedUser } from '../../store/user';
+
+/**
+ * @file BuyTicket.vue - Componente del modal de compra de entradas
+ * @author José Luis Tocino Rojo
+ * @see <a href="https://github.com/JoseLuis-TR/PFG_Frontend" target="_blank">Github</a>
+ * @module Component/Ovelays/BuyTicket
+ * 
+ * @property {Object} components - Componentes que se utilizan en el componente
+ * @property {Object} components.ModalConfirmacion - Componente del modal de confirmación
+ * @property {Object} props - Propiedades que recibe el componente
+ * @property {Object} props.neededInfo - Información necesaria para la compra de entradas
+ * @property {Object} data - Datos del componente
+ * @property {Object} data.allSeats - Todos los asientos de la sala
+ * @property {Object} data.reservedSeats - Asientos ya reservados de la sesión
+ * @property {Object} data.userPickedSeats - Asientos que ha escogido el usuario
+ * @property {Object} data.showConfirmation - Booleano que indica si se muestra el modal de confirmación
+ * @property {Object} data.precio - Precio de cada entrada
+ * @property {Object} data.user - Usuario que está comprando las entradas
+ * @property {Object} emits - Eventos que emite el componente
+ * @property {Object} emits.close - Evento que emite el componente cuando se cierra
+ */
 export default {
   name: "BuyTicket",
   props: [
@@ -54,6 +75,9 @@ export default {
     "close"
   ],
   methods: {
+    /**
+     * Se obtienen los ids e información de todos los asientos de una sala
+     */
     async fetchAllSeatsFromSala() {
       const apiUrl = import.meta.env.VITE_API_URL;
       const response = await fetch(`${apiUrl}/asientos/sala/${this.neededInfo.idSala}`)
@@ -66,6 +90,9 @@ export default {
         this.allSeats[fila].push(objectSeat);
       })
     },
+    /**
+     * Se obtienen los ids de todos los asientos reservados de una sesión
+     */
     async fetchAllReservedSeatsFromSession() {
       const apiUrl = import.meta.env.VITE_API_URL;
       const response = await fetch(`${apiUrl}/sesiones/asientos/${this.neededInfo.idSesion}`)
@@ -73,6 +100,10 @@ export default {
       if (data.codigo) return;
       this.reservedSeats = data;
     },
+    /**
+     * Se escoge un asiento y se añade al array de asientos escogidos, o se elimina si ya estaba escogido
+     * @param {Number} seatId - Id del asiento
+     */
     pickSeat(seatId) {
       if (this.reservedSeats.length > 0 && this.reservedSeats.includes(seatId)) {
         return;
@@ -83,6 +114,9 @@ export default {
         this.userPickedSeats.push(seatId);
       }
     },
+    /**
+     * Se compran los asientos escogidos
+     */
     async buyReservedSeats() {
       const apiUrl = import.meta.env.VITE_API_URL;
       if (this.user) {
@@ -99,13 +133,11 @@ export default {
           asientos: this.userPickedSeats
         })
       })
-      const data = await response.json();
       if (this.$router.currentRoute.value.path === "/") this.$emit("close");
       this.$router.push(`/`);
     }
   },
   async mounted() {
-    console.log(this.neededInfo);
     await this.fetchAllSeatsFromSala();
     await this.fetchAllReservedSeatsFromSession();
   }

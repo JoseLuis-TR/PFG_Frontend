@@ -46,24 +46,25 @@ import { validateEmailRegex, validatePasswordRegex, validateUserRegex } from "..
 import { getLoggedUser } from "../../store/user";
 
 /**
- * @file Profile.vue - Componente que muestra el formulario de modificación de usuario
+ * @file EditUser.vue - Componente de edición de usuario
  * @author José Luis Tocino Rojo
  * @see <a href="https://github.com/JoseLuis-TR/cines_haven" target="_blank">Github</a>
- */
-
-/**
- * @property {string} name - Nombre del componente
- * @property {Object} emits - Eventos que emite el componente
- * @property {Object} emits.close-profile - Evento que emite el componente para cerrar el formulario
- * @vue-data {string} [imageUrl = null] - Url de la imagen de perfil
- * @vue-data {string} [errorMessage = null] - Mensaje de error
- * @vue-data {string} imageFile - Archivo de imagen que es subido
- * @vue-data {string} emailData - Email del usuario
- * @vue-data {string} nickData - Nick del usuario
- * @vue-data {string} passData - Contraseña del usuario
- * @vue-data {boolean} [modEmailOk = true] - Indica si el email es válido
- * @vue-data {boolean} [modUserOk = true] - Indica si el usuario es válido
- * @vue-data {boolean} [modPassOk = true] - Indica si la contraseña es válida
+ * @module Component/Overlays/EditUser
+ * 
+ * @property {Object} data - Datos del componente Vue
+ * @property {String} data.imageUrl - URL de la imagen de perfil
+ * @property {String} data.errorMessage - Mensaje de error
+ * @property {String} data.imageFile - Archivo de imagen de avatar
+ * @property {String} data.emailData - Email del usuario
+ * @property {String} data.nickData - Nick del usuario
+ * @property {String} data.passData - Contraseña del usuario
+ * @property {Boolean} data.modEmailOk - Validación de email
+ * @property {Boolean} data.modUserOk - Validación de usuario
+ * @property {Boolean} data.modPassOk - Validación de contraseña
+ * @property {Object} data.loggedUser - Datos del usuario logueado
+ * @property {String} data.avatarToShow - Imagen de perfil a mostrar en el componente
+ * @property {Object} emits - Eventos del componente
+ * @property {Function} emits.close-profile - Cierra el componente
  */
 export default {
   name: "EditUser",
@@ -165,6 +166,11 @@ export default {
       } else
         this.modPassOk = validatePasswordRegex(this.passData)
     },
+    /**
+     * Función que decide que imagen de avatar mostrar
+     * @param {String} whatINeed - Que imagen de avatar se necesita mostrar
+     * @param {String} newAvatar - Nueva imagen de avatar
+     */
     showedAvatar(whatINeed, newAvatar = null) {
       if (whatINeed === "initialAvatar" && this.loggedUser) {
         this.avatarToShow = this.loggedUser.avatar ? this.loggedUser.avatar : "src/assets/images/default.png"
@@ -174,11 +180,7 @@ export default {
       }
     }
   },
-  /**
-   * Función que se ejecuta cuando se monta el componente
-   */
   mounted() {
-    // Si hay un usuario en local storage, se recogen sus datos
     this.showedAvatar("initialAvatar");
   }
 }

@@ -1,12 +1,12 @@
 import CryptoJS from "crypto-js";
 /**
- * @module Functions_PassOperations
+ * @module _Functions/PassOperations
  */
 
 /**
- * Encripta la contraseña utilizando sha1
+ * Encripta la contraseña utilizando sha256
  *
- * @memberof module:Functions_PassOperations
+ * @memberof module:_Functions/PassOperations
  * @function
  * @param {string} password Contraseña a encriptar
  * @return {string} Contraseña encriptada

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Overlays/BuyTicket.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Overlays/BuyTicket.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;template>
+  &lt;Transition name="modalBG">
+    &lt;section class="modalContainer" @click.self="$emit('close')">
+      &lt;Transition name="modal" appear>
+        &lt;article class="formContainer newBuyer">
+          &lt;p class="newBuyer__title">Escoge los asientos&lt;/p>
+          &lt;section class="chooseSeat">
+            &lt;div class="chooseSeat__row" v-for="(fila, key) in allSeats">
+              &lt;p class="chooseSeat__row__title">{{ key }}&lt;/p>
+              &lt;div class="chooseSeat__row__columns">
+                &lt;div class="seat" v-for="seat in fila" :class="[
+                    reservedSeats.includes(seat.id) ? 'disabled' : 'available',
+                    userPickedSeats.includes(seat.id) ? 'picked' : ''
+                  ]" @click="pickSeat(seat.id)">
+                  &lt;p class="seat__number">{{ seat.numero }}&lt;/p>
+                  &lt;img class="seat__img" src="../../assets/icons/seat.svg" alt="seat">
+                &lt;/div>
+              &lt;/div>
+            &lt;/div>
+          &lt;/section>
+          &lt;button v-if="userPickedSeats.length > 0" class="newBuyer__button" @click="showConfirmation = true">
+            Comprar entradas
+          &lt;/button>
+        &lt;/article>
+      &lt;/Transition>
+    &lt;/section>
+  &lt;/Transition>
+  &lt;ModalConfirmacion v-if="showConfirmation" @close="showConfirmation = false" @delete="buyReservedSeats"
+    :mensaje="`¿Estás seguro de que quieres comprar ${userPickedSeats.length} entradas por un total de ${userPickedSeats.length * precio} euros?`" />
+&lt;/template>
+
+&lt;script>
+import ModalConfirmacion from './ModalConfirmacion.vue';
+import { getLoggedUser } from '../../store/user';
+
+/**
+ * @file BuyTicket.vue - Componente del modal de compra de entradas
+ * @author José Luis Tocino Rojo
+ * @see &lt;a href="https://github.com/JoseLuis-TR/PFG_Frontend" target="_blank">Github&lt;/a>
+ * @module Component/Ovelays/BuyTicket
+ * 
+ * @property {Object} components - Componentes que se utilizan en el componente
+ * @property {Object} components.ModalConfirmacion - Componente del modal de confirmación
+ * @property {Object} props - Propiedades que recibe el componente
+ * @property {Object} props.neededInfo - Información necesaria para la compra de entradas
+ * @property {Object} data - Datos del componente
+ * @property {Object} data.allSeats - Todos los asientos de la sala
+ * @property {Object} data.reservedSeats - Asientos ya reservados de la sesión
+ * @property {Object} data.userPickedSeats - Asientos que ha escogido el usuario
+ * @property {Object} data.showConfirmation - Booleano que indica si se muestra el modal de confirmación
+ * @property {Object} data.precio - Precio de cada entrada
+ * @property {Object} data.user - Usuario que está comprando las entradas
+ * @property {Object} emits - Eventos que emite el componente
+ * @property {Object} emits.close - Evento que emite el componente cuando se cierra
+ */
+export default {
+  name: "BuyTicket",
+  props: [
+    "neededInfo"
+  ],
+  components: {
+    ModalConfirmacion
+  },
+  data() {
+    return {
+      allSeats: {},
+      reservedSeats: [],
+      userPickedSeats: [],
+      showConfirmation: false,
+      precio: 5,
+      user: getLoggedUser()
+    }
+  },
+  emits: [
+    "close"
+  ],
+  methods: {
+    /**
+     * Se obtienen los ids e información de todos los asientos de una sala
+     */
+    async fetchAllSeatsFromSala() {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      const response = await fetch(`${apiUrl}/asientos/sala/${this.neededInfo.idSala}`)
+      const data = await response.json();
+      data.forEach((objectSeat) => {
+        const fila = objectSeat.fila;
+        if (!this.allSeats.hasOwnProperty(fila)) {
+          this.allSeats[fila] = [];
+        }
+        this.allSeats[fila].push(objectSeat);
+      })
+    },
+    /**
+     * Se obtienen los ids de todos los asientos reservados de una sesión
+     */
+    async fetchAllReservedSeatsFromSession() {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      const response = await fetch(`${apiUrl}/sesiones/asientos/${this.neededInfo.idSesion}`)
+      const data = await response.json();
+      if (data.codigo) return;
+      this.reservedSeats = data;
+    },
+    /**
+     * Se escoge un asiento y se añade al array de asientos escogidos, o se elimina si ya estaba escogido
+     * @param {Number} seatId - Id del asiento
+     */
+    pickSeat(seatId) {
+      if (this.reservedSeats.length > 0 &amp;&amp; this.reservedSeats.includes(seatId)) {
+        return;
+      }
+      if (this.userPickedSeats.includes(seatId)) {
+        this.userPickedSeats = this.userPickedSeats.filter((seat) => seat !== seatId);
+      } else {
+        this.userPickedSeats.push(seatId);
+      }
+    },
+    /**
+     * Se compran los asientos escogidos
+     */
+    async buyReservedSeats() {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      if (this.user) {
+        this.neededInfo.id_usuario = this.user.id;
+      }
+      const response = await fetch(`${apiUrl}/reservas`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          id_usuario: this.neededInfo.id_usuario ? this.neededInfo.id_usuario : null,
+          id_sesion: this.neededInfo.idSesion,
+          asientos: this.userPickedSeats
+        })
+      })
+      if (this.$router.currentRoute.value.path === "/") this.$emit("close");
+      this.$router.push(`/`);
+    }
+  },
+  async mounted() {
+    await this.fetchAllSeatsFromSala();
+    await this.fetchAllReservedSeatsFromSession();
+  }
+}
+&lt;/script></code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Component_Carrusel.html">Component/Carrusel</a></li><li><a href="module-Component_Cartelera_CarteleraGeneral.html">Component/Cartelera/CarteleraGeneral</a></li><li><a href="module-Component_Cartelera_CarteleraPelicula.html">Component/Cartelera/CarteleraPelicula</a></li><li><a href="module-Component_ErrorComp.html">Component/ErrorComp</a></li><li><a href="module-Component_Header.html">Component/Header</a></li><li><a href="module-Component_Loader.html">Component/Loader</a></li><li><a href="module-Component_MovieDetails_CaptureBackground.html">Component/MovieDetails/CaptureBackground</a></li><li><a href="module-Component_MovieDetails_InfoMovie.html">Component/MovieDetails/InfoMovie</a></li><li><a href="module-Component_MovieDetails_OpinionMovie.html">Component/MovieDetails/OpinionMovie</a></li><li><a href="module-Component_MovieDetails_TicketMovie.html">Component/MovieDetails/TicketMovie</a></li><li><a href="module-Component_MovieDetails_VotoPelicula.html">Component/MovieDetails/VotoPelicula</a></li><li><a href="module-Component_Ovelays_BuyTicket.html">Component/Ovelays/BuyTicket</a></li><li><a href="module-Component_Ovelays_ModalNewPelicula.html">Component/Ovelays/ModalNewPelicula</a></li><li><a href="module-Component_Overlays_AddSession.html">Component/Overlays/AddSession</a></li><li><a href="module-Component_Overlays_EditUser.html">Component/Overlays/EditUser</a></li><li><a href="module-Component_Overlays_FormModal.html">Component/Overlays/FormModal</a></li><li><a href="module-Component_Overlays_LRUser.html">Component/Overlays/LRUser</a></li><li><a href="module-Component_Overlays_Menu.html">Component/Overlays/Menu</a></li><li><a href="module-Component_Overlays_ModalConfirmacion.html">Component/Overlays/ModalConfirmacion</a></li><li><a href="module-Component_Overlays_PickHours.html">Component/Overlays/PickHours</a></li><li><a href="module-Component_TopEsperadas.html">Component/TopEsperadas</a></li><li><a href="module-View_Catalogo.html">View/Catalogo</a></li><li><a href="module-View_Index.html">View/Index</a></li><li><a href="module-View_MovieDetails.html">View/MovieDetails</a></li><li><a href="module-_Functions_PassOperations.html">_Functions/PassOperations</a></li><li><a href="module-_Functions_User.html">_Functions/User</a></li><li><a href="module-_Functions_Validations.html">_Functions/Validations</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Jun 13 2023 20:50:29 GMT+0200 (hora de verano de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

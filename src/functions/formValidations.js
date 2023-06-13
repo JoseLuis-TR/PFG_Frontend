@@ -1,11 +1,11 @@
 /**
- * @module Functions_Validations
+ * @module _Functions/Validations
  */
 
 /**
  * Función que valida el email usando una expresión regular
  *
- * @memberof module:Functions_Validations
+ * @memberof module:_Functions/Validations
  * @function
  * @param {string} email Email a validar
  * @return {boolean}
@@ -19,7 +19,7 @@ export const validateEmailRegex = (email) => {
 /**
  * Función que valida la contraseña usando una expresión regular
  *
- * @memberof module:Functions_Validations
+ * @memberof module:_Functions/Validations
  * @function
  * @param {string} password Contraseña a validar
  * @return {boolean}
@@ -34,7 +34,7 @@ export const validatePasswordRegex = (password) => {
 /**
  * Función que valida que la contraseña al registrarse se repite corretamente
  *
- * @memberof module:Functions_Validations
+ * @memberof module:_Functions/Validations
  * @function
  * @param {string} check Contraseña que debe ser igual
  * @param {string} pass Contraseña a probar
@@ -47,7 +47,7 @@ export const validateSamePassRegex = (check, pass) => {
 /**
  * Función que valida el nombre de usuario usando una expresión regular
  *
- * @memberof module:Functions_Validations
+ * @memberof module:_Functions/Validations
  * @function
  * @param {string} user Nombre de usuario a validar
  * @return {boolean}

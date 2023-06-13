@@ -1,12 +1,12 @@
-import { encriptarPass } from "../functions/hashpass.js";
 /**
- * @module Functions_User
+ * @module _Functions/User
  */
+import { encriptarPass } from "../functions/hashpass.js";
 
 /**
  * Registro de un nuevo usuario
  *
- * @memberof module:Functions_User
+ * @memberof module:_Functions/User
  * @function registerUser
  * @param {string} nick - Nick del usuario
  * @param {string} email - Correo electrónico del usuario
@@ -38,7 +38,7 @@ export async function registerNewUser(newUser) {
 /**
  * Inicia sesión con un usuario
  *
- * @memberof module:Functions_User
+ * @memberof module:_Functions/User
  * @function loginUser
  * @param {string} email - Correo electrónico del usuario
  * @param {string} password - Contraseña del usuario
@@ -76,7 +76,7 @@ export async function loginUser(email, password) {
 /**
  * Cierra la sesión del usuario
  *
- * @memberof module:Functions_User
+ * @memberof module:_Functions/User
  * @function logoutUser
  */
 export function logoutUser() {
@@ -90,7 +90,7 @@ export function logoutUser() {
 /**
  * Obtiene los datos del usuario
  *
- * @memberof module:Functions_User
+ * @memberof module:_Functions/User
  * @function fetchUser
  * @param {string} idUsuario - ID del usuario
  * @return {object} Objeto con los datos del usuario
@@ -111,7 +111,7 @@ export async function fetchUser(idUsuario) {
 /**
  * Devuelve los datos del usuario almacenados en sessionStorage o null
  *
- * @memberof module:Functions_User
+ * @memberof module:_Functions/User
  * @function getLoggedUser
  * @return {object} Objeto con los datos del usuario o null
  */

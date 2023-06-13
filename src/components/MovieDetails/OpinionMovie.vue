@@ -48,6 +48,23 @@ import ModalConfirmacion from '../Overlays/ModalConfirmacion.vue'
 import FormModal from '../Overlays/FormModal.vue'
 import { getLoggedUser } from '../../store/user'
 
+/**
+ * @file OpinionMovie.vue - Vista de las opiniones de una película
+ * @author José Luis Tocino Rojo
+ * @see <a href="https://github.com/JoseLuis-TR/PFG_Frontend" target="_blank">Github</a>
+ * @module Component/MovieDetails/OpinionMovie
+ * 
+ * @property {Object} components - Componentes que son utilizados
+ * @property {Object} components.Loader - Componente Loader
+ * @property {Object} components.ModalConfirmacion - Componente ModalConfirmacion
+ * @property {Object} components.FormModal - Componente FormModal
+ * @property {boolean} isLoading - Indica si se está cargando la información
+ * @property {Array} opinions - Lista de opiniones de la película
+ * @property {boolean} showModal - Indica si se muestra el modal de confirmación al eliminar una opinión
+ * @property {number} idComentarioABorrar - Id de la opinión a eliminar
+ * @property {boolean} showAddComment - Indica si se muestra el formulario para añadir una opinión
+ * @property {Object} user - Usuario logueado
+ */
 export default {
   name: "opinionMovie",
   components: {
@@ -113,6 +130,10 @@ export default {
           }
         })
     },
+    /**
+     * Muestra el mensaje de confirmación de eliminacion
+     * @param {number} idComentario - Id de la opinión a eliminar
+     */
     showConfirmation(idComentario) {
       this.idComentarioABorrar = idComentario;
       this.showModal = true

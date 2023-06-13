@@ -50,6 +50,33 @@
 </template>
 
 <script>
+
+/**
+ * @file ModalNewPelicula.vue - Componente para añadir o editar una pelicula
+ * @author José Luis Tocino Rojo
+ * @see <a href="https://github.com/JoseLuis-TR/PFG_Frontend" target="_blank">Github</a>
+ * @module Component/Ovelays/ModalNewPelicula
+ * 
+ * @property {Object} data - Objeto de datos del componente Vue
+ * @property {String} data.posterToShow - Imagen del poster de la pelicula
+ * @property {String} data.capturaToShow - Imagen de la captura de la pelicula
+ * @property {String} data.errorMessage - Mensaje de error
+ * @property {String} data.tituloData - Titulo de la pelicula
+ * @property {Boolean} data.modTituloOk - Indica si el titulo es correcto
+ * @property {String} data.directorData - Director de la pelicula
+ * @property {Boolean} data.modDirectorOk - Indica si el director es correcto
+ * @property {String} data.duracionData - Duración de la pelicula
+ * @property {Boolean} data.modDuracionOk - Indica si la duración es correcta
+ * @property {String} data.trailerData - Trailer de la pelicula
+ * @property {String} data.sinopsisData - Sinopsis de la pelicula
+ * @property {Boolean} data.modSinopsisOk - Indica si la sinopsis es correcta
+ * @property {Number} data.contador - Contador de caracteres de la sinopsis
+ * @property {Object} emits - Eventos emitidos por el componente
+ * @property {String} emits.close - Cierra el modal
+ * @property {Object} props - Propiedades recibidas del componente padre
+ * @property {String} props.action - Acción a realizar (Añadir o editar)
+ * @property {Object} props.toEdit - Pelicula a editar
+ */
 export default {
   name: "ModalNewPelicula",
   data() {
@@ -81,6 +108,11 @@ export default {
     }
   },
   methods: {
+    /**
+     * Obtiene la imagen que ha sido subida y crea un enlace para mostrarla
+     * @param {Event} event - Evento de subida de imagen
+     * @param {String} type - Tipo de imagen (poster o captura)
+     */
     handleImageUpload(event, type) {
       if (event.target.files.length === 1 && event.target.files[0].type.startsWith('image/')) {
         const selectedFile = event.target.files[0];
@@ -95,6 +127,12 @@ export default {
         this.errorMessage = 'Sólo se puede subir una imagen';
       }
     },
+    /**
+     * Comprueba que la imagen subida sea un poster o una captura
+     * En caso de ser llamada al inicio añade la imagen por defecto
+     * @param {String} type - Tipo de imagen (poster o captura)
+     * @param {String} fileUrl - Enlace de la imagen
+     */
     showNewImage(type, fileUrl = null) {
       if (type === 'poster') {
         this.posterToShow = fileUrl;
@@ -105,9 +143,17 @@ export default {
         this.capturaToShow = 'https://placehold.co/640x360/png?text=Captura';
       }
     },
+    /**
+     * Comprueba que el valor introducido sea un número
+     * @param {Event} event - Evento de introducción de datos
+     */
     checkIsANumber(event) {
       this.duracionData = event.target.value.replace(/\D/g, '');
     },
+    /**
+     * Comprueba que el valor introducido no esté vacío
+     * @param {String} value - Valor introducido
+     */
     checkIsNotEmpty(value) {
       if (value.length > 0) {
         return true;
@@ -115,12 +161,19 @@ export default {
         return false;
       }
     },
+    /**
+     * Cuenta los caracteres de la sinopsis y la recorta si es mayor de 750
+     */
     countCharacters() {
       if (this.sinopsisData.length > 750) {
         this.sinopsisData = this.sinopsisData.substring(0, 750);
       }
       this.contador = this.sinopsisData.length;
     },
+    /**
+     * Comprueba que esten los datos obligatorios
+     * @param {String} inputType - Tipo de dato a comprobar
+     */
     checkIfHaveValue(inputType) {
       if (inputType === 'titulo') {
         this.modTituloOk = this.tituloData === '' || this.tituloData === null ? false : true;
@@ -132,6 +185,12 @@ export default {
         this.modSinopsisOk = this.sinopsisData === '' || this.sinopsisData === null ? false : true;
       }
     },
+    /**
+     * Hace la subida de los datos de la nueva película
+     * Si la acción es editar hace la subida de los datos de la película editada
+     * Si el nombre de la película ya existe muestra un error en el input
+     * Si la subida es correcta cierra el modal y recarga la página
+     */
     async checkNewMovie() {
       if (this.modTituloOk && this.modDirectorOk && this.modDuracionOk && this.modSinopsisOk) {
         if (this.action === 'edit') {
@@ -164,12 +223,22 @@ export default {
           body: formMovieData,
         });
         const newMovieDataResponse = await response.json();
+
+        if (newMovieDataResponse.codigo) {
+          this.modTituloOk = false;
+          return;
+        }
         this.$router.go();
 
       } else {
         return;
       }
     },
+    /**
+     * Hace la subida de los datos de la película editada
+     * Si el nombre de la película ya existe muestra un error en el input
+     * Si la subida es correcta cierra el modal y recarga la página
+     */
     async checkUpdateMovie() {
       const updatedMovieData = {
         nombre: this.tituloData,
@@ -196,6 +265,12 @@ export default {
         body: formMovieData,
       });
       const updatedMovieDataResponse = await response.json();
+
+      if (updatedMovieDataResponse.codigo) {
+        this.modTituloOk = false;
+        return;
+      }
+
       this.$router.go();
     }
   },

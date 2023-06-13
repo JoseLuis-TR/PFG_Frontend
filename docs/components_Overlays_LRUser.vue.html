@@ -108,29 +108,32 @@ import {
   validateUserRegex
 } from "../../functions/formValidations.js";
 import { loginUser, registerNewUser } from "../../store/user";
-/**
- * @file LRUser.vue - Componente que contiene el formulario de login y registro
- * @author José Luis Tocino Rojo
- * @see &lt;a href="https://github.com/JoseLuis-TR/cines_haven" target="_blank">Github&lt;/a>
- */
 
 /**
- * @property {Object} name - Nombre del componente
- * @vue-prop {Boolean} [isNeeded = false] - Indica si el componente debe mostrarse o no
- * @property {Object} emits - Eventos que emite el componente
- * @property {Object} emits.close-userForm - Evento que emite el componente para cerrarse
- * @vue-data {String} [showForm = login] - Indica si se muestra el formulario de login o registro
- * @vue-data {String} userLog - Almacena el valor del input de usuario del formulario de login
- * @vue-data {String} passLog - Almacena el valor del input de contraseña del formulario de login
- * @vue-data {String} messageError - Almacena el mensaje de error que se muestra en el formulario
- * @vue-data {String} emailReg - Almacena el valor del input de email del formulario de registro
- * @vue-data {String} nickReg - Almacena el valor del input de usuario del formulario de registro
- * @vue-data {String} passReg - Almacena el valor del input de contraseña del formulario de registro
- * @vue-data {String} repPassReg - Almacena el valor del input de repetir contraseña del formulario de registro
- * @vue-data {Boolean} [regexEmailOk = true] - Indica si el email introducido es válido
- * @vue-data {Boolean} [regexUserOk = true] - Indica si el usuario introducido es válido
- * @vue-data {Boolean} [regexPassOk = true] - Indica si la contraseña introducida es válida
- * @vue-data {Boolean} [repeatPassOk = true] - Indica si las contraseñas introducidas coinciden
+ * @file LRUser.vue - Componente para mostrar el formulario de login y registro
+ * @author José Luis Tocino Rojo
+ * @see &lt;a href="https://github.com/JoseLuis-TR/PFG_Frontend" target="_blank">Github&lt;/a>
+ * @module Component/Overlays/LRUser
+ * 
+ * @property {Object} props - Propiedades recibidas por el componente
+ * @property {Boolean} props.isNeeded - Indica si el componente debe mostrarse
+ * @property {Object} emits - Eventos emitidos por el componente
+ * @property {Function} emits.close-userForm - Evento para cerrar el formulario
+ * @property {Object} data - Datos del componente
+ * @property {String} data.showForm - Indica que formulario debe mostrarse
+ * @property {String} data.userLog - Email del usuario para el login
+ * @property {String} data.passLog - Contraseña del usuario para el login
+ * @property {String} data.messageError - Mensaje de error del formulario
+ * @property {String} data.emailReg - Email del usuario para el registro
+ * @property {String} data.nickReg - Nombre de usuario del usuario para el registro
+ * @property {String} data.passReg - Contraseña del usuario para el registro
+ * @property {String} data.repPassReg - Repetición de la contraseña del usuario para el registro
+ * @property {Boolean} data.regexEmailOk - Indica si el email es válido
+ * @property {Boolean} data.regexUserOk - Indica si el nombre de usuario es válido
+ * @property {Boolean} data.regexPassOk - Indica si la contraseña es válida
+ * @property {Boolean} data.repeatPassOk - Indica si la repetición de la contraseña es válida
+ * @property {Boolean} data.nickExistsOk - Indica si el nombre de usuario ya existe en la base de datos
+ * @property {Boolean} data.emailExistsOk - Indica si el email ya existe en la base de datos
  */
 export default {
   name: "LRUser",
@@ -159,7 +162,9 @@ export default {
       emailExistsOk: true
     }
   },
-  // Se detecta cambios en el formulario que debe enseñarse y se resetea el mensaje de error
+  /**
+   * Se detectan los cambios en el formulario para mostrar el mensaje de error
+   */
   watch: {
     showForm() {
       this.messageError = "";
@@ -176,10 +181,10 @@ export default {
 
       if (!loginResult) {
         this.messageError = 'El email o la contraseña son incorrectos'
+        return;
       } else {
         this.messageError = 'Login correcto'
-        if (this.$route.path === "/") this.$router.go()
-        else this.$router.push("/");
+        this.$router.go();
       }
     },
     /**
@@ -274,15 +279,10 @@ export default {
 
         if (!registerResult) {
           this.messageError = 'Error al crear el usuario'
-          if (this.$route.path === "/") this.$router.go()
-          else this.$router.push("/");
+          return;
         } else {
           this.messageError = 'Registro Completado'
-          if (this.$route.path === "/") this.$router.go()
-          else {
-            this.$emit('close-userForm')
-            this.$router.push("/");
-          }
+          this.$router.go();
         }
 
       } else {
@@ -302,13 +302,13 @@ export default {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-EditUser.html">EditUser</a></li><li><a href="module-Functions_PassOperations.html">Functions_PassOperations</a></li><li><a href="module-Functions_User.html">Functions_User</a></li><li><a href="module-Functions_Validations.html">Functions_Validations</a></li><li><a href="module-LRUser.html">LRUser</a></li><li><a href="module-Loader.html">Loader</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Component_Carrusel.html">Component/Carrusel</a></li><li><a href="module-Component_Cartelera_CarteleraGeneral.html">Component/Cartelera/CarteleraGeneral</a></li><li><a href="module-Component_Cartelera_CarteleraPelicula.html">Component/Cartelera/CarteleraPelicula</a></li><li><a href="module-Component_ErrorComp.html">Component/ErrorComp</a></li><li><a href="module-Component_Header.html">Component/Header</a></li><li><a href="module-Component_Loader.html">Component/Loader</a></li><li><a href="module-Component_MovieDetails_CaptureBackground.html">Component/MovieDetails/CaptureBackground</a></li><li><a href="module-Component_MovieDetails_InfoMovie.html">Component/MovieDetails/InfoMovie</a></li><li><a href="module-Component_MovieDetails_OpinionMovie.html">Component/MovieDetails/OpinionMovie</a></li><li><a href="module-Component_MovieDetails_TicketMovie.html">Component/MovieDetails/TicketMovie</a></li><li><a href="module-Component_MovieDetails_VotoPelicula.html">Component/MovieDetails/VotoPelicula</a></li><li><a href="module-Component_Ovelays_BuyTicket.html">Component/Ovelays/BuyTicket</a></li><li><a href="module-Component_Ovelays_ModalNewPelicula.html">Component/Ovelays/ModalNewPelicula</a></li><li><a href="module-Component_Overlays_AddSession.html">Component/Overlays/AddSession</a></li><li><a href="module-Component_Overlays_EditUser.html">Component/Overlays/EditUser</a></li><li><a href="module-Component_Overlays_FormModal.html">Component/Overlays/FormModal</a></li><li><a href="module-Component_Overlays_LRUser.html">Component/Overlays/LRUser</a></li><li><a href="module-Component_Overlays_Menu.html">Component/Overlays/Menu</a></li><li><a href="module-Component_Overlays_ModalConfirmacion.html">Component/Overlays/ModalConfirmacion</a></li><li><a href="module-Component_Overlays_PickHours.html">Component/Overlays/PickHours</a></li><li><a href="module-Component_TopEsperadas.html">Component/TopEsperadas</a></li><li><a href="module-View_Catalogo.html">View/Catalogo</a></li><li><a href="module-View_Index.html">View/Index</a></li><li><a href="module-View_MovieDetails.html">View/MovieDetails</a></li><li><a href="module-_Functions_PassOperations.html">_Functions/PassOperations</a></li><li><a href="module-_Functions_User.html">_Functions/User</a></li><li><a href="module-_Functions_Validations.html">_Functions/Validations</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Jun 12 2023 23:35:50 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Jun 13 2023 20:50:29 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

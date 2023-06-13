@@ -40,21 +40,27 @@
  * @file Cartelera.vue - Componente que contiene la cartelera de las próximas sesiones
  * @author José Luis Tocino Rojo
  * @see <a href="https://github.com/JoseLuis-TR/cines_haven" target="_blank">Github</a>
- */
-
-/**
- * @property {string} name - Nombre del componente
+ * @module Component/Cartelera/CarteleraGeneral
+ * 
  * @property {Object} components - Componentes que se utilizan en la cartelera
  * @property {Object} components.Loader - Componente pantalla de carga
- * @vue-data {Array} sinceToday - Array con las sesiones desde hoy
- * @vue-data {Array} dates - Array con las fechas de las sesiones
- * @vue-data {Array} visibleDates - Array con las fechas visibles en el slider
- * @vue-data {number} [index = 0] - Índice de la fecha seleccionada
- * @vue-data {string} selectedDate - Fecha seleccionada
- * @vue-data {Array} sessionsList - Array con las películas de la fecha seleccionada
- * @vue-data {boolean} [isLoading = false] - Indica si se está cargando la cartelera
- * @vue-data {boolean} [showConfirmation = false] - Indica si se muestra la confirmación de compra
- * @vue-data {Object} orderedSessions - Objeto con las sesiones ordenadas por fecha y pelicula
+ * @property {Object} components.ErrorComp - Componente de error por si no hay sesiones
+ * @property {Object} components.BuyTicket - Componente del modal de compra de entradas
+ * @property {Object} data - Variables del componente
+ * @property {Array} data.sinceToday - Array con las sesiones desde hoy
+ * @property {Array} data.dates - Array con las fechas de las sesiones
+ * @property {Array} data.visibleDates - Array con las fechas visibles en el slider
+ * @property {number} data.index - Índice de la fecha seleccionada
+ * @property {string} data.selectedDate - Fecha seleccionada
+ * @property {Array} data.sessionsList - Array con las sesiones de la fecha seleccionada
+ * @property {boolean} data.orderedSessions - Objeto con las sesiones ordenadas por fecha y sala
+ * @property {boolean} data.isLoading - Indica si se está cargando la cartelera
+ * @property {boolean} data.showBuyTicket - Indica si se muestra el modal de compra
+ * @property {Object} data.buyTicketNeededInfo - Objeto con la información necesaria para comprar la entrada
+ * @property {string} data.buyTicketNeededInfo.idSesion - Id de la sesión
+ * @property {string} data.buyTicketNeededInfo.idSala - Id de la sala
+ * @property {string} data.buyTicketNeededInfo.movieName - Nombre de la película
+ * @property {string} data.buyTicketNeededInfo.pickedTime - Hora de la sesión escogida
  */
 import Loader from '../Loader.vue'
 import ErrorComp from '../Error.vue'
@@ -82,7 +88,10 @@ export default {
       }
     }
   },
-  // Se detecta cuando cambia la fecha seleccionada y se muestran las horas de la fecha seleccionada
+  /** 
+   * Se detecta cuando cambia la fecha seleccionada y se muestran las horas de 
+   * la fecha seleccionada
+   */
   watch: {
     selectedDate: function (val) {
       this.showHours(val)
@@ -90,7 +99,8 @@ export default {
   },
   methods: {
     /**
-     * Llama a la api para obtener las sesiones desde hoy
+     * Llamada a la api para obtener todas las sesiones desde el día de hoy
+     * @returns {Promise} - Promesa con las sesiones desde hoy
      */
     async getSinceTodaySessions() {
       const apiUrl = import.meta.env.VITE_API_URL;
@@ -102,7 +112,8 @@ export default {
         })
     },
     /**
-     * Ordena las fechas de las sesiones recibidas en la llamada
+     * Ordena las fechas de las sesiones que se han obtenido desde hoy
+     * desde la más cercana a la más lejana
      */
     sortDates() {
       let uniqueDates = new Set();
@@ -121,7 +132,8 @@ export default {
       })
     },
     /**
-     * Muestra las 3 anteriores fechas y la siguiente
+     * Al hacer click en el botón izquierda del slider se muestra una fecha
+     * más cercana a la actual
      */
     showPreviousDates() {
       if (this.index > 0) {
@@ -130,7 +142,8 @@ export default {
       }
     },
     /**
-     * Muestra las 3 siguientes fechas y la anterior
+     * Al hacer click en el botón derecha del slider se muestra una fecha
+     * más lejana a la actual
      */
     showNextDates() {
       if (this.index + 4 < this.dates.length) {
@@ -221,7 +234,7 @@ export default {
             return fechaSesionAcumulada;
           }, {})
 
-
+        // Se crea un array de fechas con los datos de la pelicula y sus sesiones
         sessionsByDate[date] = Object.values(sessionsByDate[date]).map(sesion => ({
           pelicula: sesion,
           salaSesion: sesion.salaSesion,
@@ -231,6 +244,7 @@ export default {
           }))
         }))
 
+        // Se ordenan las sesiones de un dia por el nombre de la sala
         sessionsByDate[date].sort(function (a, b) {
           return a.salaSesion.nombre.localeCompare(b.salaSesion.nombre);
         });

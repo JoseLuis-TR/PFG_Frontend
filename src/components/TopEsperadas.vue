@@ -24,14 +24,14 @@
  * @file TopEsperadas.vue - Componente que contiene el top 5 de películas más esperadas por los usuarios
  * @author José Luis Tocino Rojo
  * @see <a href="https://github.com/JoseLuis-TR/cines_haven" target="_blank">Github</a>
- */
-
-/**
- * @property {string} name - Nombre del componente
+ * @module Component/TopEsperadas
+ * 
  * @property {Object} components - Componentes que se utilizan en la página
  * @property {Object} components.Loader - Componente loader de la página
- * @vue-data {Array} topMovies - Array que contiene las películas más esperadas
- * @vue-data {boolean} isLoading - Booleano que indica si se está cargando la página
+ * @property {Object} components.ErrorComp - Componente que muestra un mensaje de error
+ * @property {Object} data - Datos del componente
+ * @property {Array} data.topMovies - Top 5 de películas más esperadas
+ * @property {boolean} data.isLoading - Indica si se está cargando los datos
  */
 import Loader from './Loader.vue';
 import ErrorComp from './Error.vue';

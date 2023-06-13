@@ -31,6 +31,29 @@ import infoMovie from '../components/MovieDetails/InfoMovie.vue'
 import opinionMovie from '../components/MovieDetails/OpinionMovie.vue';
 import ticketMovie from '../components/MovieDetails/TicketMovie.vue';
 
+/**
+ * @file MovieDetails.vue - Vista de la página de detalles de una película
+ * @author José Luis Tocino Rojo
+ * @see <a href="https://github.com/JoseLuis-TR/PFG_Frontend" target="_blank">Github</a>
+ * @module View/MovieDetails
+ * 
+ * @property {Object} components - Componentes que se usan dentro de la vista
+ * @property {Object} components.Header - Componente del header
+ * @property {Object} components.CaptureBackground - Componente de la parte superior de la página con poster, captura e info
+ * @property {Object} components.Loader - Componente del loader
+ * @property {Object} components.infoMovie - Componente de la información de la película (sinopsis y trailer)
+ * @property {Object} components.opinionMovie - Componente de las opiniones de la película
+ * @property {Object} components.ticketMovie - Componente de las entradas de la película
+ * @property {Object} data - Datos del componente
+ * @property {Object} data.movieInfo - Información de la película a mostrar
+ * @property {Object} data.movieSessions - Sesiones de la película a mostrar
+ * @property {Boolean} data.isLoading - Indica si se está cargando lo que se quiere ver
+ * @property {Boolean} data.infoIsOpen - Indica si el componente de información está abierto
+ * @property {Boolean} data.opinionsIsOpen - Indica si el componente de opiniones está abierto
+ * @property {Boolean} data.ticketsIsOpen - Indica si el componente de entradas está abierto
+ * @property {String} data.activeTab - Indica el componente que está abierto
+ * @property {Array} data.sessions - Sesiones de la película a mostrar
+ */
 export default {
   name: "MovieDetails",
   components: {
@@ -54,6 +77,12 @@ export default {
     };
   },
   methods: {
+    /**
+     * Obtiene la información de la pelicula
+     * 
+     * @param {Number} movieId - Id de la película
+     * @returns {Object} - Información de la película
+     */
     async getMovieDetails(movieId) {
       const apiUrl = import.meta.env.VITE_API_URL;
       return await fetch(`${apiUrl}/peliculas?idPelicula=${movieId}`)
@@ -63,8 +92,12 @@ export default {
           this.isLoading = false;
         });
     },
-    // Ordena las sesiones por fecha y almacena dentro de cada objeto fecha
-    // las horas de las sesiones de ese día
+    /**
+     * Ordena las sesiones por fecha y almacena dentro de cada objeto fecha
+     * las horas de las sesiones de ese día
+     * 
+     * @returns {Array} - Sesiones ordenadas por fecha
+     */
     orderSessionsByDate() {
       let sessions = this.movieSessions;
       let orderedSessions = [];
@@ -90,6 +123,9 @@ export default {
     }
   },
   computed: {
+    /**
+     * Comprueba que tab es la que se quiere abrir para mostrarlo
+     */
     activeTabComponent() {
       switch (this.activeTab) {
         case "info":
@@ -104,6 +140,9 @@ export default {
     }
   },
   mounted() {
+    /**
+     * Se obtiene la información de la película usando el id de la ruta
+     */
     this.getMovieDetails(this.$route.params.id);
   }
 };

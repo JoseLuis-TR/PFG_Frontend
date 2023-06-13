@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/MovieDetails.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/MovieDetails.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;template>
+  &lt;Loader class="loader__details" v-if="isLoading" :mensajeCarga="'Cargando información de la película'" />
+  &lt;section class="mainDetails" v-else>
+    &lt;CaptureBackground :movieCapture="movieInfo.captura" :movieName="movieInfo.nombre" :moviePoster="movieInfo.poster"
+      :movieDirector="movieInfo.director" :movieDuration="movieInfo.duracion" :movieData="movieInfo" />
+    &lt;section class="buttons">
+      &lt;button class="buttons__item" :class="{ 'active': activeTab === 'info', 'inactive': activeTab !== 'info' }"
+        @click="changeTab('info')">
+        Información
+      &lt;/button>
+      &lt;button class="buttons__item" :class="{ 'active': activeTab === 'opinions', 'inactive': activeTab !== 'opinions' }"
+        @click="changeTab('opinions')">
+        Opiniones
+      &lt;/button>
+      &lt;button class="buttons__item" :class="{ 'active': activeTab === 'tickets', 'inactive': activeTab !== 'tickets' }"
+        @click="changeTab('tickets')">
+        Entradas
+      &lt;/button>
+    &lt;/section>
+    &lt;Transition name="fade" mode="out-in">
+      &lt;component :is="activeTabComponent">&lt;/component>
+    &lt;/Transition>
+  &lt;/section>
+&lt;/template>
+
+&lt;script>
+import Header from '../components/Header.vue'
+import CaptureBackground from '../components/MovieDetails/CaptureBackground.vue'
+import Loader from '../components/Loader.vue'
+import infoMovie from '../components/MovieDetails/InfoMovie.vue'
+import opinionMovie from '../components/MovieDetails/OpinionMovie.vue';
+import ticketMovie from '../components/MovieDetails/TicketMovie.vue';
+
+/**
+ * @file MovieDetails.vue - Vista de la página de detalles de una película
+ * @author José Luis Tocino Rojo
+ * @see &lt;a href="https://github.com/JoseLuis-TR/PFG_Frontend" target="_blank">Github&lt;/a>
+ * @module View/MovieDetails
+ * 
+ * @property {Object} components - Componentes que se usan dentro de la vista
+ * @property {Object} components.Header - Componente del header
+ * @property {Object} components.CaptureBackground - Componente de la parte superior de la página con poster, captura e info
+ * @property {Object} components.Loader - Componente del loader
+ * @property {Object} components.infoMovie - Componente de la información de la película (sinopsis y trailer)
+ * @property {Object} components.opinionMovie - Componente de las opiniones de la película
+ * @property {Object} components.ticketMovie - Componente de las entradas de la película
+ * @property {Object} data - Datos del componente
+ * @property {Object} data.movieInfo - Información de la película a mostrar
+ * @property {Object} data.movieSessions - Sesiones de la película a mostrar
+ * @property {Boolean} data.isLoading - Indica si se está cargando lo que se quiere ver
+ * @property {Boolean} data.infoIsOpen - Indica si el componente de información está abierto
+ * @property {Boolean} data.opinionsIsOpen - Indica si el componente de opiniones está abierto
+ * @property {Boolean} data.ticketsIsOpen - Indica si el componente de entradas está abierto
+ * @property {String} data.activeTab - Indica el componente que está abierto
+ * @property {Array} data.sessions - Sesiones de la película a mostrar
+ */
+export default {
+  name: "MovieDetails",
+  components: {
+    Header,
+    CaptureBackground,
+    Loader,
+    infoMovie,
+    opinionMovie,
+    ticketMovie
+  },
+  data() {
+    return {
+      movieInfo: {},
+      movieSessions: {},
+      isLoading: true,
+      infoIsOpen: true,
+      opinionsIsOpen: false,
+      ticketsIsOpen: false,
+      activeTab: 'info',
+      sessions: [],
+    };
+  },
+  methods: {
+    /**
+     * Obtiene la información de la pelicula
+     * 
+     * @param {Number} movieId - Id de la película
+     * @returns {Object} - Información de la película
+     */
+    async getMovieDetails(movieId) {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      return await fetch(`${apiUrl}/peliculas?idPelicula=${movieId}`)
+        .then(response => response.json())
+        .then(data => {
+          this.movieInfo = data;
+          this.isLoading = false;
+        });
+    },
+    /**
+     * Ordena las sesiones por fecha y almacena dentro de cada objeto fecha
+     * las horas de las sesiones de ese día
+     * 
+     * @returns {Array} - Sesiones ordenadas por fecha
+     */
+    orderSessionsByDate() {
+      let sessions = this.movieSessions;
+      let orderedSessions = [];
+      // Se obtienen las fechas de las sesiones
+      // No se modifica el formato de la fecha
+      orderedSessions[date] = sessions
+      // Se ordenan las sesiones por fecha
+      dates.forEach(date => {
+        let sessionsByDate = [];
+        sessions.forEach(session => {
+          let sessionDate = new Date(session.fecha);
+          let sessionDateStr = `${sessionDate.getDate()}/${sessionDate.getMonth() + 1}/${sessionDate.getFullYear()}`;
+          if (sessionDateStr === date) {
+            sessionsByDate.push(session);
+          }
+        });
+        orderedSessions.push({ date: date, sessions: sessionsByDate });
+      });
+      return orderedSessions;
+    },
+    changeTab(tabName) {
+      this.activeTab = tabName;
+    }
+  },
+  computed: {
+    /**
+     * Comprueba que tab es la que se quiere abrir para mostrarlo
+     */
+    activeTabComponent() {
+      switch (this.activeTab) {
+        case "info":
+          return 'infoMovie';
+        case "opinions":
+          return 'opinionMovie';
+        case "tickets":
+          return 'ticketMovie';
+        default:
+          return 'infoMovie';
+      }
+    }
+  },
+  mounted() {
+    /**
+     * Se obtiene la información de la película usando el id de la ruta
+     */
+    this.getMovieDetails(this.$route.params.id);
+  }
+};
+
+&lt;/script></code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Component_Carrusel.html">Component/Carrusel</a></li><li><a href="module-Component_Cartelera_CarteleraGeneral.html">Component/Cartelera/CarteleraGeneral</a></li><li><a href="module-Component_Cartelera_CarteleraPelicula.html">Component/Cartelera/CarteleraPelicula</a></li><li><a href="module-Component_ErrorComp.html">Component/ErrorComp</a></li><li><a href="module-Component_Header.html">Component/Header</a></li><li><a href="module-Component_Loader.html">Component/Loader</a></li><li><a href="module-Component_MovieDetails_CaptureBackground.html">Component/MovieDetails/CaptureBackground</a></li><li><a href="module-Component_MovieDetails_InfoMovie.html">Component/MovieDetails/InfoMovie</a></li><li><a href="module-Component_MovieDetails_OpinionMovie.html">Component/MovieDetails/OpinionMovie</a></li><li><a href="module-Component_MovieDetails_TicketMovie.html">Component/MovieDetails/TicketMovie</a></li><li><a href="module-Component_MovieDetails_VotoPelicula.html">Component/MovieDetails/VotoPelicula</a></li><li><a href="module-Component_Ovelays_BuyTicket.html">Component/Ovelays/BuyTicket</a></li><li><a href="module-Component_Ovelays_ModalNewPelicula.html">Component/Ovelays/ModalNewPelicula</a></li><li><a href="module-Component_Overlays_AddSession.html">Component/Overlays/AddSession</a></li><li><a href="module-Component_Overlays_EditUser.html">Component/Overlays/EditUser</a></li><li><a href="module-Component_Overlays_FormModal.html">Component/Overlays/FormModal</a></li><li><a href="module-Component_Overlays_LRUser.html">Component/Overlays/LRUser</a></li><li><a href="module-Component_Overlays_Menu.html">Component/Overlays/Menu</a></li><li><a href="module-Component_Overlays_ModalConfirmacion.html">Component/Overlays/ModalConfirmacion</a></li><li><a href="module-Component_Overlays_PickHours.html">Component/Overlays/PickHours</a></li><li><a href="module-Component_TopEsperadas.html">Component/TopEsperadas</a></li><li><a href="module-View_Catalogo.html">View/Catalogo</a></li><li><a href="module-View_Index.html">View/Index</a></li><li><a href="module-View_MovieDetails.html">View/MovieDetails</a></li><li><a href="module-_Functions_PassOperations.html">_Functions/PassOperations</a></li><li><a href="module-_Functions_User.html">_Functions/User</a></li><li><a href="module-_Functions_Validations.html">_Functions/Validations</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Jun 13 2023 20:50:29 GMT+0200 (hora de verano de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

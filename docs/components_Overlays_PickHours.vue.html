@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Overlays/PickHours.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Overlays/PickHours.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;template>
+  &lt;section class="modalSesion__pickHours">
+    &lt;p class="modalSesion__pickHours__title">Selecciona las horas para las sesiones&lt;/p>
+    &lt;section v-for="(input, index) in hourList" :key="`hora - ${index}`" class="modalSesion__pickHours__group">
+      &lt;input class="modalSesion__pickHours__group--input" @blur="isValidHour(index, input.hour)"
+        :class="{ 'error': showError[index] }" type="time" v-model="input.hour">
+      &lt;section class="inputButtons">
+        &lt;img v-if="hourList.length >= 0 &amp;&amp; hourList.length &lt; 5" @click="addHour" class="inputButtons__add"
+          src="../../assets/icons/add.svg">
+        &lt;img v-if="hourList.length > 1" @click="deleteHour(index)" class="inputButtons__delete"
+          src="../../assets/icons/cross.svg">
+      &lt;/section>
+    &lt;/section>
+    &lt;Transition name="errorMessage">
+      &lt;section v-show="errorMessage !== null" class="formContainer__body__form--error">
+        &lt;ul class="list">
+          &lt;li class="item">{{ errorMessage }}&lt;/li>
+        &lt;/ul>
+      &lt;/section>
+    &lt;/Transition>
+    &lt;button class="pickHourbtn" v-if="hourListValid" @click="addNewSesion">
+      Agregar sesión
+    &lt;/button>
+  &lt;/section>
+&lt;/template>
+
+&lt;script>
+
+/**
+ * @file PickHours.vue - Componente usado en la creación de sesiones para escoger las horas
+ * @author José Luis Tocino Rojo
+ * @see &lt;a href="https://github.com/JoseLuis-TR/PFG_Frontend" target="_blank">Github&lt;/a>
+ * @module Component/Overlays/PickHours
+ * 
+ * @property {Object} props - Propiedades que recibe el componente
+ * @property {Object} props.selectedSesionDate - Fecha de la sesión seleccionada
+ * @property {Object} props.selectedSesionMovie - Película de la sesión seleccionada
+ * @property {Object} props.selectedSesionSala - Sala de la sesión seleccionada
+ * @property {Object} data - Datos del componente
+ * @property {Array} data.hourList - Lista de horas seleccionadas
+ * @property {Boolean} data.hourListValid - Indica si la lista de horas es válida
+ * @property {Array} data.noNullList - Lista de horas sin valores nulos
+ * @property {Array} data.showError - Lista de errores
+ * @property {String} data.errorMessage - Mensaje de error
+ */
+export default {
+  name: "PickHours",
+  props: [
+    "selectedSesionDate",
+    "selectedSesionMovie",
+    "selectedSesionSala"
+  ],
+  data() {
+    return {
+      hourList: [{ hour: null }],
+      hourListValid: false,
+      noNullList: [],
+      showError: [],
+      errorMessage: null
+    }
+  },
+  watch: {
+    /**
+     * Comprueba los cambios en el listado de horas para revisar si es válido
+     */
+    hourList: {
+      handler: function () {
+        this.checkNotEmptyNotRepeat();
+      },
+      deep: true,
+      inmediate: true
+    },
+    /**
+     * Comprueba el cambio en el mensaje de error para revisar si el formulario es válido
+     */
+    errorMessage: {
+      handler: function () {
+        if (this.errorMessage === null) {
+          this.hourListValid = true;
+        } else {
+          this.hourListValid = false;
+        }
+      },
+      deep: true,
+      inmediate: true
+    }
+  },
+  methods: {
+    /**
+     * Añade una hora a la lista de horas
+     */
+    addHour() {
+      if (this.errorMessage !== null) {
+        return;
+      }
+      this.hourList.push({ hour: null });
+    },
+    /**
+     * Elimina una hora de la lista de horas
+     * @param {Number} index - Índice de la hora a eliminar
+     */
+    deleteHour(index) {
+      this.hourList.splice(index, 1);
+    },
+    /**
+     * Comprueba que la lista de horas no esté vacía y que no haya horas que se pisen
+     */
+    isValidHour(index, hour) {
+      if (this.errorMessage !== null) {
+        this.verifyOverlapingHours();
+        if (this.errorMessage !== null) {
+          return;
+        }
+      }
+      if (hour === null || hour === "") {
+        this.errorMessage = "No puedes dejar horas vacias"
+        this.showError[index] = true;
+      } else {
+        this.errorMessage = null;
+        this.showError[index] = false;
+        if (this.hourList.length > 1) {
+          this.verifyOverlapingHours();
+        }
+      };
+    },
+    /**
+     * Se encarga de revisar que no haya horas que se pisen entre sí
+     * Se entiende por pisarse entre sí aquellas horas que se repitan o no respeten la duración
+     * de la película + el tiempo necesario para la limpieza de la sala (20 minutos)
+     */
+    verifyOverlapingHours() {
+      // Para mayor facilidad de cálculo, se ordenan las horas de menor a mayor
+      const sortedHourList = this.hourList
+        .slice()
+        .filter(hour => hour.hour !== '' &amp;&amp; hour.hour !== null)
+        .sort((a, b) => {
+          const fechaA = new Date();
+          fechaA.setHours(parseInt(a.hour.split(":")[0]));
+          fechaA.setMinutes(parseInt(a.hour.split(":")[1]));
+
+          const fechaB = new Date();
+          fechaB.setHours(parseInt(b.hour.split(":")[0]));
+          fechaB.setMinutes(parseInt(b.hour.split(":")[1]));
+
+          return fechaA - fechaB;
+        })
+        .map((hour, index) => {
+          const realIndex = this.hourList.indexOf(hour);
+          return {
+            ...hour,
+            realIndex
+          }
+        });
+
+      // Se crea un set para almacenar las horas que se pisan entre sí
+      let overlapingHours = new Set();
+      sortedHourList.forEach((currentHour, index) => {
+        if (index &lt; sortedHourList.length - 1) {
+          const hourA = currentHour.hour;
+          const hourB = sortedHourList[index + 1].hour;
+
+          const fechaA = new Date();
+          fechaA.setHours(parseInt(hourA.split(":")[0]));
+          fechaA.setMinutes(parseInt(hourA.split(":")[1]));
+
+          const fechaB = new Date();
+          fechaB.setHours(parseInt(hourB.split(":")[0]));
+          fechaB.setMinutes(parseInt(hourB.split(":")[1]));
+
+          const minutesDifference = Math.abs(fechaB - fechaA) / (1000 * 60);
+
+          if (minutesDifference &lt; this.selectedSesionMovie.duracion + 20) {
+            overlapingHours.add(currentHour.realIndex);
+            overlapingHours.add(sortedHourList[index + 1].realIndex);
+          } else {
+            this.errorMessage = null;
+            this.showError[currentHour.realIndex] = false;
+            this.showError[sortedHourList[index + 1].realIndex] = false;
+          }
+        }
+      });
+      // Si hay horas que se pisan entre sí, se muestra un mensaje de error
+      if (overlapingHours.size > 0) {
+        this.errorMessage = `Ten en cuenta la duración en minutos de la pelicula (${this.selectedSesionMovie.duracion} minutos) más el tiempo de limpieza (20 minutos)`;
+        this.hourListValid = false;
+        overlapingHours.forEach(indexHour => {
+          this.showError[indexHour] = true;
+        })
+      } else {
+        this.errorMessage = null;
+      }
+    },
+    /**
+     * Se encarga de comprobar que el input de la hora no esté vacío y que no se repitan las horas
+     */
+    checkNotEmptyNotRepeat() {
+      if (this.errorMessage !== null) {
+        return;
+      }
+      const notNull = this.hourList.filter(hour => hour.hour !== null &amp;&amp; hour.hour !== "");
+      this.noNullList = notNull;
+      if (this.noNullList.length === 0) {
+        this.hourListValid = false;
+        this.errorMessage = "Debes seleccionar al menos una hora";
+        return;
+      } else {
+        this.hourListValid = true;
+        this.errorMessage = null;
+      }
+      const uniqueHours = [...new Set(this.noNullList.map(hour => hour.hour))];
+      const repeatError = uniqueHours.length !== this.noNullList.length;
+      if (repeatError) {
+        this.errorMessage = "No puedes repetir horas";
+        return;
+      } else {
+        this.errorMessage = null;
+        this.showError = [];
+      }
+    },
+    /**
+     * Se encarga de añadir las horas a la sesión y enviarla al servidor
+     */
+    async addNewSesion() {
+      const hourListString = this.hourList.map(hour => hour.hour).join(", ");
+      const apiUrl = import.meta.env.VITE_API_URL;
+
+      const newSesion = {
+        fecha: this.selectedSesionDate,
+        horas: hourListString,
+        id_pelicula: this.selectedSesionMovie.id,
+        id_sala: this.selectedSesionSala.id
+      }
+
+      await fetch(`${apiUrl}/sesiones`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newSesion)
+      })
+
+      this.$router.go();
+    }
+  }
+}
+&lt;/script></code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Component_Carrusel.html">Component/Carrusel</a></li><li><a href="module-Component_Cartelera_CarteleraGeneral.html">Component/Cartelera/CarteleraGeneral</a></li><li><a href="module-Component_Cartelera_CarteleraPelicula.html">Component/Cartelera/CarteleraPelicula</a></li><li><a href="module-Component_ErrorComp.html">Component/ErrorComp</a></li><li><a href="module-Component_Header.html">Component/Header</a></li><li><a href="module-Component_Loader.html">Component/Loader</a></li><li><a href="module-Component_MovieDetails_CaptureBackground.html">Component/MovieDetails/CaptureBackground</a></li><li><a href="module-Component_MovieDetails_InfoMovie.html">Component/MovieDetails/InfoMovie</a></li><li><a href="module-Component_MovieDetails_OpinionMovie.html">Component/MovieDetails/OpinionMovie</a></li><li><a href="module-Component_MovieDetails_TicketMovie.html">Component/MovieDetails/TicketMovie</a></li><li><a href="module-Component_MovieDetails_VotoPelicula.html">Component/MovieDetails/VotoPelicula</a></li><li><a href="module-Component_Ovelays_BuyTicket.html">Component/Ovelays/BuyTicket</a></li><li><a href="module-Component_Ovelays_ModalNewPelicula.html">Component/Ovelays/ModalNewPelicula</a></li><li><a href="module-Component_Overlays_AddSession.html">Component/Overlays/AddSession</a></li><li><a href="module-Component_Overlays_EditUser.html">Component/Overlays/EditUser</a></li><li><a href="module-Component_Overlays_FormModal.html">Component/Overlays/FormModal</a></li><li><a href="module-Component_Overlays_LRUser.html">Component/Overlays/LRUser</a></li><li><a href="module-Component_Overlays_Menu.html">Component/Overlays/Menu</a></li><li><a href="module-Component_Overlays_ModalConfirmacion.html">Component/Overlays/ModalConfirmacion</a></li><li><a href="module-Component_Overlays_PickHours.html">Component/Overlays/PickHours</a></li><li><a href="module-Component_TopEsperadas.html">Component/TopEsperadas</a></li><li><a href="module-View_Catalogo.html">View/Catalogo</a></li><li><a href="module-View_Index.html">View/Index</a></li><li><a href="module-View_MovieDetails.html">View/MovieDetails</a></li><li><a href="module-_Functions_PassOperations.html">_Functions/PassOperations</a></li><li><a href="module-_Functions_User.html">_Functions/User</a></li><li><a href="module-_Functions_Validations.html">_Functions/Validations</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Jun 13 2023 20:50:29 GMT+0200 (hora de verano de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

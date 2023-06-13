@@ -68,21 +68,27 @@
  * @file Cartelera.vue - Componente que contiene la cartelera de las próximas sesiones
  * @author José Luis Tocino Rojo
  * @see &lt;a href="https://github.com/JoseLuis-TR/cines_haven" target="_blank">Github&lt;/a>
- */
-
-/**
- * @property {string} name - Nombre del componente
+ * @module Component/Cartelera/CarteleraGeneral
+ * 
  * @property {Object} components - Componentes que se utilizan en la cartelera
  * @property {Object} components.Loader - Componente pantalla de carga
- * @vue-data {Array} sinceToday - Array con las sesiones desde hoy
- * @vue-data {Array} dates - Array con las fechas de las sesiones
- * @vue-data {Array} visibleDates - Array con las fechas visibles en el slider
- * @vue-data {number} [index = 0] - Índice de la fecha seleccionada
- * @vue-data {string} selectedDate - Fecha seleccionada
- * @vue-data {Array} sessionsList - Array con las películas de la fecha seleccionada
- * @vue-data {boolean} [isLoading = false] - Indica si se está cargando la cartelera
- * @vue-data {boolean} [showConfirmation = false] - Indica si se muestra la confirmación de compra
- * @vue-data {Object} orderedSessions - Objeto con las sesiones ordenadas por fecha y pelicula
+ * @property {Object} components.ErrorComp - Componente de error por si no hay sesiones
+ * @property {Object} components.BuyTicket - Componente del modal de compra de entradas
+ * @property {Object} data - Variables del componente
+ * @property {Array} data.sinceToday - Array con las sesiones desde hoy
+ * @property {Array} data.dates - Array con las fechas de las sesiones
+ * @property {Array} data.visibleDates - Array con las fechas visibles en el slider
+ * @property {number} data.index - Índice de la fecha seleccionada
+ * @property {string} data.selectedDate - Fecha seleccionada
+ * @property {Array} data.sessionsList - Array con las sesiones de la fecha seleccionada
+ * @property {boolean} data.orderedSessions - Objeto con las sesiones ordenadas por fecha y sala
+ * @property {boolean} data.isLoading - Indica si se está cargando la cartelera
+ * @property {boolean} data.showBuyTicket - Indica si se muestra el modal de compra
+ * @property {Object} data.buyTicketNeededInfo - Objeto con la información necesaria para comprar la entrada
+ * @property {string} data.buyTicketNeededInfo.idSesion - Id de la sesión
+ * @property {string} data.buyTicketNeededInfo.idSala - Id de la sala
+ * @property {string} data.buyTicketNeededInfo.movieName - Nombre de la película
+ * @property {string} data.buyTicketNeededInfo.pickedTime - Hora de la sesión escogida
  */
 import Loader from '../Loader.vue'
 import ErrorComp from '../Error.vue'
@@ -110,7 +116,10 @@ export default {
       }
     }
   },
-  // Se detecta cuando cambia la fecha seleccionada y se muestran las horas de la fecha seleccionada
+  /** 
+   * Se detecta cuando cambia la fecha seleccionada y se muestran las horas de 
+   * la fecha seleccionada
+   */
   watch: {
     selectedDate: function (val) {
       this.showHours(val)
@@ -118,7 +127,8 @@ export default {
   },
   methods: {
     /**
-     * Llama a la api para obtener las sesiones desde hoy
+     * Llamada a la api para obtener todas las sesiones desde el día de hoy
+     * @returns {Promise} - Promesa con las sesiones desde hoy
      */
     async getSinceTodaySessions() {
       const apiUrl = import.meta.env.VITE_API_URL;
@@ -130,7 +140,8 @@ export default {
         })
     },
     /**
-     * Ordena las fechas de las sesiones recibidas en la llamada
+     * Ordena las fechas de las sesiones que se han obtenido desde hoy
+     * desde la más cercana a la más lejana
      */
     sortDates() {
       let uniqueDates = new Set();
@@ -149,7 +160,8 @@ export default {
       })
     },
     /**
-     * Muestra las 3 anteriores fechas y la siguiente
+     * Al hacer click en el botón izquierda del slider se muestra una fecha
+     * más cercana a la actual
      */
     showPreviousDates() {
       if (this.index > 0) {
@@ -158,7 +170,8 @@ export default {
       }
     },
     /**
-     * Muestra las 3 siguientes fechas y la anterior
+     * Al hacer click en el botón derecha del slider se muestra una fecha
+     * más lejana a la actual
      */
     showNextDates() {
       if (this.index + 4 &lt; this.dates.length) {
@@ -249,7 +262,7 @@ export default {
             return fechaSesionAcumulada;
           }, {})
 
-
+        // Se crea un array de fechas con los datos de la pelicula y sus sesiones
         sessionsByDate[date] = Object.values(sessionsByDate[date]).map(sesion => ({
           pelicula: sesion,
           salaSesion: sesion.salaSesion,
@@ -259,6 +272,7 @@ export default {
           }))
         }))
 
+        // Se ordenan las sesiones de un dia por el nombre de la sala
         sessionsByDate[date].sort(function (a, b) {
           return a.salaSesion.nombre.localeCompare(b.salaSesion.nombre);
         });
@@ -290,7 +304,6 @@ export default {
     this.updateVisibleDates()
     this.orderedSessions = this.sortSessionsByDate()
     this.selectedDate = this.dates[0]
-    console.log(this.orderedSessions)
   }
 }
 &lt;/script>
@@ -304,13 +317,13 @@ export default {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-EditUser.html">EditUser</a></li><li><a href="module-Functions_PassOperations.html">Functions_PassOperations</a></li><li><a href="module-Functions_User.html">Functions_User</a></li><li><a href="module-Functions_Validations.html">Functions_Validations</a></li><li><a href="module-LRUser.html">LRUser</a></li><li><a href="module-Loader.html">Loader</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Component_Carrusel.html">Component/Carrusel</a></li><li><a href="module-Component_Cartelera_CarteleraGeneral.html">Component/Cartelera/CarteleraGeneral</a></li><li><a href="module-Component_Cartelera_CarteleraPelicula.html">Component/Cartelera/CarteleraPelicula</a></li><li><a href="module-Component_ErrorComp.html">Component/ErrorComp</a></li><li><a href="module-Component_Header.html">Component/Header</a></li><li><a href="module-Component_Loader.html">Component/Loader</a></li><li><a href="module-Component_MovieDetails_CaptureBackground.html">Component/MovieDetails/CaptureBackground</a></li><li><a href="module-Component_MovieDetails_InfoMovie.html">Component/MovieDetails/InfoMovie</a></li><li><a href="module-Component_MovieDetails_OpinionMovie.html">Component/MovieDetails/OpinionMovie</a></li><li><a href="module-Component_MovieDetails_TicketMovie.html">Component/MovieDetails/TicketMovie</a></li><li><a href="module-Component_MovieDetails_VotoPelicula.html">Component/MovieDetails/VotoPelicula</a></li><li><a href="module-Component_Ovelays_BuyTicket.html">Component/Ovelays/BuyTicket</a></li><li><a href="module-Component_Ovelays_ModalNewPelicula.html">Component/Ovelays/ModalNewPelicula</a></li><li><a href="module-Component_Overlays_AddSession.html">Component/Overlays/AddSession</a></li><li><a href="module-Component_Overlays_EditUser.html">Component/Overlays/EditUser</a></li><li><a href="module-Component_Overlays_FormModal.html">Component/Overlays/FormModal</a></li><li><a href="module-Component_Overlays_LRUser.html">Component/Overlays/LRUser</a></li><li><a href="module-Component_Overlays_Menu.html">Component/Overlays/Menu</a></li><li><a href="module-Component_Overlays_ModalConfirmacion.html">Component/Overlays/ModalConfirmacion</a></li><li><a href="module-Component_Overlays_PickHours.html">Component/Overlays/PickHours</a></li><li><a href="module-Component_TopEsperadas.html">Component/TopEsperadas</a></li><li><a href="module-View_Catalogo.html">View/Catalogo</a></li><li><a href="module-View_Index.html">View/Index</a></li><li><a href="module-View_MovieDetails.html">View/MovieDetails</a></li><li><a href="module-_Functions_PassOperations.html">_Functions/PassOperations</a></li><li><a href="module-_Functions_User.html">_Functions/User</a></li><li><a href="module-_Functions_Validations.html">_Functions/Validations</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Jun 12 2023 23:35:50 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Jun 13 2023 20:50:29 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

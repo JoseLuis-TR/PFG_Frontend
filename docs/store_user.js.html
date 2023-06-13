@@ -27,13 +27,14 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @module Functions_User
+ * @module _Functions/User
  */
+import { encriptarPass } from "../functions/hashpass.js";
 
 /**
  * Registro de un nuevo usuario
  *
- * @memberof module:Functions_User
+ * @memberof module:_Functions/User
  * @function registerUser
  * @param {string} nick - Nick del usuario
  * @param {string} email - Correo electrónico del usuario
@@ -42,6 +43,7 @@
  */
 export async function registerNewUser(newUser) {
   const apiUrl = import.meta.env.VITE_API_URL;
+  newUser.clave = encriptarPass(newUser.clave);
   const options = {
     method: "POST",
     headers: {
@@ -64,7 +66,7 @@ export async function registerNewUser(newUser) {
 /**
  * Inicia sesión con un usuario
  *
- * @memberof module:Functions_User
+ * @memberof module:_Functions/User
  * @function loginUser
  * @param {string} email - Correo electrónico del usuario
  * @param {string} password - Contraseña del usuario
@@ -79,7 +81,7 @@ export async function loginUser(email, password) {
     },
     body: JSON.stringify({
       email: email,
-      clave: password,
+      clave: encriptarPass(password),
     }),
   };
   const response = await fetch(`${apiUrl}/usuario/login`, options);
@@ -102,7 +104,7 @@ export async function loginUser(email, password) {
 /**
  * Cierra la sesión del usuario
  *
- * @memberof module:Functions_User
+ * @memberof module:_Functions/User
  * @function logoutUser
  */
 export function logoutUser() {
@@ -116,7 +118,7 @@ export function logoutUser() {
 /**
  * Obtiene los datos del usuario
  *
- * @memberof module:Functions_User
+ * @memberof module:_Functions/User
  * @function fetchUser
  * @param {string} idUsuario - ID del usuario
  * @return {object} Objeto con los datos del usuario
@@ -137,7 +139,7 @@ export async function fetchUser(idUsuario) {
 /**
  * Devuelve los datos del usuario almacenados en sessionStorage o null
  *
- * @memberof module:Functions_User
+ * @memberof module:_Functions/User
  * @function getLoggedUser
  * @return {object} Objeto con los datos del usuario o null
  */
@@ -159,13 +161,13 @@ export function getLoggedUser() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-EditUser.html">EditUser</a></li><li><a href="module-Functions_PassOperations.html">Functions_PassOperations</a></li><li><a href="module-Functions_User.html">Functions_User</a></li><li><a href="module-Functions_Validations.html">Functions_Validations</a></li><li><a href="module-LRUser.html">LRUser</a></li><li><a href="module-Loader.html">Loader</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Component_Carrusel.html">Component/Carrusel</a></li><li><a href="module-Component_Cartelera_CarteleraGeneral.html">Component/Cartelera/CarteleraGeneral</a></li><li><a href="module-Component_Cartelera_CarteleraPelicula.html">Component/Cartelera/CarteleraPelicula</a></li><li><a href="module-Component_ErrorComp.html">Component/ErrorComp</a></li><li><a href="module-Component_Header.html">Component/Header</a></li><li><a href="module-Component_Loader.html">Component/Loader</a></li><li><a href="module-Component_MovieDetails_CaptureBackground.html">Component/MovieDetails/CaptureBackground</a></li><li><a href="module-Component_MovieDetails_InfoMovie.html">Component/MovieDetails/InfoMovie</a></li><li><a href="module-Component_MovieDetails_OpinionMovie.html">Component/MovieDetails/OpinionMovie</a></li><li><a href="module-Component_MovieDetails_TicketMovie.html">Component/MovieDetails/TicketMovie</a></li><li><a href="module-Component_MovieDetails_VotoPelicula.html">Component/MovieDetails/VotoPelicula</a></li><li><a href="module-Component_Ovelays_BuyTicket.html">Component/Ovelays/BuyTicket</a></li><li><a href="module-Component_Ovelays_ModalNewPelicula.html">Component/Ovelays/ModalNewPelicula</a></li><li><a href="module-Component_Overlays_AddSession.html">Component/Overlays/AddSession</a></li><li><a href="module-Component_Overlays_EditUser.html">Component/Overlays/EditUser</a></li><li><a href="module-Component_Overlays_FormModal.html">Component/Overlays/FormModal</a></li><li><a href="module-Component_Overlays_LRUser.html">Component/Overlays/LRUser</a></li><li><a href="module-Component_Overlays_Menu.html">Component/Overlays/Menu</a></li><li><a href="module-Component_Overlays_ModalConfirmacion.html">Component/Overlays/ModalConfirmacion</a></li><li><a href="module-Component_Overlays_PickHours.html">Component/Overlays/PickHours</a></li><li><a href="module-Component_TopEsperadas.html">Component/TopEsperadas</a></li><li><a href="module-View_Catalogo.html">View/Catalogo</a></li><li><a href="module-View_Index.html">View/Index</a></li><li><a href="module-View_MovieDetails.html">View/MovieDetails</a></li><li><a href="module-_Functions_PassOperations.html">_Functions/PassOperations</a></li><li><a href="module-_Functions_User.html">_Functions/User</a></li><li><a href="module-_Functions_Validations.html">_Functions/Validations</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Jun 12 2023 23:35:50 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Jun 13 2023 20:50:29 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Overlays/ModalNewPelicula.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Overlays/ModalNewPelicula.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;template>
+  &lt;Transition name="modalBG">
+    &lt;section class="modalContainer" @click.self="$emit('close')">
+      &lt;Transition name="modal" appear>
+        &lt;article class="formContainer newMovie">
+          &lt;section class="showImages">
+            &lt;img class="showImages__poster" :src="posterToShow">
+            &lt;img class="showImages__captura" :src="capturaToShow">
+          &lt;/section>
+          &lt;section class="inputImages">
+            &lt;label for="poster" class="inputImages__button">
+              {{ action === 'edit' ? 'Editar' : 'Añadir' }} poster
+            &lt;/label>
+            &lt;input id="poster" class="inputImages__input" type="file" accept="image/*" :multiple="false" ref="posterFile"
+              @change="(event) => handleImageUpload(event, 'poster')">
+            &lt;label for="captura" class="inputImages__button">
+              {{ action === 'edit' ? 'Editar' : 'Añadir' }} captura
+            &lt;/label>
+            &lt;input id="captura" class="inputImages__input" type="file" accept="image/*" :multiple="false"
+              ref="capturaFile" @change="(event) => handleImageUpload(event, 'captura')">
+          &lt;/section>
+          &lt;form class="formContainer__body__form" v-on:submit.prevent="checkNewMovie()">
+            &lt;fieldset class="formContainer__body__userDataHandler">
+              &lt;label for="titulo">Titulo *&lt;/label>
+              &lt;input v-model="tituloData" :class="{ 'input_error': !modTituloOk }" v-on:blur="checkIfHaveValue('titulo')"
+                id="titulo" type="text" placeholder="Titulo de la pelicula...">
+              &lt;label for="director">Director *&lt;/label>
+              &lt;input v-model="directorData" :class="{ 'input_error': !modDirectorOk }"
+                v-on:blur="checkIfHaveValue('director')" id="director" type="text"
+                placeholder="Director de la pelicula...">
+              &lt;label for="duracion">Duración *&lt;/label>
+              &lt;input v-model="duracionData" :class="{ 'input_error': !modDuracionOk }"
+                v-on:blur="checkIfHaveValue('duracion')" id="duracion" maxlength="3" v-on:input="checkIsANumber"
+                placeholder="Duración de la pelicula en minutos...">
+              &lt;label for="trailer">Trailer&lt;/label>
+              &lt;input v-model="trailerData" id="trailer" placeholder="Enlace a trailer en youtube (Opcional)">
+              &lt;label for="sinopsis">Sinopsis *&lt;/label>
+              &lt;textarea v-model="sinopsisData" @keyup="countCharacters" :class="{ 'input_error': !modSinopsisOk }"
+                v-on:blur="checkIfHaveValue('sinopsis')" id="sinopsis"
+                placeholder="Escriba un pequeño resumen de la pelicula...">
+                            &lt;/textarea>
+              &lt;p class="modalForm__contador" :class="{ 'limit': contador === 750 }">{{ contador }}/750&lt;/p>
+            &lt;/fieldset>
+            &lt;button>Añadir&lt;/button>
+          &lt;/form>
+        &lt;/article>
+      &lt;/Transition>
+    &lt;/section>
+  &lt;/Transition>
+&lt;/template>
+
+&lt;script>
+
+/**
+ * @file ModalNewPelicula.vue - Componente para añadir o editar una pelicula
+ * @author José Luis Tocino Rojo
+ * @see &lt;a href="https://github.com/JoseLuis-TR/PFG_Frontend" target="_blank">Github&lt;/a>
+ * @module Component/Ovelays/ModalNewPelicula
+ * 
+ * @property {Object} data - Objeto de datos del componente Vue
+ * @property {String} data.posterToShow - Imagen del poster de la pelicula
+ * @property {String} data.capturaToShow - Imagen de la captura de la pelicula
+ * @property {String} data.errorMessage - Mensaje de error
+ * @property {String} data.tituloData - Titulo de la pelicula
+ * @property {Boolean} data.modTituloOk - Indica si el titulo es correcto
+ * @property {String} data.directorData - Director de la pelicula
+ * @property {Boolean} data.modDirectorOk - Indica si el director es correcto
+ * @property {String} data.duracionData - Duración de la pelicula
+ * @property {Boolean} data.modDuracionOk - Indica si la duración es correcta
+ * @property {String} data.trailerData - Trailer de la pelicula
+ * @property {String} data.sinopsisData - Sinopsis de la pelicula
+ * @property {Boolean} data.modSinopsisOk - Indica si la sinopsis es correcta
+ * @property {Number} data.contador - Contador de caracteres de la sinopsis
+ * @property {Object} emits - Eventos emitidos por el componente
+ * @property {String} emits.close - Cierra el modal
+ * @property {Object} props - Propiedades recibidas del componente padre
+ * @property {String} props.action - Acción a realizar (Añadir o editar)
+ * @property {Object} props.toEdit - Pelicula a editar
+ */
+export default {
+  name: "ModalNewPelicula",
+  data() {
+    return {
+      posterToShow: this.toEdit ? this.toEdit.poster : 'https://placehold.co/300x450/png?text=Poster',
+      capturaToShow: this.toEdit ? this.toEdit.captura : 'https://placehold.co/300x150/png?text=Captura',
+      errorMessage: null,
+      tituloData: this.toEdit ? this.toEdit.nombre : null,
+      modTituloOk: true,
+      directorData: this.toEdit ? this.toEdit.director : null,
+      modDirectorOk: true,
+      duracionData: this.toEdit ? this.toEdit.duracion : null,
+      modDuracionOk: true,
+      trailerData: this.toEdit ? this.toEdit.trailer : null,
+      sinopsisData: this.toEdit ? this.toEdit.sinopsis : null,
+      modSinopsisOk: true,
+      contador: 0,
+    }
+  },
+  emits: ['close'],
+  props: {
+    action: {
+      type: String,
+      required: true
+    },
+    toEdit: {
+      type: Object,
+      required: false
+    }
+  },
+  methods: {
+    /**
+     * Obtiene la imagen que ha sido subida y crea un enlace para mostrarla
+     * @param {Event} event - Evento de subida de imagen
+     * @param {String} type - Tipo de imagen (poster o captura)
+     */
+    handleImageUpload(event, type) {
+      if (event.target.files.length === 1 &amp;&amp; event.target.files[0].type.startsWith('image/')) {
+        const selectedFile = event.target.files[0];
+        const fileUrl = URL.createObjectURL(selectedFile);
+        this.errorMessage = null;
+        if (type === 'poster') {
+          this.showNewImage('poster', fileUrl);
+        } else if (type === 'captura') {
+          this.showNewImage('captura', fileUrl);
+        }
+      } else {
+        this.errorMessage = 'Sólo se puede subir una imagen';
+      }
+    },
+    /**
+     * Comprueba que la imagen subida sea un poster o una captura
+     * En caso de ser llamada al inicio añade la imagen por defecto
+     * @param {String} type - Tipo de imagen (poster o captura)
+     * @param {String} fileUrl - Enlace de la imagen
+     */
+    showNewImage(type, fileUrl = null) {
+      if (type === 'poster') {
+        this.posterToShow = fileUrl;
+      } else if (type === 'captura') {
+        this.capturaToShow = fileUrl;
+      } else {
+        this.posterToShow = 'https://placehold.co/300x450/png?text=Poster';
+        this.capturaToShow = 'https://placehold.co/640x360/png?text=Captura';
+      }
+    },
+    /**
+     * Comprueba que el valor introducido sea un número
+     * @param {Event} event - Evento de introducción de datos
+     */
+    checkIsANumber(event) {
+      this.duracionData = event.target.value.replace(/\D/g, '');
+    },
+    /**
+     * Comprueba que el valor introducido no esté vacío
+     * @param {String} value - Valor introducido
+     */
+    checkIsNotEmpty(value) {
+      if (value.length > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    /**
+     * Cuenta los caracteres de la sinopsis y la recorta si es mayor de 750
+     */
+    countCharacters() {
+      if (this.sinopsisData.length > 750) {
+        this.sinopsisData = this.sinopsisData.substring(0, 750);
+      }
+      this.contador = this.sinopsisData.length;
+    },
+    /**
+     * Comprueba que esten los datos obligatorios
+     * @param {String} inputType - Tipo de dato a comprobar
+     */
+    checkIfHaveValue(inputType) {
+      if (inputType === 'titulo') {
+        this.modTituloOk = this.tituloData === '' || this.tituloData === null ? false : true;
+      } else if (inputType === 'director') {
+        this.modDirectorOk = this.directorData === '' || this.directorData === null ? false : true;
+      } else if (inputType === 'duracion') {
+        this.modDuracionOk = this.duracionData === '' || this.duracionData === null ? false : true;
+      } else if (inputType === 'sinopsis') {
+        this.modSinopsisOk = this.sinopsisData === '' || this.sinopsisData === null ? false : true;
+      }
+    },
+    /**
+     * Hace la subida de los datos de la nueva película
+     * Si la acción es editar hace la subida de los datos de la película editada
+     * Si el nombre de la película ya existe muestra un error en el input
+     * Si la subida es correcta cierra el modal y recarga la página
+     */
+    async checkNewMovie() {
+      if (this.modTituloOk &amp;&amp; this.modDirectorOk &amp;&amp; this.modDuracionOk &amp;&amp; this.modSinopsisOk) {
+        if (this.action === 'edit') {
+          await this.checkUpdateMovie();
+          return;
+        }
+
+        const newMovieData = {
+          nombre: this.tituloData,
+          director: this.directorData,
+          duracion: this.duracionData,
+          trailer: this.trailerData,
+          sinopsis: this.sinopsisData,
+        }
+
+        const formMovieData = new FormData();
+
+        const blobMovie = new Blob([JSON.stringify(newMovieData)],
+          { type: 'application/json' }
+        );
+
+        formMovieData.append('nuevaPelicula', blobMovie);
+        formMovieData.append('poster', this.$refs.posterFile.files[0]);
+        formMovieData.append('captura', this.$refs.capturaFile.files[0]);
+
+        const apiUrl = import.meta.env.VITE_API_URL;
+
+        const response = await fetch(`${apiUrl}/peliculas/archivos`, {
+          method: 'POST',
+          body: formMovieData,
+        });
+        const newMovieDataResponse = await response.json();
+
+        if (newMovieDataResponse.codigo) {
+          this.modTituloOk = false;
+          return;
+        }
+        this.$router.go();
+
+      } else {
+        return;
+      }
+    },
+    /**
+     * Hace la subida de los datos de la película editada
+     * Si el nombre de la película ya existe muestra un error en el input
+     * Si la subida es correcta cierra el modal y recarga la página
+     */
+    async checkUpdateMovie() {
+      const updatedMovieData = {
+        nombre: this.tituloData,
+        director: this.directorData,
+        duracion: this.duracionData,
+        trailer: this.trailerData,
+        sinopsis: this.sinopsisData,
+      }
+
+      const formMovieData = new FormData();
+
+      const blobMovie = new Blob([JSON.stringify(updatedMovieData)],
+        { type: 'application/json' }
+      );
+
+      formMovieData.append('peliculaToUpdate', blobMovie);
+      formMovieData.append('posterToUpdate', this.$refs.posterFile.files[0] ? this.$refs.posterFile.files[0] : null);
+      formMovieData.append('capturaToUpdate', this.$refs.capturaFile.files[0] ? this.$refs.capturaFile.files[0] : null);
+
+      const apiUrl = import.meta.env.VITE_API_URL;
+
+      const response = await fetch(`${apiUrl}/peliculas?idPelicula=${this.toEdit.id}`, {
+        method: 'PUT',
+        body: formMovieData,
+      });
+      const updatedMovieDataResponse = await response.json();
+
+      if (updatedMovieDataResponse.codigo) {
+        this.modTituloOk = false;
+        return;
+      }
+
+      this.$router.go();
+    }
+  },
+  mounted() {
+    if (this.action !== 'edit') {
+      this.showNewImage('blank');
+    } else {
+      this.contador = this.sinopsisData.length;
+    }
+  }
+}
+&lt;/script></code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Component_Carrusel.html">Component/Carrusel</a></li><li><a href="module-Component_Cartelera_CarteleraGeneral.html">Component/Cartelera/CarteleraGeneral</a></li><li><a href="module-Component_Cartelera_CarteleraPelicula.html">Component/Cartelera/CarteleraPelicula</a></li><li><a href="module-Component_ErrorComp.html">Component/ErrorComp</a></li><li><a href="module-Component_Header.html">Component/Header</a></li><li><a href="module-Component_Loader.html">Component/Loader</a></li><li><a href="module-Component_MovieDetails_CaptureBackground.html">Component/MovieDetails/CaptureBackground</a></li><li><a href="module-Component_MovieDetails_InfoMovie.html">Component/MovieDetails/InfoMovie</a></li><li><a href="module-Component_MovieDetails_OpinionMovie.html">Component/MovieDetails/OpinionMovie</a></li><li><a href="module-Component_MovieDetails_TicketMovie.html">Component/MovieDetails/TicketMovie</a></li><li><a href="module-Component_MovieDetails_VotoPelicula.html">Component/MovieDetails/VotoPelicula</a></li><li><a href="module-Component_Ovelays_BuyTicket.html">Component/Ovelays/BuyTicket</a></li><li><a href="module-Component_Ovelays_ModalNewPelicula.html">Component/Ovelays/ModalNewPelicula</a></li><li><a href="module-Component_Overlays_AddSession.html">Component/Overlays/AddSession</a></li><li><a href="module-Component_Overlays_EditUser.html">Component/Overlays/EditUser</a></li><li><a href="module-Component_Overlays_FormModal.html">Component/Overlays/FormModal</a></li><li><a href="module-Component_Overlays_LRUser.html">Component/Overlays/LRUser</a></li><li><a href="module-Component_Overlays_Menu.html">Component/Overlays/Menu</a></li><li><a href="module-Component_Overlays_ModalConfirmacion.html">Component/Overlays/ModalConfirmacion</a></li><li><a href="module-Component_Overlays_PickHours.html">Component/Overlays/PickHours</a></li><li><a href="module-Component_TopEsperadas.html">Component/TopEsperadas</a></li><li><a href="module-View_Catalogo.html">View/Catalogo</a></li><li><a href="module-View_Index.html">View/Index</a></li><li><a href="module-View_MovieDetails.html">View/MovieDetails</a></li><li><a href="module-_Functions_PassOperations.html">_Functions/PassOperations</a></li><li><a href="module-_Functions_User.html">_Functions/User</a></li><li><a href="module-_Functions_Validations.html">_Functions/Validations</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Jun 13 2023 20:50:29 GMT+0200 (hora de verano de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

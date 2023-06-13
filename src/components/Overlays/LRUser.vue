@@ -80,29 +80,32 @@ import {
   validateUserRegex
 } from "../../functions/formValidations.js";
 import { loginUser, registerNewUser } from "../../store/user";
-/**
- * @file LRUser.vue - Componente que contiene el formulario de login y registro
- * @author José Luis Tocino Rojo
- * @see <a href="https://github.com/JoseLuis-TR/cines_haven" target="_blank">Github</a>
- */
 
 /**
- * @property {Object} name - Nombre del componente
- * @vue-prop {Boolean} [isNeeded = false] - Indica si el componente debe mostrarse o no
- * @property {Object} emits - Eventos que emite el componente
- * @property {Object} emits.close-userForm - Evento que emite el componente para cerrarse
- * @vue-data {String} [showForm = login] - Indica si se muestra el formulario de login o registro
- * @vue-data {String} userLog - Almacena el valor del input de usuario del formulario de login
- * @vue-data {String} passLog - Almacena el valor del input de contraseña del formulario de login
- * @vue-data {String} messageError - Almacena el mensaje de error que se muestra en el formulario
- * @vue-data {String} emailReg - Almacena el valor del input de email del formulario de registro
- * @vue-data {String} nickReg - Almacena el valor del input de usuario del formulario de registro
- * @vue-data {String} passReg - Almacena el valor del input de contraseña del formulario de registro
- * @vue-data {String} repPassReg - Almacena el valor del input de repetir contraseña del formulario de registro
- * @vue-data {Boolean} [regexEmailOk = true] - Indica si el email introducido es válido
- * @vue-data {Boolean} [regexUserOk = true] - Indica si el usuario introducido es válido
- * @vue-data {Boolean} [regexPassOk = true] - Indica si la contraseña introducida es válida
- * @vue-data {Boolean} [repeatPassOk = true] - Indica si las contraseñas introducidas coinciden
+ * @file LRUser.vue - Componente para mostrar el formulario de login y registro
+ * @author José Luis Tocino Rojo
+ * @see <a href="https://github.com/JoseLuis-TR/PFG_Frontend" target="_blank">Github</a>
+ * @module Component/Overlays/LRUser
+ * 
+ * @property {Object} props - Propiedades recibidas por el componente
+ * @property {Boolean} props.isNeeded - Indica si el componente debe mostrarse
+ * @property {Object} emits - Eventos emitidos por el componente
+ * @property {Function} emits.close-userForm - Evento para cerrar el formulario
+ * @property {Object} data - Datos del componente
+ * @property {String} data.showForm - Indica que formulario debe mostrarse
+ * @property {String} data.userLog - Email del usuario para el login
+ * @property {String} data.passLog - Contraseña del usuario para el login
+ * @property {String} data.messageError - Mensaje de error del formulario
+ * @property {String} data.emailReg - Email del usuario para el registro
+ * @property {String} data.nickReg - Nombre de usuario del usuario para el registro
+ * @property {String} data.passReg - Contraseña del usuario para el registro
+ * @property {String} data.repPassReg - Repetición de la contraseña del usuario para el registro
+ * @property {Boolean} data.regexEmailOk - Indica si el email es válido
+ * @property {Boolean} data.regexUserOk - Indica si el nombre de usuario es válido
+ * @property {Boolean} data.regexPassOk - Indica si la contraseña es válida
+ * @property {Boolean} data.repeatPassOk - Indica si la repetición de la contraseña es válida
+ * @property {Boolean} data.nickExistsOk - Indica si el nombre de usuario ya existe en la base de datos
+ * @property {Boolean} data.emailExistsOk - Indica si el email ya existe en la base de datos
  */
 export default {
   name: "LRUser",
@@ -131,8 +134,9 @@ export default {
       emailExistsOk: true
     }
   },
-  emits: ['close-userForm'],
-  // Se detecta cambios en el formulario que debe enseñarse y se resetea el mensaje de error
+  /**
+   * Se detectan los cambios en el formulario para mostrar el mensaje de error
+   */
   watch: {
     showForm() {
       this.messageError = "";

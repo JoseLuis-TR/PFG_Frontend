@@ -39,9 +39,6 @@
         &lt;/section>
       &lt;/SplideSlide>
     &lt;/Splide>
-    &lt;!-- &lt;section v-else>
-            &lt;p>No hay películas en cartelera&lt;/p>
-        &lt;/section> -->
     &lt;ErrorComp v-else mensajeError="No hay peliculas programadas para hoy" />
   &lt;/section>
 &lt;/template>
@@ -49,22 +46,25 @@
 &lt;script>
 /**
  * @file Carrusel.vue - Componente que contiene el carrusel de las películas en cartelera hoy
- * @see &lt;a href="https://github.com/JoseLuis-TR/PFG_Frontend - target="_blank">Github&lt;/a>
- */
-
-/**
- * @property {string} name - Nombre del componente
+ * @author José Luis Tocino Rojo
+ * @see &lt;a href="https://github.com/JoseLuis-TR/PFG_Frontend" target="_blank">Github&lt;/a>
+ * @module Component/Carrusel
+ * 
  * @property {Object} components - Componentes que se utilizan en el carrusel
  * @property {Object} components.Loader - Componente pantalla de carga
  * @property {Object} components.Splide - Componente carrusel de la libreria de Splide
- * @vue-data {Array} movies - Array con las películas que se muestran en el carrusel
- * @vue-data {boolean} [isLoading = false] - Indica si se está cargando el carrusel
- * @vue-data {Object} slideOptions - Opciones para personalizar el carrusel
- * @vue-data {string} slideOptions.type - Tipo de carrusel
- * @vue-data {boolean} slideOptions.arrows - Indica si se muestran las flechas de navegación
- * @vue-data {boolean} slideOptions.cover - La imagen ocupa todo el espacio del carrusel
- * @vue-data {boolean} slideOptions.autoplay - Indica si el carrusel se mueve automáticamente
- * @vue-data {number} slideOptions.interval - Intervalo de tiempo entre cada movimiento del carrusel
+ * @property {Object} components.ErrorComp - Componente pantalla de error
+ * @property {Object} data - Datos del componente
+ * @property {Array} data.movies - Array que contiene las películas hoy en cartelera
+ * @property {boolean} data.isLoading - Booleano que indica si se está cargando la página
+ * @property {Object} data.slideOptions - Opciones del carrusel
+ * @property {string} data.slideOptions.type - Tipo de carrusel
+ * @property {boolean} data.slideOptions.arrows - Indica si se muestran las flechas
+ * @property {boolean} data.slideOptions.cover - Indica si se muestra la imagen completa
+ * @property {boolean} data.slideOptions.autoplay - Indica si se reproduce automáticamente
+ * @property {number} data.slideOptions.interval - Intervalo de tiempo entre cada slide
+ * @property {Array} data.moviesUnicas - Array que contiene las películas hoy en cartelera sin repetir
+ * 
  */
 
 import { Splide } from '@splidejs/vue-splide';
@@ -77,7 +77,6 @@ export default {
   data() {
     return {
       movies: [],
-      movieListForCarousel: [],
       isLoading: false,
       slideOptions: {
         type: 'loop',
@@ -113,8 +112,8 @@ export default {
         });
     },
     /**
- * Redirecciona a la página de la película
- */
+     * Redirecciona a la página de la película
+     */
     redirectToMoviePage(movieId) {
       this.$router.push(`pelicula/${movieId}`)
     }
@@ -136,13 +135,13 @@ export default {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-EditUser.html">EditUser</a></li><li><a href="module-Functions_PassOperations.html">Functions_PassOperations</a></li><li><a href="module-Functions_User.html">Functions_User</a></li><li><a href="module-Functions_Validations.html">Functions_Validations</a></li><li><a href="module-LRUser.html">LRUser</a></li><li><a href="module-Loader.html">Loader</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Component_Carrusel.html">Component/Carrusel</a></li><li><a href="module-Component_Cartelera_CarteleraGeneral.html">Component/Cartelera/CarteleraGeneral</a></li><li><a href="module-Component_Cartelera_CarteleraPelicula.html">Component/Cartelera/CarteleraPelicula</a></li><li><a href="module-Component_ErrorComp.html">Component/ErrorComp</a></li><li><a href="module-Component_Header.html">Component/Header</a></li><li><a href="module-Component_Loader.html">Component/Loader</a></li><li><a href="module-Component_MovieDetails_CaptureBackground.html">Component/MovieDetails/CaptureBackground</a></li><li><a href="module-Component_MovieDetails_InfoMovie.html">Component/MovieDetails/InfoMovie</a></li><li><a href="module-Component_MovieDetails_OpinionMovie.html">Component/MovieDetails/OpinionMovie</a></li><li><a href="module-Component_MovieDetails_TicketMovie.html">Component/MovieDetails/TicketMovie</a></li><li><a href="module-Component_MovieDetails_VotoPelicula.html">Component/MovieDetails/VotoPelicula</a></li><li><a href="module-Component_Ovelays_BuyTicket.html">Component/Ovelays/BuyTicket</a></li><li><a href="module-Component_Ovelays_ModalNewPelicula.html">Component/Ovelays/ModalNewPelicula</a></li><li><a href="module-Component_Overlays_AddSession.html">Component/Overlays/AddSession</a></li><li><a href="module-Component_Overlays_EditUser.html">Component/Overlays/EditUser</a></li><li><a href="module-Component_Overlays_FormModal.html">Component/Overlays/FormModal</a></li><li><a href="module-Component_Overlays_LRUser.html">Component/Overlays/LRUser</a></li><li><a href="module-Component_Overlays_Menu.html">Component/Overlays/Menu</a></li><li><a href="module-Component_Overlays_ModalConfirmacion.html">Component/Overlays/ModalConfirmacion</a></li><li><a href="module-Component_Overlays_PickHours.html">Component/Overlays/PickHours</a></li><li><a href="module-Component_TopEsperadas.html">Component/TopEsperadas</a></li><li><a href="module-View_Catalogo.html">View/Catalogo</a></li><li><a href="module-View_Index.html">View/Index</a></li><li><a href="module-View_MovieDetails.html">View/MovieDetails</a></li><li><a href="module-_Functions_PassOperations.html">_Functions/PassOperations</a></li><li><a href="module-_Functions_User.html">_Functions/User</a></li><li><a href="module-_Functions_Validations.html">_Functions/Validations</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Jun 12 2023 23:35:50 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Jun 13 2023 20:50:29 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

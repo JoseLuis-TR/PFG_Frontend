@@ -28,7 +28,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>&lt;template>
   &lt;Transition name="formBackground">
-    &lt;article ref="Perfil" class="formBG" v-if="needProfile" @click.self="$emit('close-profile')" v-intersect>
+    &lt;article ref="Perfil" class="formBG" @click.self="$emit('close-profile')" v-intersect>
       &lt;article class="formContainer">
         &lt;form @submit.prevent="enviarInfoUsuario" class="formContainer__body" enctype="multipart/form-data">
           &lt;fieldset class="formContainer__body__imageHandler">
@@ -74,34 +74,28 @@ import { validateEmailRegex, validatePasswordRegex, validateUserRegex } from "..
 import { getLoggedUser } from "../../store/user";
 
 /**
- * @file Profile.vue - Componente que muestra el formulario de modificación de usuario
+ * @file EditUser.vue - Componente de edición de usuario
  * @author José Luis Tocino Rojo
  * @see &lt;a href="https://github.com/JoseLuis-TR/cines_haven" target="_blank">Github&lt;/a>
- */
-
-/**
- * @property {string} name - Nombre del componente
- * @property {Object} emits - Eventos que emite el componente
- * @property {Object} emits.close-profile - Evento que emite el componente para cerrar el formulario
- * @vue-prop {boolean} [needProfile = false] - Indica si se muestra el formulario
- * @vue-data {string} [imageUrl = null] - Url de la imagen de perfil
- * @vue-data {string} [errorMessage = null] - Mensaje de error
- * @vue-data {string} imageFile - Archivo de imagen que es subido
- * @vue-data {string} emailData - Email del usuario
- * @vue-data {string} nickData - Nick del usuario
- * @vue-data {string} passData - Contraseña del usuario
- * @vue-data {boolean} [modEmailOk = true] - Indica si el email es válido
- * @vue-data {boolean} [modUserOk = true] - Indica si el usuario es válido
- * @vue-data {boolean} [modPassOk = true] - Indica si la contraseña es válida
+ * @module Component/Overlays/EditUser
+ * 
+ * @property {Object} data - Datos del componente Vue
+ * @property {String} data.imageUrl - URL de la imagen de perfil
+ * @property {String} data.errorMessage - Mensaje de error
+ * @property {String} data.imageFile - Archivo de imagen de avatar
+ * @property {String} data.emailData - Email del usuario
+ * @property {String} data.nickData - Nick del usuario
+ * @property {String} data.passData - Contraseña del usuario
+ * @property {Boolean} data.modEmailOk - Validación de email
+ * @property {Boolean} data.modUserOk - Validación de usuario
+ * @property {Boolean} data.modPassOk - Validación de contraseña
+ * @property {Object} data.loggedUser - Datos del usuario logueado
+ * @property {String} data.avatarToShow - Imagen de perfil a mostrar en el componente
+ * @property {Object} emits - Eventos del componente
+ * @property {Function} emits.close-profile - Cierra el componente
  */
 export default {
   name: "EditUser",
-  props: {
-    needProfile: {
-      type: Boolean,
-      default: false
-    }
-  },
   data() {
     return {
       imageUrl: null,
@@ -117,6 +111,7 @@ export default {
       avatarToShow: null
     }
   },
+  emits: ['close-profile'],
   methods: {
     /**
      * Función que se ejecuta cuando se selecciona un archivo de imagen y nos ayuda a mostrar la
@@ -199,6 +194,11 @@ export default {
       } else
         this.modPassOk = validatePasswordRegex(this.passData)
     },
+    /**
+     * Función que decide que imagen de avatar mostrar
+     * @param {String} whatINeed - Que imagen de avatar se necesita mostrar
+     * @param {String} newAvatar - Nueva imagen de avatar
+     */
     showedAvatar(whatINeed, newAvatar = null) {
       if (whatINeed === "initialAvatar" &amp;&amp; this.loggedUser) {
         this.avatarToShow = this.loggedUser.avatar ? this.loggedUser.avatar : "src/assets/images/default.png"
@@ -208,11 +208,7 @@ export default {
       }
     }
   },
-  /**
-   * Función que se ejecuta cuando se monta el componente
-   */
   mounted() {
-    // Si hay un usuario en local storage, se recogen sus datos
     this.showedAvatar("initialAvatar");
   }
 }
@@ -226,13 +222,13 @@ export default {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-EditUser.html">EditUser</a></li><li><a href="module-Functions_PassOperations.html">Functions_PassOperations</a></li><li><a href="module-Functions_User.html">Functions_User</a></li><li><a href="module-Functions_Validations.html">Functions_Validations</a></li><li><a href="module-LRUser.html">LRUser</a></li><li><a href="module-Loader.html">Loader</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Component_Carrusel.html">Component/Carrusel</a></li><li><a href="module-Component_Cartelera_CarteleraGeneral.html">Component/Cartelera/CarteleraGeneral</a></li><li><a href="module-Component_Cartelera_CarteleraPelicula.html">Component/Cartelera/CarteleraPelicula</a></li><li><a href="module-Component_ErrorComp.html">Component/ErrorComp</a></li><li><a href="module-Component_Header.html">Component/Header</a></li><li><a href="module-Component_Loader.html">Component/Loader</a></li><li><a href="module-Component_MovieDetails_CaptureBackground.html">Component/MovieDetails/CaptureBackground</a></li><li><a href="module-Component_MovieDetails_InfoMovie.html">Component/MovieDetails/InfoMovie</a></li><li><a href="module-Component_MovieDetails_OpinionMovie.html">Component/MovieDetails/OpinionMovie</a></li><li><a href="module-Component_MovieDetails_TicketMovie.html">Component/MovieDetails/TicketMovie</a></li><li><a href="module-Component_MovieDetails_VotoPelicula.html">Component/MovieDetails/VotoPelicula</a></li><li><a href="module-Component_Ovelays_BuyTicket.html">Component/Ovelays/BuyTicket</a></li><li><a href="module-Component_Ovelays_ModalNewPelicula.html">Component/Ovelays/ModalNewPelicula</a></li><li><a href="module-Component_Overlays_AddSession.html">Component/Overlays/AddSession</a></li><li><a href="module-Component_Overlays_EditUser.html">Component/Overlays/EditUser</a></li><li><a href="module-Component_Overlays_FormModal.html">Component/Overlays/FormModal</a></li><li><a href="module-Component_Overlays_LRUser.html">Component/Overlays/LRUser</a></li><li><a href="module-Component_Overlays_Menu.html">Component/Overlays/Menu</a></li><li><a href="module-Component_Overlays_ModalConfirmacion.html">Component/Overlays/ModalConfirmacion</a></li><li><a href="module-Component_Overlays_PickHours.html">Component/Overlays/PickHours</a></li><li><a href="module-Component_TopEsperadas.html">Component/TopEsperadas</a></li><li><a href="module-View_Catalogo.html">View/Catalogo</a></li><li><a href="module-View_Index.html">View/Index</a></li><li><a href="module-View_MovieDetails.html">View/MovieDetails</a></li><li><a href="module-_Functions_PassOperations.html">_Functions/PassOperations</a></li><li><a href="module-_Functions_User.html">_Functions/User</a></li><li><a href="module-_Functions_Validations.html">_Functions/Validations</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Jun 12 2023 23:35:50 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Jun 13 2023 20:50:29 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

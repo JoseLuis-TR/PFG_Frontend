@@ -36,6 +36,34 @@ import Loader from '../Loader.vue'
 import VotoPelicula from '../MovieDetails/VotoPelicula.vue';
 import BuyTicket from '../Overlays/BuyTicket.vue';
 
+/**
+ * @file CarteleraMovieDetails.vue - Página principal de la aplicación
+ * @author José Luis Tocino Rojo
+ * @see <a href="https://github.com/JoseLuis-TR/PFG_Frontend" target="_blank">Github</a>
+ * @module Component/Cartelera/CarteleraPelicula
+ * 
+ * @property {Object} components - Componentes que se utilizan en la página
+ * @property {Object} components.Loader - Componente Loader
+ * @property {Object} components.VotoPelicula - Componente para el voto de las peliculas sin sesiones
+ * @property {Object} components.BuyTicket - Componente para la compra de entradas
+ * @property {Object} data - Datos de la página
+ * @property {boolean} data.isLoading - Indica si se está cargando la página
+ * @property {Object[]} data.movieSessions - Sesiones de la película
+ * @property {Object} data.orderedSessions - Sesiones ordenadas por fecha
+ * @property {string[]} data.dates - Fechas de las sesiones
+ * @property {string[]} data.visibleDates - Fechas visibles en el slider
+ * @property {Object[]} data.sessionsList - Sesiones de la fecha seleccionada
+ * @property {string} data.selectedDate - Fecha seleccionada
+ * @property {number} data.index - Índice de la fecha seleccionada
+ * @property {boolean} data.sessionExists - Indica si la película tiene sesiones
+ * @property {boolean} data.showAddSession - Indica si se muestra el modal para añadir sesiones
+ * @property {boolean} data.showBuyTicket - Indica si se muestra el modal para comprar entradas
+ * @property {Object} data.buyTicketNeededInfo - Información necesaria para comprar entradas
+ * @property {string} data.buyTicketNeededInfo.idSesion - Id de la sesión
+ * @property {string} data.buyTicketNeededInfo.idSala - Id de la sala
+ * @property {string} data.buyTicketNeededInfo.movieName - Nombre de la película
+ * @property {string} data.buyTicketNeededInfo.pickedTime - Hora de la sesión
+ */
 export default {
   name: "CarteleraMovieDetails",
   components: {
@@ -64,12 +92,20 @@ export default {
       }
     }
   },
+  /**
+   * Revisa la fecha que se señala para mostrar las horas de ese día
+   */
   watch: {
     selectedDate: function (val) {
       this.showHours(val);
     }
   },
   methods: {
+    /**
+     * Recoge las sesiones desde hoy de la pelicula en especifico
+     * 
+     * @returns {Promise} - Sesiones de la película
+     */
     async getMovieInfo() {
       const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -140,7 +176,8 @@ export default {
       return sessionsByDate
     },
     /**
-     * Muestra las 3 anteriores fechas y la siguiente
+     * Muestra una fecha más cercana a la actualidad al hacer click en el botón
+     * de la izquierda en el slider
      */
     showPreviousDates() {
       if (this.index > 0) {
@@ -149,7 +186,8 @@ export default {
       }
     },
     /**
-     * Muestra las 3 siguientes fechas y la anterior
+     * Muestra una fecha más lejana a la actualidad al hacer click en el botón
+     * que se encuentra a la derecha en el slider
      */
     showNextDates() {
       if (this.index + 4 < this.dates.length) {
@@ -207,6 +245,8 @@ export default {
     },
     /**
      * Convierte la fecha recibida en formato YYYY-MM-DD a DD/MM/YYYY
+     * 
+     * @param {string} date - Fecha en formato YYYY-MM-DD
      */
     formatDate(date) {
       let dateParts = date.split("-")
@@ -231,6 +271,8 @@ export default {
     },
   },
   async mounted() {
+    // Realiza la carga de las sesiones de la pelicula y ordena las fechas
+    // En caso de no existir sesiones muestra el componente para votar
     this.isLoading = true;
     await this.getMovieInfo();
     if (this.sessionExists) {
