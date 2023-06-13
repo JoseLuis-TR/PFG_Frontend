@@ -67,7 +67,6 @@ export default {
         return;
       }
       this.hourList.push({ hour: null });
-      console.log(this.selectedSesionMovie)
     },
     deleteHour(index) {
       this.hourList.splice(index, 1);
@@ -107,14 +106,12 @@ export default {
         })
         .map((hour, index) => {
           const realIndex = this.hourList.indexOf(hour);
-          console.log(realIndex)
           return {
             ...hour,
             realIndex
           }
         });
 
-      console.log(sortedHourList)
       let overlapingHours = new Set();
       sortedHourList.forEach((currentHour, index) => {
         if (index < sortedHourList.length - 1) {

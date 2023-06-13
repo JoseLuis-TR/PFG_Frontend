@@ -11,7 +11,7 @@
   </LRUser>
   <FormModal v-if="contactOpen" :form-type="'contact'" @close="contactOpen = false">
   </FormModal>
-  <EditUser :need-profile="editUserOpen" @close-profile="editUserOpen = false"></EditUser>
+  <EditUser v-if="editUserOpen" @close-profile="editUserOpen = false"></EditUser>
 </template>
 
 <script>

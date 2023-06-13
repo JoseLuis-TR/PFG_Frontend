@@ -1,6 +1,12 @@
+import { encriptarPass } from "../functions/hashpass.js";
+/**
+ * @module Functions_User
+ */
+
 /**
  * Registro de un nuevo usuario
  *
+ * @memberof module:Functions_User
  * @function registerUser
  * @param {string} nick - Nick del usuario
  * @param {string} email - Correo electrónico del usuario
@@ -9,6 +15,7 @@
  */
 export async function registerNewUser(newUser) {
   const apiUrl = import.meta.env.VITE_API_URL;
+  newUser.clave = encriptarPass(newUser.clave);
   const options = {
     method: "POST",
     headers: {
@@ -31,6 +38,7 @@ export async function registerNewUser(newUser) {
 /**
  * Inicia sesión con un usuario
  *
+ * @memberof module:Functions_User
  * @function loginUser
  * @param {string} email - Correo electrónico del usuario
  * @param {string} password - Contraseña del usuario
@@ -45,11 +53,12 @@ export async function loginUser(email, password) {
     },
     body: JSON.stringify({
       email: email,
-      clave: password,
+      clave: encriptarPass(password),
     }),
   };
   const response = await fetch(`${apiUrl}/usuario/login`, options);
   const data = await response.json();
+
   if (data.hasOwnProperty("codigo")) {
     return false;
   } else {
@@ -67,6 +76,7 @@ export async function loginUser(email, password) {
 /**
  * Cierra la sesión del usuario
  *
+ * @memberof module:Functions_User
  * @function logoutUser
  */
 export function logoutUser() {
@@ -80,6 +90,7 @@ export function logoutUser() {
 /**
  * Obtiene los datos del usuario
  *
+ * @memberof module:Functions_User
  * @function fetchUser
  * @param {string} idUsuario - ID del usuario
  * @return {object} Objeto con los datos del usuario
@@ -100,6 +111,7 @@ export async function fetchUser(idUsuario) {
 /**
  * Devuelve los datos del usuario almacenados en sessionStorage o null
  *
+ * @memberof module:Functions_User
  * @function getLoggedUser
  * @return {object} Objeto con los datos del usuario o null
  */

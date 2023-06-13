@@ -55,6 +55,7 @@ export default {
       user: getLoggedUser(),
     }
   },
+  emits: ['close-menu', 'open-user-form', 'open-edit-user', 'open-contact'],
   methods: {
     userLogged() {
       const userIsLogged = sessionStorage.getItem('loggedUser');
@@ -76,7 +77,7 @@ export default {
       logoutUser();
       this.user = null;
       this.$emit('close-menu');
-      this.$router.push('/');
+      this.$router.go();
     },
     goToContact() {
       this.$emit('close-menu');

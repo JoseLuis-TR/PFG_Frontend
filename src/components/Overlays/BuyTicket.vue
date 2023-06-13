@@ -50,6 +50,9 @@ export default {
       user: getLoggedUser()
     }
   },
+  emits: [
+    "close"
+  ],
   methods: {
     async fetchAllSeatsFromSala() {
       const apiUrl = import.meta.env.VITE_API_URL;

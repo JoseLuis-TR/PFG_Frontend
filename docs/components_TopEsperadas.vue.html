@@ -27,75 +27,78 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>&lt;template>
-    &lt;section class="top">
-        &lt;h2 class="top__titulo" >Top 5 + esperadas&lt;/h2>
-        &lt;section class="top__container">
-            &lt;Loader mensajeCarga="Cargando Top 5" v-if="isLoading"/>
-            &lt;ul class="list" v-else>
-                &lt;li class="list__item"
-                    v-for="(movie,index) in this.topMovies.slice(0,5)">
-                    &lt;p class="list__item__order">{{ index+1 }}&lt;/p>
-                    &lt;section class="list__item__info">
-                        &lt;p class="list__item__info__name"
-                            @click="redirectToMoviePage(movie.id)">{{movie.nombre}}&lt;/p>
-                        &lt;p class="list__item__info__vote">{{movie.votos}} votos&lt;/p>
-                    &lt;/section>
-                &lt;/li>
-            &lt;/ul>
-        &lt;/section>
+  &lt;section class="top">
+    &lt;h2 class="top__titulo">Top 5 + esperadas&lt;/h2>
+    &lt;section class="top__container">
+      &lt;Loader mensajeCarga="Cargando Top 5" v-if="isLoading" />
+      &lt;ul class="list" v-else-if="!isLoading &amp;&amp; topMovies.length > 0">
+        &lt;li class="list__item" v-for="(movie, index) in this.topMovies">
+          &lt;p class="list__item__order">{{ index + 1 }}&lt;/p>
+          &lt;section class="list__item__info">
+            &lt;p class="list__item__info__name" @click="redirectToMoviePage(movie.id)">{{ movie.nombre }}&lt;/p>
+            &lt;p class="list__item__info__vote">{{ movie.votos }} votos&lt;/p>
+          &lt;/section>
+        &lt;/li>
+        &lt;li class="list__item" v-if="this.topMovies" v-for="emptyElement in 5 - this.topMovies.length">
+        &lt;/li>
+      &lt;/ul>
+      &lt;ErrorComp v-else-if="!isLoading &amp;&amp; topMovies.length === 0" mensajeError="No hay películas en el top" />
     &lt;/section>
+  &lt;/section>
 &lt;/template>
 
 &lt;script>
-  /**
-   * @file TopEsperadas.vue - Componente que contiene el top 5 de películas más esperadas por los usuarios
-   * @author José Luis Tocino Rojo
-   * @see &lt;a href="https://github.com/JoseLuis-TR/cines_haven" target="_blank">Github&lt;/a>
-  */
+/**
+ * @file TopEsperadas.vue - Componente que contiene el top 5 de películas más esperadas por los usuarios
+ * @author José Luis Tocino Rojo
+ * @see &lt;a href="https://github.com/JoseLuis-TR/cines_haven" target="_blank">Github&lt;/a>
+ */
 
-  /**
-   * @property {string} name - Nombre del componente
-   * @property {Object} components - Componentes que se utilizan en la página
-   * @property {Object} components.Loader - Componente loader de la página
-   * @vue-data {Array} topMovies - Array que contiene las películas más esperadas
-   * @vue-data {boolean} isLoading - Booleano que indica si se está cargando la página
-   */
-  import Loader from './Loader.vue';
+/**
+ * @property {string} name - Nombre del componente
+ * @property {Object} components - Componentes que se utilizan en la página
+ * @property {Object} components.Loader - Componente loader de la página
+ * @vue-data {Array} topMovies - Array que contiene las películas más esperadas
+ * @vue-data {boolean} isLoading - Booleano que indica si se está cargando la página
+ */
+import Loader from './Loader.vue';
+import ErrorComp from './Error.vue';
 
-  export default {
-    name: "TopEsperadas",
-    components: { Loader },
-    data() {
-        return {
-            topMovies: [],
-            isLoading: false
-        };
+export default {
+  name: "TopEsperadas",
+  components: { Loader, ErrorComp },
+  data() {
+    return {
+      topMovies: [],
+      isLoading: false
+    };
+  },
+  methods: {
+    /**
+     * Obtiene las películas más votadas por los usuarios
+     */
+    async getTopMovies() {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      return await fetch(`${apiUrl}/peliculas/top`)
+        .then(response => response.json())
+        .then(data => {
+          this.topMovies = data;
+          this.isLoading = false;
+        });
     },
-    methods:{
-      /**
-       * Obtiene las películas más votadas por los usuarios
-       */
-      async getTopMovies() {
-          const apiUrl = import.meta.env.VITE_API_URL;
-          return await fetch(`${apiUrl}/peliculas/top`)
-              .then(response => response.json())
-              .then(data => {
-                  this.topMovies = data;
-                  this.isLoading = false;
-              });
-      },
-      /**
-       * Redirige a la página de la película
-       * @param {number} movieId - Id de la película
-       */
-      redirectToMoviePage(movieId) {
+    /**
+     * Redirige a la página de la película
+     * @param {number} movieId - Id de la película
+     */
+    redirectToMoviePage(movieId) {
       this.$router.push(`pelicula/${movieId}`)
-      }
-    },
-    mounted() {
-        this.isLoading = true;
-        this.getTopMovies();
-    }}
+    }
+  },
+  mounted() {
+    this.isLoading = true;
+    this.getTopMovies();
+  }
+}
 &lt;/script></code></pre>
         </article>
     </section>
@@ -106,13 +109,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Header.html">Header</a></li><li><a href="module-Loader.html">Loader</a></li><li><a href="module-Store_User.html">Store_User</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-EditUser.html">EditUser</a></li><li><a href="module-Functions_PassOperations.html">Functions_PassOperations</a></li><li><a href="module-Functions_User.html">Functions_User</a></li><li><a href="module-Functions_Validations.html">Functions_Validations</a></li><li><a href="module-LRUser.html">LRUser</a></li><li><a href="module-Loader.html">Loader</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sun Jun 04 2023 20:20:47 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Jun 12 2023 23:35:50 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

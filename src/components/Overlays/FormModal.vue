@@ -53,6 +53,7 @@
 
 <script>
 import emailjs from '@emailjs/browser';
+import { getLoggedUser } from '../../store/user';
 
 export default {
   name: "FormModal",
@@ -69,9 +70,10 @@ export default {
       error: false,
       nameContact: '',
       messageContact: '',
-      loggedUser: null
+      loggedUser: getLoggedUser()
     }
   },
+  emits: ['close'],
   methods: {
     /**
      * Cuenta los caracteres que se introducen en el textarea
@@ -107,6 +109,8 @@ export default {
           .then(data => {
             this.$emit('close');
           })
+
+        this.$router.go();
       }
     },
     sendNewEmail() {
@@ -124,11 +128,6 @@ export default {
           this.$emit('close');
         }
         );
-    }
-  },
-  mounted() {
-    if (sessionStorage.getItem('user')) {
-      this.loggedUser = JSON.parse(sessionStorage.getItem('loggedUser'));
     }
   }
 }

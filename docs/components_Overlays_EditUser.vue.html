@@ -1,60 +1,89 @@
-<template>
-  <Transition name="formBackground">
-    <article ref="Perfil" class="formBG" @click.self="$emit('close-profile')" v-intersect>
-      <article class="formContainer">
-        <form @submit.prevent="enviarInfoUsuario" class="formContainer__body" enctype="multipart/form-data">
-          <fieldset class="formContainer__body__imageHandler">
-            <img class="formContainer__body__imageHandler--image" :src="avatarToShow" alt="Imagen de perfil">
-            <label for="profilePicture" class="formContainer__body__imageHandler--label">
-              Escoge imagen de perfil
-            </label>
-            <input id="profilePicture" class="formContainer__body__imageHandler--input" type="file" accept="image/*"
-              @change="handleFileInput" :multiple="false" ref="imageFile">
-          </fieldset>
-          <fieldset class="formContainer__body__userDataHandler">
-            <label for="email">Email</label>
-            <input v-model="emailData" v-on:blur="validateEmail" :class="{ 'input_error': !modEmailOk }" id="email"
-              type="email" placeholder="Nuevo email...">
-            <label for="username">Usuario</label>
-            <input v-model="nickData" v-on:blur="validateUser" :class="{ 'input_error': !modUserOk }" id="username"
-              type="text" placeholder="Nuevo nombre de usuario...">
-            <label for="password">Contraseña</label>
-            <input v-model="passData" v-on:blur="validatePass" :class="{ 'input_error': !modPassOk }" id="password"
-              type="password" placeholder="Nueva contraseña...">
-          </fieldset>
-          <Transition name="errorMessage">
-            <section v-show="!modEmailOk || !modPassOk || !modUserOk || errorMessage !== null"
-              class="formContainer__body__form--error">
-              <ul>
-                <li v-if="!modEmailOk">Email no válido</li>
-                <li v-if="!modUserOk">Usuario no válido [5 a 20 caracteres, sólo letras y números]</li>
-                <li v-if="!modPassOk">Contraseña no válida [8 a 32 caracteres, mayúscula, minúscula, carácter especial y
-                  número]</li>
-                <li v-if="errorMessage !== null">{{ errorMessage }}</li>
-              </ul>
-            </section>
-          </Transition>
-          <button class="formContainer__body__userDataHandler--submit">Modificar usuario</button>
-        </form>
-      </article>
-    </article>
-  </Transition>
-</template>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Overlays/EditUser.vue</title>
 
-<script>
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Overlays/EditUser.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;template>
+  &lt;Transition name="formBackground">
+    &lt;article ref="Perfil" class="formBG" v-if="needProfile" @click.self="$emit('close-profile')" v-intersect>
+      &lt;article class="formContainer">
+        &lt;form @submit.prevent="enviarInfoUsuario" class="formContainer__body" enctype="multipart/form-data">
+          &lt;fieldset class="formContainer__body__imageHandler">
+            &lt;img class="formContainer__body__imageHandler--image" :src="avatarToShow" alt="Imagen de perfil">
+            &lt;label for="profilePicture" class="formContainer__body__imageHandler--label">
+              Escoge imagen de perfil
+            &lt;/label>
+            &lt;input id="profilePicture" class="formContainer__body__imageHandler--input" type="file" accept="image/*"
+              @change="handleFileInput" :multiple="false" ref="imageFile">
+          &lt;/fieldset>
+          &lt;fieldset class="formContainer__body__userDataHandler">
+            &lt;label for="email">Email&lt;/label>
+            &lt;input v-model="emailData" v-on:blur="validateEmail" :class="{ 'input_error': !modEmailOk }" id="email"
+              type="email" placeholder="Nuevo email...">
+            &lt;label for="username">Usuario&lt;/label>
+            &lt;input v-model="nickData" v-on:blur="validateUser" :class="{ 'input_error': !modUserOk }" id="username"
+              type="text" placeholder="Nuevo nombre de usuario...">
+            &lt;label for="password">Contraseña&lt;/label>
+            &lt;input v-model="passData" v-on:blur="validatePass" :class="{ 'input_error': !modPassOk }" id="password"
+              type="password" placeholder="Nueva contraseña...">
+          &lt;/fieldset>
+          &lt;Transition name="errorMessage">
+            &lt;section v-show="!modEmailOk || !modPassOk || !modUserOk || errorMessage !== null"
+              class="formContainer__body__form--error">
+              &lt;ul>
+                &lt;li v-if="!modEmailOk">Email no válido&lt;/li>
+                &lt;li v-if="!modUserOk">Usuario no válido [5 a 20 caracteres, sólo letras y números]&lt;/li>
+                &lt;li v-if="!modPassOk">Contraseña no válida [8 a 32 caracteres, mayúscula, minúscula, carácter especial y
+                  número]&lt;/li>
+                &lt;li v-if="errorMessage !== null">{{ errorMessage }}&lt;/li>
+              &lt;/ul>
+            &lt;/section>
+          &lt;/Transition>
+          &lt;button class="formContainer__body__userDataHandler--submit">Modificar usuario&lt;/button>
+        &lt;/form>
+      &lt;/article>
+    &lt;/article>
+  &lt;/Transition>
+&lt;/template>
+
+&lt;script>
 import { validateEmailRegex, validatePasswordRegex, validateUserRegex } from "../../functions/formValidations.js";
 import { getLoggedUser } from "../../store/user";
 
 /**
  * @file Profile.vue - Componente que muestra el formulario de modificación de usuario
  * @author José Luis Tocino Rojo
- * @see <a href="https://github.com/JoseLuis-TR/cines_haven" target="_blank">Github</a>
+ * @see &lt;a href="https://github.com/JoseLuis-TR/cines_haven" target="_blank">Github&lt;/a>
  */
 
 /**
  * @property {string} name - Nombre del componente
  * @property {Object} emits - Eventos que emite el componente
  * @property {Object} emits.close-profile - Evento que emite el componente para cerrar el formulario
+ * @vue-prop {boolean} [needProfile = false] - Indica si se muestra el formulario
  * @vue-data {string} [imageUrl = null] - Url de la imagen de perfil
  * @vue-data {string} [errorMessage = null] - Mensaje de error
  * @vue-data {string} imageFile - Archivo de imagen que es subido
@@ -67,6 +96,12 @@ import { getLoggedUser } from "../../store/user";
  */
 export default {
   name: "EditUser",
+  props: {
+    needProfile: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       imageUrl: null,
@@ -82,7 +117,6 @@ export default {
       avatarToShow: null
     }
   },
-  emits: ['close-profile'],
   methods: {
     /**
      * Función que se ejecuta cuando se selecciona un archivo de imagen y nos ayuda a mostrar la
@@ -91,7 +125,7 @@ export default {
      */
     handleFileInput(event) {
       // Si se selecciona un archivo y es una imagen, ok
-      if (event.target.files.length === 1 && event.target.files[0].type.startsWith('image/')) {
+      if (event.target.files.length === 1 &amp;&amp; event.target.files[0].type.startsWith('image/')) {
         const selectedFile = event.target.files[0];
         this.imageUrl = URL.createObjectURL(selectedFile);
         this.errorMessage = null;
@@ -104,7 +138,7 @@ export default {
      * Función que envia al servidor los datos del usuario para modificarlos
      */
     async enviarInfoUsuario() {
-      if (this.emailData === "" && this.nickData === "" && this.passData === "" && this.$refs.imageFile.files[0] === undefined) {
+      if (this.emailData === "" &amp;&amp; this.nickData === "" &amp;&amp; this.passData === "" &amp;&amp; this.$refs.imageFile.files[0] === undefined) {
         this.errorMessage = "Por favor, rellene los campos que desee modificar";
         return;
       }
@@ -166,7 +200,7 @@ export default {
         this.modPassOk = validatePasswordRegex(this.passData)
     },
     showedAvatar(whatINeed, newAvatar = null) {
-      if (whatINeed === "initialAvatar" && this.loggedUser) {
+      if (whatINeed === "initialAvatar" &amp;&amp; this.loggedUser) {
         this.avatarToShow = this.loggedUser.avatar ? this.loggedUser.avatar : "src/assets/images/default.png"
       }
       if (whatINeed === 'newUserAvatar') {
@@ -182,4 +216,26 @@ export default {
     this.showedAvatar("initialAvatar");
   }
 }
-</script>
+&lt;/script></code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-EditUser.html">EditUser</a></li><li><a href="module-Functions_PassOperations.html">Functions_PassOperations</a></li><li><a href="module-Functions_User.html">Functions_User</a></li><li><a href="module-Functions_Validations.html">Functions_Validations</a></li><li><a href="module-LRUser.html">LRUser</a></li><li><a href="module-Loader.html">Loader</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Jun 12 2023 23:35:50 GMT+0200 (hora de verano de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

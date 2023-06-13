@@ -17,6 +17,7 @@
 <script>
 export default {
   name: "ModalConfirmacion",
+  emits: ["close", "delete"],
   props: {
     mensaje: {
       type: String,

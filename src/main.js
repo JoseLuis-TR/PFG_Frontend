@@ -71,6 +71,7 @@ app.use(router);
 app.use(VueSplide);
 app.use(vuetify);
 
+// Se define una función para obtener el usuario de las cookies
 app.config.globalProperties.$fetchUserOnStart = async () => {
   const cookies = document.cookie.split(";");
   let userID;

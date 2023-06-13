@@ -61,6 +61,7 @@ export default {
       showPickHours: false
     }
   },
+  emits: ['close'],
   components: {
     PickHours
   },
@@ -107,9 +108,6 @@ export default {
     this.pickedSessions = await this.getSinceTodaySessions();
     this.allSalas = await this.getAllSalas();
     this.allMovies = await this.getAllMovies();
-    console.log(this.allMovies);
-    console.log(this.allSalas);
-    console.log(this.pickedSessions);
   }
 }
 </script>

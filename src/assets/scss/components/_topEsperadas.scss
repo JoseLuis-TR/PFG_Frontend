@@ -37,7 +37,7 @@
 
       &__item {
         flex-grow: 1;
-        height: fit-content;
+        height: 20%;
         display: grid;
         grid-template-columns: auto 1fr;
         grid-template-rows: 1fr;
@@ -56,6 +56,7 @@
 
         &__info {
           grid-area: info;
+          height: fit-content;
           display: grid;
           grid-template-columns: 1fr;
           grid-template-rows: 1fr 1fr;

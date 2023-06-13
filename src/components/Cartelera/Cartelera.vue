@@ -262,7 +262,6 @@ export default {
     this.updateVisibleDates()
     this.orderedSessions = this.sortSessionsByDate()
     this.selectedDate = this.dates[0]
-    console.log(this.orderedSessions)
   }
 }
 </script>

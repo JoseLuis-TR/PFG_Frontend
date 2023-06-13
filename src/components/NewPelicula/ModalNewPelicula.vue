@@ -69,6 +69,7 @@ export default {
       contador: 0,
     }
   },
+  emits: ['close'],
   props: {
     action: {
       type: String,
