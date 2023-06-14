@@ -4,7 +4,10 @@
       <article class="formContainer">
         <form @submit.prevent="enviarInfoUsuario" class="formContainer__body" enctype="multipart/form-data">
           <fieldset class="formContainer__body__imageHandler">
-            <img class="formContainer__body__imageHandler--image" :src="avatarToShow" alt="Avatar de usuario">
+            <img class="formContainer__body__imageHandler--image" v-if="!showDefaultAvatar" :src="avatarToShow"
+              alt="Avatar de usuario">
+            <img class="formContainer__body__imageHandler--image" v-else src="../../assets/images/default.png"
+              alt="Avatar de usuario">
             <label for="profilePicture" class="formContainer__body__imageHandler--label">
               Escoge imagen de perfil
             </label>
@@ -62,6 +65,7 @@ import { getLoggedUser } from "../../store/user";
  * @property {Boolean} data.modUserOk - Validación de usuario
  * @property {Boolean} data.modPassOk - Validación de contraseña
  * @property {Object} data.loggedUser - Datos del usuario logueado
+ * @property {Boolean} data.showDefaultAvatar - Mostrar avatar por defecto
  * @property {String} data.avatarToShow - Imagen de perfil a mostrar en el componente
  * @property {Object} emits - Eventos del componente
  * @property {Function} emits.close-profile - Cierra el componente
@@ -80,7 +84,8 @@ export default {
       modUserOk: true,
       modPassOk: true,
       loggedUser: getLoggedUser(),
-      avatarToShow: null
+      avatarToShow: null,
+      showDefaultAvatar: true,
     }
   },
   emits: ['close-profile'],
@@ -172,10 +177,18 @@ export default {
      * @param {String} newAvatar - Nueva imagen de avatar
      */
     showedAvatar(whatINeed, newAvatar = null) {
+      const defaultAvatar = "../../assets/images/default.png";
       if (whatINeed === "initialAvatar" && this.loggedUser) {
-        this.avatarToShow = this.loggedUser.avatar ? this.loggedUser.avatar : "src/assets/images/default.png"
+        this.avatarToShow = this.loggedUser.avatar !== null ? this.loggedUser.avatar : defaultAvatar;
+        if (this.loggedUser.avatar === null) {
+          this.showDefaultAvatar = true;
+        } else {
+          this.showDefaultAvatar = false;
+          this.avatarToShow = this.loggedUser.avatar;
+        }
       }
       if (whatINeed === 'newUserAvatar') {
+        this.showDefaultAvatar = false;
         this.avatarToShow = newAvatar;
       }
     }

@@ -4,8 +4,8 @@
       <Transition class="menuModal">
         <nav class="menuContainer__overlay">
           <header class="yesUser" v-if="user">
-            <img class="yesUser__img" alt="Avatar de usuario"
-              :src="user.avatar ? user.avatar : 'src/assets/images/default.png'">
+            <img class="yesUser__img" alt="Avatar de usuario" v-if="user.avatar !== null" :src="user.avatar">
+            <img class="yesUser__img" alt="Avatar de usuario" v-else src="../../assets/images/default.png">
             <p class="yesUser__nick">@{{ user.nick }}</p>
             <a class="yesUser__edit" @click="$emit('open-edit-user')">Editar perfil</a>
           </header>
