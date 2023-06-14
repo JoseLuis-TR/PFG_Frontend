@@ -1,8 +1,9 @@
 <template>
   <header class="header">
     <section class="header__container">
-      <img src="../assets/images/logoHaven.svg" class="header__container__logo" @click="redirectToIndex()">
-      <img src="../assets/icons/menu.svg" class="header__container__menu" @click="menuOpen = true">
+      <img src="../assets/images/logoHaven.svg" alt="Logo de Cines Haven" class="header__container__logo"
+        @click="redirectToIndex()">
+      <img src="../assets/icons/menu.svg" alt="Boton de menú" class="header__container__menu" @click="menuOpen = true">
     </section>
   </header>
   <Menu :menuOpen="menuOpen" @close-menu="menuOpen = false" @open-user-form="openUserForm()"

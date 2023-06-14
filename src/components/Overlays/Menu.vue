@@ -4,7 +4,8 @@
       <Transition class="menuModal">
         <nav class="menuContainer__overlay">
           <header class="yesUser" v-if="user">
-            <img class="yesUser__img" :src="user.avatar ? user.avatar : 'src/assets/images/default.png'">
+            <img class="yesUser__img" alt="Avatar de usuario"
+              :src="user.avatar ? user.avatar : 'src/assets/images/default.png'">
             <p class="yesUser__nick">@{{ user.nick }}</p>
             <a class="yesUser__edit" @click="$emit('open-edit-user')">Editar perfil</a>
           </header>
@@ -17,19 +18,19 @@
           </header>
           <ul class="listaMenu">
             <li @click="goToHome()" class="listaMenu__item">
-              <img class="listaMenu__item--img" src="../../assets/icons/home.svg">
+              <img class="listaMenu__item--img" src="../../assets/icons/home.svg" alt="Icono de inicio">
               <p class="listaMenu__item--text">Inicio</p>
             </li>
             <li @click="goToCatalogo()" class="listaMenu__item">
-              <img class="listaMenu__item--img" src="../../assets/icons/video.svg">
+              <img class="listaMenu__item--img" src="../../assets/icons/video.svg" alt="Icono del catálogo">
               <p class="listaMenu__item--text">Catálogo</p>
             </li>
             <li @click="goToContact()" class="listaMenu__item">
-              <img class="listaMenu__item--img" src="../../assets/icons/mail.svg">
+              <img class="listaMenu__item--img" src="../../assets/icons/mail.svg" alt="Icono de contacto">
               <p class="listaMenu__item--text">Contacto</p>
             </li>
             <li @click="logOut()" class="listaMenu__item logout" v-if="userLogged()">
-              <img class="listaMenu__item--img" src="../../assets/icons/logout.svg">
+              <img class="listaMenu__item--img" src="../../assets/icons/logout.svg" alt="Icono de cierre de sesión">
               <p class="listaMenu__item--text">Cierra sesión</p>
             </li>
           </ul>

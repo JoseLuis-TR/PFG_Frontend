@@ -2,7 +2,7 @@
   <section class="errorContainer">
     <p class="errorContainer__title">¡Oh no!</p>
     <p class="errorContainer__text">{{ mensajeError }}</p>
-    <img src="../assets/icons/sad.svg" class="errorContainer__sad">
+    <img src="../assets/icons/sad.svg" alt="Emoji triste" class="errorContainer__sad">
   </section>
 </template>
 

@@ -6,9 +6,9 @@
         :class="{ 'error': showError[index] }" type="time" v-model="input.hour">
       <section class="inputButtons">
         <img v-if="hourList.length >= 0 && hourList.length < 5" @click="addHour" class="inputButtons__add"
-          src="../../assets/icons/add.svg">
+          src="../../assets/icons/add.svg" alt="Icono de añadir">
         <img v-if="hourList.length > 1" @click="deleteHour(index)" class="inputButtons__delete"
-          src="../../assets/icons/cross.svg">
+          src="../../assets/icons/cross.svg" alt="Icono de eliminar">
       </section>
     </section>
     <Transition name="errorMessage">

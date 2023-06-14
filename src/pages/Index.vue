@@ -7,7 +7,7 @@
     <article class="inicio__inferior">
       <h2 class="inicio__inferior__titulo">Proximas sesiones</h2>
       <button class="opinions__add" @click="showAddSession = true" v-if="user && user.rol === 'ADMIN'">
-        <img src="../assets/icons/add.svg">
+        <img src="../assets/icons/add.svg" alt="Icono de añadir">
         Añade una sesión
       </button>
       <Cartelera />

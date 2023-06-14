@@ -4,8 +4,8 @@
       <Transition name="modal" appear>
         <article class="formContainer newMovie">
           <section class="showImages">
-            <img class="showImages__poster" :src="posterToShow">
-            <img class="showImages__captura" :src="capturaToShow">
+            <img class="showImages__poster" alt="Muestra de poster subido por input" :src="posterToShow">
+            <img class="showImages__captura" alt="Muestra de captura subida por input" :src="capturaToShow">
           </section>
           <section class="inputImages">
             <label for="poster" class="inputImages__button">
@@ -165,10 +165,13 @@ export default {
      * Cuenta los caracteres de la sinopsis y la recorta si es mayor de 750
      */
     countCharacters() {
-      if (this.sinopsisData.length > 750) {
+      if (this.sinopsisData && this.sinopsisData.length > 750) {
         this.sinopsisData = this.sinopsisData.substring(0, 750);
+      } else if (this.sinopsisData && this.sinopsisData.length > 0 && this.sinopsisData.length <= 750) {
+        this.contador = this.sinopsisData.length;
+      } else {
+        this.contador = 0;
       }
-      this.contador = this.sinopsisData.length;
     },
     /**
      * Comprueba que esten los datos obligatorios
@@ -192,6 +195,10 @@ export default {
      * Si la subida es correcta cierra el modal y recarga la página
      */
     async checkNewMovie() {
+      this.checkIfHaveValue('titulo');
+      this.checkIfHaveValue('director');
+      this.checkIfHaveValue('duracion');
+      this.checkIfHaveValue('sinopsis');
       if (this.modTituloOk && this.modDirectorOk && this.modDuracionOk && this.modSinopsisOk) {
         if (this.action === 'edit') {
           await this.checkUpdateMovie();

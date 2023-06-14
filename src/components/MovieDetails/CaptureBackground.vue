@@ -1,8 +1,8 @@
 <template>
-  <img class="mainDetails__img" :src="movieCapture">
+  <img class="mainDetails__img" :alt="`Captura de la pelicula ${movieName}`" :src="movieCapture">
   <section class="containerInfo">
     <section class="containerInfo__poster">
-      <img class="containerInfo__poster--img" :src="moviePoster">
+      <img class="containerInfo__poster--img" :alt="`Poster de la película ${movieName}`" :src="moviePoster">
     </section>
     <section class="containerInfo__details">
       <h1 class="containerInfo__details--title">{{ movieName }}</h1>
@@ -12,11 +12,11 @@
   </section>
   <section class="adminButtons">
     <button class="opinions__add deleteMovie" @click="showMovieForm" v-if="user && user.rol === 'ADMIN'">
-      <img src="../../assets/icons/trash.svg">
+      <img src="../../assets/icons/trash.svg" alt="Icono de eliminar">
       Eliminar
     </button>
     <button class="opinions__add editMovie" @click="showEditModal" v-if="user && user.rol === 'ADMIN'">
-      <img src="../../assets/icons/edit.svg">
+      <img src="../../assets/icons/edit.svg" alt="Icono de editar">
       Editar
     </button>
   </section>

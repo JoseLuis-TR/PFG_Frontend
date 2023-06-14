@@ -8,7 +8,8 @@
             <input class="modalSesion__pickDate__input" v-model="pickedDate" type="date" :min="today"
               v-on:change="checkAvalaibleDate">
           </section>
-          <section class="modalSesion__error" v-if="pickedDate !== null && avalaibleSalas.length === 0 && !showPickHours">
+          <section class="modalSesion__error"
+            v-if="pickedDate !== null && avalaibleSalas !== null && avalaibleSalas.length === 0 && !showPickHours">
             <p class="modalSesion__error__text">No se pueden añadir más sesiones para la fecha seleccionada</p>
           </section>
           <section class="modalSesion__pickMovie"
@@ -128,13 +129,20 @@ export default {
       const apiUrl = import.meta.env.VITE_API_URL;
       const response = await fetch(`${apiUrl}/peliculasMini`);
       const data = await response.json();
+      if (data.codigo) {
+        return [];
+      }
       return data;
     },
     /**
      * Función que comprueba si en la fecha seleccionada hay sesiones disponibles
      */
     async checkAvalaibleDate() {
-      const sessionsForPickedDate = this.pickedSessions.filter(session => session.fecha === this.pickedDate);
+      const sessionsForPickedDate = [];
+      if (this.pickedSessions && !this.pickedSessions.codigo) {
+        this.pickedSessions.filter(session => session.fecha === this.pickedDate);
+      }
+
       this.avalaibleSalas = this.allSalas.filter(sala => {
         return !sessionsForPickedDate.some(session => session.salaSesion.id === sala.id);
       });

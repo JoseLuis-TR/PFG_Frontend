@@ -3,7 +3,7 @@
     <p class="loader__text">
       {{ mensajeCarga }}
     </p>
-    <img class="loader__img" src="../assets/images/tail-spin.svg">
+    <img alt="Spinner" class="loader__img" src="../assets/images/tail-spin.svg">
   </section>
 </template>
 

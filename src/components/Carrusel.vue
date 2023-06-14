@@ -5,7 +5,7 @@
     <Splide :options="slideOptions" class="carteleraHoy__splide" v-else-if="!isLoading && this.movies">
       <SplideSlide class="carteleraHoy__splide__slide" v-for="(movie, index) in this.moviesUnicas" :key="index"
         @click="redirectToMoviePage(movie.peliculaCartelera.id)">
-        <img :src="movie.peliculaCartelera.captura">
+        <img :src="movie.peliculaCartelera.captura" :alt="`Captura de la pelicula ${movie.peliculaCartelera.nombre}`">
         <section class="movieInfo">
           <p class="movieInfo__titulo">{{ movie.peliculaCartelera.nombre }}</p>
         </section>

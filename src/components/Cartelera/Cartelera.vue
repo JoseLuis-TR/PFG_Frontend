@@ -1,6 +1,6 @@
 <template>
   <Loader v-if="isLoading" />
-  <section v-else-if="!isLoading && sessionsList.length > 0" class="sliderSinceToday">
+  <section v-else-if="!isLoading && sessionsList !== undefined && sessionsList.length > 0" class="sliderSinceToday">
     <button class="sliderSinceToday__sliderButton" @click="showPreviousDates">
       <img src="../../assets/icons/left.svg" alt="Atras">
     </button>
@@ -12,10 +12,11 @@
       <img src="../../assets/icons/right.svg" alt="Siguiente">
     </button>
   </section>
-  <section v-if="!isLoading && sessionsList.length > 0" class="infoMovies">
+  <section v-if="!isLoading && sessionsList !== undefined && sessionsList.length > 0" class="infoMovies">
     <section class="infoMovies__item" v-for="movieSession in sessionsList">
       <section class="infoMovies__item__data">
-        <img class="infoMovies__item__data--poster" :src="movieSession.pelicula.poster" alt="Poster pelicula"
+        <img class="infoMovies__item__data--poster" :src="movieSession.pelicula.poster"
+          :alt="`Poster de la pelicula ${movieSession.pelicula.nombre}}`"
           @click="seeMovieDetails(movieSession.pelicula.id)">
         <p class="infoMovies__item__data--titulo" @click="seeMovieDetails(movieSession.pelicula.id)">
           {{ movieSession.pelicula.nombre }}
@@ -30,7 +31,8 @@
       </section>
     </section>
   </section>
-  <ErrorComp v-if="!isLoading && sessionsList.length === 0" mensajeError="No hay sesiones programadas proximamente" />
+  <ErrorComp v-if="!isLoading && sessionsList === undefined || sessionsList.length === 0"
+    mensajeError="No hay sesiones programadas proximamente" />
   <BuyTicket v-if="showBuyTicket" :neededInfo="buyTicketNeededInfo" @close="showBuyTicket = false">
   </BuyTicket>
 </template>
@@ -119,9 +121,11 @@ export default {
       let uniqueDates = new Set();
 
       // Se crea una lista única de fechas de las sesiones
-      this.sinceToday.forEach(session => {
-        uniqueDates.add(session["fecha"])
-      })
+      if (this.sinceToday && this.sinceToday.length > 0) {
+        this.sinceToday.forEach(session => {
+          uniqueDates.add(session["fecha"])
+        })
+      }
 
       // Se crea un array con las fechas únicas
       this.dates = Array.from(uniqueDates)

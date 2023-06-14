@@ -2,13 +2,14 @@
   <section class="catalogoContainer">
     <h2 class="catalogoContainer__titulo">Catálogo</h2>
     <button class="opinions__add" @click="showMovieForm" v-if="user && user.rol === 'ADMIN'">
-      <img src="../assets/icons/add.svg">
+      <img src="../assets/icons/add.svg" alt="Icono de añadir">
       Añade una pelicula
     </button>
     <ul class="catalogoContainer__lista" v-if="moviesList.peliculas">
       <li class="catalogoContainer__lista__item" v-for="movie in moviesList.peliculas">
         <div class="catalogoContainer__lista__item__container" @click="seeMovieDetails(movie.id)">
-          <img class="catalogoContainer__lista__item__container--img" :src="movie.poster">
+          <img class="catalogoContainer__lista__item__container--img" :alt="`Poster de la pelicula ${movie.nombre}`"
+            :src="movie.poster">
           <p class="catalogoContainer__lista__item__container--titulo">
             {{ movie.nombre }}
           </p>

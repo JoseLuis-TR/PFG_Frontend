@@ -128,10 +128,7 @@ export default {
         const apiUrl = import.meta.env.VITE_API_URL;
         fetch(`${apiUrl}/comentarios`, options)
           .then(response => response.json())
-          .then(data => {
-            this.$emit('close');
-          })
-
+          .then(data => { })
         this.$router.go();
       }
     },

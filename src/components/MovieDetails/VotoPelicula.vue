@@ -8,7 +8,7 @@
       Contra más votos... ¡más posibilidades de que vuelva!
     </p>
     <button class="vote__button" @click="castVote" v-if="!isVoted">
-      <img src="../../assets/icons/like.svg" alt="like">
+      <img src="../../assets/icons/like.svg" alt="Like">
       Votar
     </button>
     <Transition name="fade">

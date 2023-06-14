@@ -13,7 +13,7 @@
                     userPickedSeats.includes(seat.id) ? 'picked' : ''
                   ]" @click="pickSeat(seat.id)">
                   <p class="seat__number">{{ seat.numero }}</p>
-                  <img class="seat__img" src="../../assets/icons/seat.svg" alt="seat">
+                  <img class="seat__img" src="../../assets/icons/seat.svg" alt="Asiento">
                 </div>
               </div>
             </div>

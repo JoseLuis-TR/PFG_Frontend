@@ -4,7 +4,7 @@
       <article class="formContainer">
         <form @submit.prevent="enviarInfoUsuario" class="formContainer__body" enctype="multipart/form-data">
           <fieldset class="formContainer__body__imageHandler">
-            <img class="formContainer__body__imageHandler--image" :src="avatarToShow" alt="Imagen de perfil">
+            <img class="formContainer__body__imageHandler--image" :src="avatarToShow" alt="Avatar de usuario">
             <label for="profilePicture" class="formContainer__body__imageHandler--label">
               Escoge imagen de perfil
             </label>
