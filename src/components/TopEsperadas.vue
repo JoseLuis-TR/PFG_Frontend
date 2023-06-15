@@ -55,6 +55,9 @@ export default {
         .then(response => response.json())
         .then(data => {
           this.topMovies = data;
+          if (this.topMovies !== undefined && this.topMovies !== null && this.topMovies.length > 5) {
+            this.topMovies = this.topMovies.slice(0, 5);
+          }
           this.isLoading = false;
         });
     },
