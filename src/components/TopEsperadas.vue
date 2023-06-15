@@ -4,7 +4,7 @@
     <section class="top__container">
       <Loader mensajeCarga="Cargando Top 5" v-if="isLoading" />
       <ul class="list" v-else-if="!isLoading && topMovies.length > 0">
-        <li class="list__item" v-for="(movie, index) in this.topMovies">
+        <li class="list__item" v-for="(movie, index) in this.topMovies.slice(0, 5)">
           <p class="list__item__order">{{ index + 1 }}</p>
           <section class="list__item__info">
             <p class="list__item__info__name" @click="redirectToMoviePage(movie.id)">{{ movie.nombre }}</p>
