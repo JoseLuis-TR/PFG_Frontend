@@ -4,7 +4,7 @@
       <Transition class="menuModal">
         <nav class="menuContainer__overlay">
           <header class="yesUser" v-if="user">
-            <img class="yesUser__img" alt="Avatar de usuario" v-if="user.avatar !== null || user.avatar !== ''"
+            <img class="yesUser__img" alt="Avatar de usuario" v-if="user.avatar !== null && user.avatar !== ''"
               :src="user.avatar">
             <img class="yesUser__img" alt="Avatar de usuario" v-else src="../../assets/images/default.png">
             <p class="yesUser__nick">@{{ user.nick }}</p>

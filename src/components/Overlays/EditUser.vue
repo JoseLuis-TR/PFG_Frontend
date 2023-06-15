@@ -179,7 +179,7 @@ export default {
     showedAvatar(whatINeed, newAvatar = null) {
       const defaultAvatar = "../../assets/images/default.png";
       if (whatINeed === "initialAvatar" && this.loggedUser) {
-        this.avatarToShow = (this.loggedUser.avatar !== null || this.loggedUser.avatar !== '') ? this.loggedUser.avatar : defaultAvatar;
+        this.avatarToShow = (this.loggedUser.avatar !== null && this.loggedUser.avatar !== '') ? this.loggedUser.avatar : defaultAvatar;
         if (this.loggedUser.avatar === null) {
           this.showDefaultAvatar = true;
         } else {
