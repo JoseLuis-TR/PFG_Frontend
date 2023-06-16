@@ -29,9 +29,10 @@
     <section v-else-if="!isLoading && opinions.length === 0" class="noOpinion">
       <p class="noOpinion__title">¡Oh no!</p>
       <p class="noOpinion__explain">
-        Actualmente no hay opiniones de esta película. ¡Sé el primero en opinar!
+        Actualmente no hay opiniones de esta película. <span class="noOpinion__explain" v-if="user && !user.mensaje">¡Sé
+          el primero en opinar!</span>
       </p>
-      <button class="noOpinion__button" @click="showForm">
+      <button class="noOpinion__button" @click="showForm" v-if="user && !user.mensaje">
         <img src="../../assets/icons/add.svg" alt="Icono de añadir">
         Añade una opinión
       </button>
